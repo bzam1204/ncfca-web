@@ -1,5 +1,5 @@
 import {Sex} from "@/domain/enums/sex.enum";
-import {UserRoles} from "@/domain/enums/user-roles";
+import {UserRoles} from "@/domain/enums/user.roles";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 import {PaymentStatus} from "@/domain/enums/payment-status.enum";
 import {PaymentMethod} from "@/domain/enums/payment-method.enum";
@@ -16,7 +16,6 @@ export interface Address {
   state: string;
   zipCode: string;
   complement?: string;
-  country: string;
 }
 
 export interface User {

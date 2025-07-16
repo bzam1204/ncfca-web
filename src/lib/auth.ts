@@ -1,70 +1,67 @@
-// src/lib/auth.ts
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import type { NextAuthConfig } from "next-auth";
+// src/lib/auth.ts (Versão Unificada)
+
+import NextAuth from 'next-auth';
+import type { NextAuthConfig } from 'next-auth';
+import Credentials from 'next-auth/providers/credentials';
+import { jwtDecode } from 'jwt-decode';
+import {UserRoles} from "@/domain/enums/user.roles";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-export const config = {
+interface DecodedAccessToken {
+  sub: string;
+  email: string;
+  roles: UserRoles[];
+  familyId: string;
+  iat: number;
+  exp: number;
+}
+
+const config = {
   providers: [
     Credentials({
       async authorize(credentials) {
-        if (!credentials.email || !credentials.password) return null;
-
+        if (!credentials?.email || !credentials.password) return null;
         try {
           const res = await fetch(`${BACKEND_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
+            body: JSON.stringify(credentials),
           });
-
-          if (!res.ok) {
-            // A API retornou um erro (ex: 401 Unauthorized)
-            console.error("Falha na autenticação com o backend:", await res.text());
-            return null;
-          }
-
+          if (!res.ok) return null;
           const user = await res.json();
-
-          // O objeto retornado aqui será passado para o callback 'jwt'
-          if (user && user.accessToken) {
-            return user; // Retorne o objeto completo que vem do seu backend
-          }
-
-          return null;
+          return user && user.accessToken ? user : null;
         } catch (error) {
-          console.error("Erro de rede ou de servidor ao autenticar:", error);
           return null;
         }
       },
     }),
   ],
   callbacks: {
-    // O callback 'jwt' é chamado para codificar o token da sessão do NextAuth.
-    // Nós o usamos para injetar o accessToken do nosso backend no token do NextAuth.
+    // A lógica de jwt e session permanece a mesma. Essencial para popular os dados.
     async jwt({ token, user }) {
-      // 'user' só está presente no primeiro login.
-      // O objeto 'user' aqui é o que foi retornado pelo 'authorize'.
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
       }
       return token;
     },
-    // O callback 'session' é chamado para criar o objeto 'session'
-    // que é acessível no lado do cliente.
     async session({ session, token }) {
-      // Passamos o accessToken do token JWT para o objeto da sessão.
-      session.accessToken = token.accessToken as string;
+      if (token.accessToken) {
+        console.log('rodoou o session callback');
+        const decodedToken = jwtDecode<DecodedAccessToken>(token.accessToken as string);
+        session.accessToken = token.accessToken as string;
+        session.user.id = decodedToken.sub;
+        session.user.email = decodedToken.email;
+        (session.user as any).roles = decodedToken.roles;
+        (session.user as any).familyId = decodedToken.familyId;
+      }
       return session;
     },
   },
   pages: {
-    signIn: '/login', // Redireciona para a nossa página de login customizada
-  }
+    signIn: '/login',
+  },
 } satisfies NextAuthConfig;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(config);
