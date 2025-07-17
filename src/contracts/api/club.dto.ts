@@ -8,8 +8,8 @@ export interface ClubDto {
   id: string;
   name: string;
   city: string;
+  state: string; // O novo DTO inclui 'state'.
   principalId: string;
-  // O schema no openapi.json não inclui state ou status, aderimos estritamente ao contrato.
 }
 
 /**
@@ -24,4 +24,15 @@ export interface PaginatedClubDto {
     limit: number;
     page: number;
   };
+}
+
+/**
+ * @description Parâmetros de query para a busca de clubes.
+ */
+export interface SearchClubsQuery {
+  name?: string;
+  city?: string;
+  state?: string;
+  page?: number;
+  limit?: number;
 }

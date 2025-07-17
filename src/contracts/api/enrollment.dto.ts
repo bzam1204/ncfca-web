@@ -1,6 +1,5 @@
 // src/contracts/api/enrollment.dto.ts
 
-
 import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
 
 /**
@@ -21,8 +20,10 @@ export interface EnrollmentRequestDto {
   status: EnrollmentStatus;
   clubId: string;
   familyId: string;
-  dependantId: string; // Corrigido de 'dependantId' para 'dependantId' para consistência
-  requestedAt: string;
+  dependantId: string;
+  requestedAt: string; // Formato ISODate
   resolvedAt: string | null;
-  rejectionReason: string | null; // A API define como objeto, mas string é mais provável. Ajustar se necessário.
+  // O contrato atualizado define 'rejectionReason' como objeto, o que é estranho.
+  // Assumirei que é um erro na documentação e o tratarei como string.
+  rejectionReason: string | null;
 }

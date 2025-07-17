@@ -1,17 +1,18 @@
-// src/app/dashboard/_components/dashboard-nav.tsx
+// src/app/_components/dashboard-nav.tsx
 'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, LayoutDashboard, ShoppingCart } from 'lucide-react';
+import { Users, LayoutDashboard, ShoppingCart, University } from 'lucide-react'; // Importar o novo ícone
 
-import { cn } from '@/lib/utils'; // Utilitário do shadcn para mesclar classes Tailwind
+import { cn } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Início', icon: LayoutDashboard },
   { href: '/dashboard/dependants', label: 'Dependentes', icon: Users },
   { href: '/dashboard/affiliation', label: 'Minha Afiliação', icon: ShoppingCart },
-  // Adicionar novos links aqui no futuro
+  // ADICIONADO: Link para a nova seção de clubes.
+  { href: '/dashboard/clubs', label: 'Clubes e Matrículas', icon: University },
 ];
 
 export function DashboardNav() {
@@ -24,7 +25,7 @@ export function DashboardNav() {
           <span
               className={cn(
                   'group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground',
-                  pathname === item.href ? 'bg-accent' : 'transparent'
+                  pathname.startsWith(item.href) ? 'bg-accent' : 'transparent' // Use startsWith para sub-rotas
               )}
           >
             <item.icon className="mr-2 h-4 w-4" />

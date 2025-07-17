@@ -1,10 +1,11 @@
 // src/lib/translations.ts
 
-import {Sex} from "@/domain/enums/sex.enum";
+import {type VariantProps} from "class-variance-authority";
+import {badgeVariants} from "@/components/ui/badge";
 import {DependantRelationship} from "@/domain/enums/dependant-relationship.enum";
+import {Sex} from "@/domain/enums/sex.enum";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {VariantProps} from "class-variance-authority";
-import {type badgeVariants} from "@/components/ui/badge";
+import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
 
 export const sexTranslation: Record<Sex, string> = {
   [Sex.MALE] : "Masculino",
@@ -27,17 +28,34 @@ export const familyStatusTranslation: Record<FamilyStatus, string> = {
   [FamilyStatus.EXPIRED] : "Expirado",
 };
 
-// NOVO: Helper para mapear o status a uma variante de cor do Badge.
-// Isso permite que a cor do status seja consistente em toda a aplicação.
 export const getFamilyStatusVariant = (status: FamilyStatus): VariantProps<typeof badgeVariants>["variant"] => {
   switch (status) {
     case FamilyStatus.AFFILIATED:
-      return "default"; // Assumindo que 'default' é verde/positivo. Adicione variantes se necessário.
+      return "default";
     case FamilyStatus.EXPIRED:
       return "destructive";
     case FamilyStatus.PENDING_PAYMENT:
-      return "secondary"; // Assumindo que 'secondary' é amarelo/laranja.
-    default:
       return "outline";
+    default:
+      return "secondary";
+  }
+};
+
+// ADICIONADO: Tradução e variantes para o status da matrícula.
+export const enrollmentStatusTranslation: Record<EnrollmentStatus, string> = {
+  [EnrollmentStatus.PENDING] : "Pendente",
+  [EnrollmentStatus.APPROVED] : "Aprovada",
+  [EnrollmentStatus.REJECTED] : "Rejeitada",
+};
+
+export const getEnrollmentStatusVariant = (status: EnrollmentStatus): VariantProps<typeof badgeVariants>["variant"] => {
+  switch (status) {
+    case EnrollmentStatus.APPROVED:
+      return "default";
+    case EnrollmentStatus.REJECTED:
+      return "destructive";
+    case EnrollmentStatus.PENDING:
+    default:
+      return "secondary";
   }
 };

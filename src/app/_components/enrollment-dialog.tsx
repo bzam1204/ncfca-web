@@ -59,9 +59,7 @@ export function EnrollmentDialog({ club, dependants, isOpen, onClose }: Enrollme
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Solicitar Matrícula para "{club.name}"</DialogTitle>
-            <DialogDescription>
-              Selecione um dependente da sua família para enviar a solicitação de matrícula ao diretor do clube.
-            </DialogDescription>
+            <DialogDescription>Selecione um dependente para enviar a solicitação ao diretor do clube.</DialogDescription>
           </DialogHeader>
 
           <div className="py-4 space-y-4">
@@ -85,9 +83,7 @@ export function EnrollmentDialog({ club, dependants, isOpen, onClose }: Enrollme
                 <Alert variant="destructive">
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Nenhum Dependente Cadastrado</AlertTitle>
-                  <AlertDescription>
-                    Você precisa cadastrar um dependente na seção "Dependentes" antes de solicitar uma matrícula.
-                  </AlertDescription>
+                  <AlertDescription>Você precisa cadastrar um dependente antes de solicitar uma matrícula.</AlertDescription>
                 </Alert>
             )}
           </div>
