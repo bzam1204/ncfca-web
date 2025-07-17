@@ -18,6 +18,7 @@ declare module 'next-auth' {
       lastName: string;
       firstName: string;
     } & DefaultSession['user'];
+    error?: string;
   }
 }
 

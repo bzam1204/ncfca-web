@@ -15,6 +15,7 @@ import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} f
 import {registerSchema, type RegisterInput} from '@/lib/validators/register.schema';
 import {useRegisterUser} from "@/hooks/use-cases/use-register-user.use-case";
 import {useCepAutocomplete} from "@/hooks/use-cep-autocomplete";
+import {viaCepService} from "@/lib/providers/via-cep.service";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -31,11 +32,8 @@ export default function RegisterPage() {
       address : {zipCode : ''}
     }
   });
-  const {isLoading : isCepLoading, error : cepError, handleCepChange} = useCepAutocomplete(setValue);
+  const {isLoading : isCepLoading, error : cepError, handleCepChange} = useCepAutocomplete(setValue, viaCepService);
   const cepValue = watch('address.zipCode');
-  useEffect(() => {
-    handleCepChange(cepValue);
-  }, [cepValue, handleCepChange]);
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
@@ -95,7 +93,8 @@ export default function RegisterPage() {
                     <legend className="text-lg font-semibold mb-2 col-span-1 md:col-span-6">Endereço</legend>
                     <div className="space-y-2 md:col-span-2 relative">
                       <Label htmlFor="address.zipCode">CEP</Label>
-                      <Input id="address.zipCode" {...formRegister('address.zipCode')} />
+                      <Input id="address.zipCode" {...formRegister('address.zipCode')}
+                             onBlur={() => handleCepChange(cepValue)} />
                       {isCepLoading &&
                           <Loader2 className="animate-spin h-4 w-4 absolute right-2 top-9 text-slate-400" />}
                       {errors.address?.zipCode &&
@@ -133,7 +132,6 @@ export default function RegisterPage() {
                   </fieldset>
                   <fieldset className="grid grid-cols-1 gap-4 border-t pt-4">
                     <legend className="text-lg font-semibold mb-2">Segurança</legend>
-                    {/* ... Campos de senha permanecem os mesmos ... */}
                     <div className="space-y-2">
                       <Label htmlFor="password">Senha</Label>
                       <Input id="password" type="password" {...formRegister('password')} />

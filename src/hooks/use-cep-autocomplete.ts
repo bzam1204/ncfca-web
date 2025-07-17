@@ -1,51 +1,38 @@
-// src/hooks/useCepAutocomplete.ts
+import {useState} from "react";
+import {UseFormSetValue} from "react-hook-form";
 
-import {useState} from 'react';
-import {UseFormSetValue} from 'react-hook-form';
-import {RegisterInput} from '@/lib/validators/register.schema';
-import {fetchAddressByCep} from "@/lib/providers/services/cep.service";
+import {CepService} from "@/domain/services/cep.service";
 
-export const useCepAutocomplete = (
-    setValue: UseFormSetValue<RegisterInput>
-) => {
+import {RegisterInput} from "@/lib/validators/register.schema";
+
+export function useCepAutocomplete(
+    setValue: UseFormSetValue<RegisterInput>,
+    cepService: CepService
+) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleCepChange = async (cep: string) => {
-    // Apenas busca quando o CEP tem 8 dígitos numéricos
-    const numericCep = cep.replace(/\D/g, '');
-    if (numericCep.length !== 8) {
+  async function handleCepChange(cep: string) {
+    const sanitizedCep = cep.replace(/\D/g, '');
+    if (sanitizedCep.length !== 8) {
       setError(null);
-      return;
+      return void 0;
     }
-
     setIsLoading(true);
     setError(null);
-
     try {
-      const address = await fetchAddressByCep(numericCep);
-
-      // Atualiza os campos do formulário com os dados recebidos
-      setValue('address.street', address.logradouro);
-      setValue('address.district', address.bairro);
-      setValue('address.city', address.localidade);
-      setValue('address.state', address.uf);
-
-    } catch (err: any) {
-      setError(err.message || 'Erro ao buscar CEP.');
-      // Limpa os campos em caso de erro para evitar dados inconsistentes
-      setValue('address.street', '');
-      setValue('address.district', '');
-      setValue('address.city', '');
-      setValue('address.state', '');
+      const cepAddress = await cepService.fetchAddress(sanitizedCep);
+      if (!cepAddress) throw new Error('Erro ao buscar endereço do CEP');
+      setValue('address.district', cepAddress.district);
+      setValue('address.street', cepAddress.street);
+      setValue('address.state', cepAddress.state);
+      setValue('address.city', cepAddress.city);
+    } catch (error) {
+      setError('Erro ao buscar endereço do CEP');
     } finally {
       setIsLoading(false);
     }
+    return void 0;
   };
-
-  return {
-    isLoading,
-    error,
-    handleCepChange,
-  };
+  return {handleCepChange, isLoading, error};
 };
