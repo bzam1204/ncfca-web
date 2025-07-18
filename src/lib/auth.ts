@@ -87,10 +87,8 @@ export const authConfig = {
         token.error = undefined;
         return token;
       }
-      console.log('!! o c[odigo t[a aqui')
       const newTokens = await refreshAccessToken(token.refreshToken);
       if (!newTokens) {
-        console.log('não teve token');
         token.error = "RefreshAccessTokenError";
         return token;
       }
@@ -137,7 +135,6 @@ export const {handlers, auth, signIn, signOut} = NextAuth(authConfig);
 
 export function isTokenExpired(token: string, decoder: (token: string) => DecodedAccessToken): boolean {
   const decoded = decoder(token);
-  console.log('expira em: ', (decoded.exp * 1000 - Date.now()) / 1000);
   return Date.now() >= decoded.exp * 1000;
 }
 
@@ -158,5 +155,7 @@ function isOnDashboard(nextUrl: NextURL) {
 }
 
 function isSessionValid(auth: Session | null) {
-  return !auth?.error && !isTokenExpired(auth?.accessToken as string, jwtDecode<DecodedAccessToken>);
+  const token = auth?.accessToken;
+  if (!token) return false;
+  return !auth?.error && !isTokenExpired(token, jwtDecode<DecodedAccessToken>);
 }
