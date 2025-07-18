@@ -8,29 +8,9 @@ import { CheckCircle, AlertTriangle, XCircle, Clock } from 'lucide-react';
 import { familyStatusTranslation, getFamilyStatusVariant } from '@/lib/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
+import {getMyFamily} from "@/hooks/use-cases/use-my-family.use-case";
 
-// Função de busca de dados, executada no servidor.
-async function getFamilyData(accessToken: string): Promise<FamilyResponseDto | null> {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  try {
-    // O endpoint está alinhado com o openapi.json.
-    const res = await fetch(`${BACKEND_URL}/dependants/my-family`, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-      // Usamos cache por demanda. A invalidação ocorrerá quando o status da família mudar.
-      next: { tags: ['family-status'] },
-    });
-    if (!res.ok) {
-      console.error("API Error:", res.status, await res.text());
-      return null;
-    }
-    return res.json();
-  } catch (error) {
-    console.error("Network Error fetching family data:", error);
-    return null;
-  }
-}
 
-// Helper para formatar datas de forma segura.
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';
   // O bloco try-catch lida com strings de data inválidas que a API possa retornar.
@@ -61,7 +41,7 @@ export default async function AffiliationPage() {
     );
   }
 
-  const family = await getFamilyData(session.accessToken);
+  const family = await getMyFamily(session.accessToken);
 
   if (!family) {
     return (

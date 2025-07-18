@@ -4,6 +4,8 @@ import Credentials from 'next-auth/providers/credentials';
 import {UserRoles} from "@/domain/enums/user.roles";
 import {jwtDecode} from "jwt-decode";
 import {NextURL} from "next/dist/server/web/next-url";
+import {getMyFamily} from "@/hooks/use-cases/use-my-family.use-case";
+import {FamilyStatus} from "@/domain/enums/family-status.enum";
 
 // --- TIPOS DE DADOS ---
 interface DecodedAccessToken {
@@ -115,15 +117,18 @@ export const authConfig = {
     async authorized({auth, request : {nextUrl}}) {
       if (!isSessionValid(auth)) {
         const refreshToken = auth?.refreshToken;
-        if (!refreshToken) return false;
-        const newTokens = await refreshAccessToken(refreshToken);
-        if (!newTokens) return false;
-        auth.accessToken = newTokens.accessToken;
-        auth.refreshToken = newTokens.refreshToken;
+        if (refreshToken) {
+          const newTokens = await refreshAccessToken(refreshToken);
+          if (!newTokens) return false;
+          auth.accessToken = newTokens.accessToken;
+          auth.refreshToken = newTokens.refreshToken;
+        }
       }
       const isLoggedIn = !!auth?.user;
       if (isOnHomePage(nextUrl)) return false
       if (isOnAuthPages(nextUrl) && !everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
+      if (isOnCheckout(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth) && !await isAffiliated(auth?.accessToken ?? ''))) return true;
+      if (everythingIsAlright(isLoggedIn, isSessionValid(auth)) && !await isAffiliated(auth?.accessToken ?? '')) return Response.redirect(new URL('/checkout', nextUrl));
       if (isOnDashboard(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
       if (isOnAuthPages(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return Response.redirect(new URL('/dashboard', nextUrl));
       return false;
@@ -132,6 +137,12 @@ export const authConfig = {
 } satisfies NextAuthConfig;
 
 export const {handlers, auth, signIn, signOut} = NextAuth(authConfig);
+
+async function isAffiliated(token: string): Promise<boolean> {
+  const family = await getMyFamily(token);
+  if (!family) return false;
+  return family.status === FamilyStatus.AFFILIATED;
+}
 
 export function isTokenExpired(token: string, decoder: (token: string) => DecodedAccessToken): boolean {
   const decoded = decoder(token);
@@ -152,6 +163,10 @@ function isOnHomePage(nextUrl: NextURL) {
 
 function isOnDashboard(nextUrl: NextURL) {
   return nextUrl.pathname.startsWith('/dashboard');
+}
+
+function isOnCheckout(nextUrl: NextURL) {
+  return nextUrl.pathname.startsWith('/checkout');
 }
 
 function isSessionValid(auth: Session | null) {

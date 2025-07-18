@@ -1,11 +1,9 @@
-// src/app/register/page.tsx
 'use client';
 
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
-import {useEffect} from 'react';
 import {Loader2} from 'lucide-react';
 
 import {Button} from '@/components/ui/button';
@@ -16,9 +14,12 @@ import {registerSchema, type RegisterInput} from '@/lib/validators/register.sche
 import {useRegisterUser} from "@/hooks/use-cases/use-register-user.use-case";
 import {useCepAutocomplete} from "@/hooks/use-cep-autocomplete";
 import {viaCepService} from "@/lib/providers/via-cep.service";
+import {useNotify} from "@/hooks/use-notify";
+import {useEffect} from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const notify = useNotify();
   const {mutate : register, isPending : isRegistering, error : registerError, isSuccess} = useRegisterUser();
   const {
     register : formRegister,
@@ -32,8 +33,6 @@ export default function RegisterPage() {
       address : {zipCode : ''}
     }
   });
-  const {isLoading : isCepLoading, error : cepError, handleCepChange} = useCepAutocomplete(setValue, viaCepService);
-  const cepValue = watch('address.zipCode');
   useEffect(() => {
     if (isSuccess) {
       const timer = setTimeout(() => {
@@ -42,6 +41,10 @@ export default function RegisterPage() {
       return () => clearTimeout(timer);
     }
   }, [isSuccess, router]);
+  useEffect(() => {
+    if (!registerError) return;
+    notify.error(registerError.message || 'Erro ao registrar usuário');
+  }, [registerError]);
   const onSubmit = (data: RegisterInput) => {
     register(data);
   };
@@ -89,47 +92,7 @@ export default function RegisterPage() {
                       {errors.cpf && <p className="text-red-500 text-sm">{errors.cpf.message}</p>}
                     </div>
                   </fieldset>
-                  <fieldset className="grid grid-cols-1 md:grid-cols-6 gap-4 border-t pt-4">
-                    <legend className="text-lg font-semibold mb-2 col-span-1 md:col-span-6">Endereço</legend>
-                    <div className="space-y-2 md:col-span-2 relative">
-                      <Label htmlFor="address.zipCode">CEP</Label>
-                      <Input id="address.zipCode" {...formRegister('address.zipCode')}
-                             onBlur={() => handleCepChange(cepValue)} />
-                      {isCepLoading &&
-                          <Loader2 className="animate-spin h-4 w-4 absolute right-2 top-9 text-slate-400" />}
-                      {errors.address?.zipCode &&
-                          <p className="text-red-500 text-sm">{errors.address.zipCode.message}</p>}
-                      {cepError && <p className="text-red-500 text-sm">{cepError}</p>}
-                    </div>
-                    <div className="space-y-2 md:col-span-4">
-                      <Label htmlFor="address.street">Rua</Label>
-                      <Input id="address.street" {...formRegister('address.street')} />
-                      {errors.address?.street &&
-                          <p className="text-red-500 text-sm">{errors.address.street.message}</p>}
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="address.number">Número</Label>
-                      <Input id="address.number" {...formRegister('address.number')} />
-                      {errors.address?.number &&
-                          <p className="text-red-500 text-sm">{errors.address.number.message}</p>}
-                    </div>
-                    <div className="space-y-2 md:col-span-4">
-                      <Label htmlFor="address.district">Bairro</Label>
-                      <Input id="address.district" {...formRegister('address.district')} />
-                      {errors.address?.district &&
-                          <p className="text-red-500 text-sm">{errors.address.district.message}</p>}
-                    </div>
-                    <div className="space-y-2 md:col-span-4">
-                      <Label htmlFor="address.city">Cidade</Label>
-                      <Input id="address.city" {...formRegister('address.city')} />
-                      {errors.address?.city && <p className="text-red-500 text-sm">{errors.address.city.message}</p>}
-                    </div>
-                    <div className="space-y-2 md:col-span-2">
-                      <Label htmlFor="address.state">Estado (UF)</Label>
-                      <Input id="address.state" {...formRegister('address.state')} />
-                      {errors.address?.state && <p className="text-red-500 text-sm">{errors.address.state.message}</p>}
-                    </div>
-                  </fieldset>
+                  <Endereco watch={watch} errors={errors} formRegister={formRegister} setValue={setValue} />
                   <fieldset className="grid grid-cols-1 gap-4 border-t pt-4">
                     <legend className="text-lg font-semibold mb-2">Segurança</legend>
                     <div className="space-y-2">
@@ -144,7 +107,6 @@ export default function RegisterPage() {
                           <p className="text-red-500 text-sm">{errors.confirmPassword.message}</p>}
                     </div>
                   </fieldset>
-                  {registerError && <p className="text-red-500 text-sm">{registerError.message}</p>}
                   <Button type="submit" className="w-full" disabled={isRegistering}>
                     {isRegistering ? 'Registrando...' : 'Registrar'}
                   </Button>
@@ -162,5 +124,58 @@ export default function RegisterPage() {
           )}
         </Card>
       </div>
+  );
+}
+
+function Endereco(input: {formRegister: any, setValue: any, watch: any, errors: any}) {
+  const {
+    handleCepChange,
+    isLoadingCep,
+    errorCep,
+  } = useCepAutocomplete(input.setValue, viaCepService);
+  const cepValue = input.watch('address.zipCode');
+
+  return (
+      <fieldset className="grid grid-cols-1 md:grid-cols-6 gap-4 border-t pt-4">
+        <legend className="text-lg font-semibold mb-2 col-span-1 md:col-span-6">Endereço</legend>
+        <div className="space-y-2 md:col-span-2 relative">
+          <Label htmlFor="address.zipCode">CEP</Label>
+          <Input id="address.zipCode" {...input.formRegister('address.zipCode')}
+                 onBlur={() => handleCepChange(cepValue)} />
+          {isLoadingCep &&
+              <Loader2 className="animate-spin h-4 w-4 absolute right-2 top-9 text-slate-400" />}
+          {input.errors.address?.zipCode &&
+              <p className="text-red-500 text-sm">{input.errors.address.zipCode.message}</p>}
+          {errorCep && <p className="text-red-500 text-sm">{errorCep}</p>}
+        </div>
+        <div className="space-y-2 md:col-span-4">
+          <Label htmlFor="address.street">Rua</Label>
+          <Input id="address.street" {...input.formRegister('address.street')} />
+          {input.errors.address?.street &&
+              <p className="text-red-500 text-sm">{input.errors.address.street.message}</p>}
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="address.number">Número</Label>
+          <Input id="address.number" {...input.formRegister('address.number')} />
+          {input.errors.address?.number &&
+              <p className="text-red-500 text-sm">{input.errors.address.number.message}</p>}
+        </div>
+        <div className="space-y-2 md:col-span-4">
+          <Label htmlFor="address.district">Bairro</Label>
+          <Input id="address.district" {...input.formRegister('address.district')} />
+          {input.errors.address?.district &&
+              <p className="text-red-500 text-sm">{input.errors.address.district.message}</p>}
+        </div>
+        <div className="space-y-2 md:col-span-4">
+          <Label htmlFor="address.city">Cidade</Label>
+          <Input id="address.city" {...input.formRegister('address.city')} />
+          {input.errors.address?.city && <p className="text-red-500 text-sm">{input.errors.address.city.message}</p>}
+        </div>
+        <div className="space-y-2 md:col-span-2">
+          <Label htmlFor="address.state">Estado (UF)</Label>
+          <Input id="address.state" {...input.formRegister('address.state')} />
+          {input.errors.address?.state && <p className="text-red-500 text-sm">{input.errors.address.state.message}</p>}
+        </div>
+      </fieldset>
   );
 }

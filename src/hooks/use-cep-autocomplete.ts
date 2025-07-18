@@ -34,5 +34,5 @@ export function useCepAutocomplete(
     }
     return void 0;
   };
-  return {handleCepChange, isLoading, error};
+  return {handleCepChange, isLoadingCep : isLoading, errorCep : error};
 };
