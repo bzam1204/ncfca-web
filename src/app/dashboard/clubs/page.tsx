@@ -13,10 +13,31 @@ import {Button} from '@/components/ui/button';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Alert, AlertTitle, AlertDescription} from '@/components/ui/alert';
 import {Input} from '@/components/ui/input';
-import {AlertTriangle, University, Search, ListChecks} from 'lucide-react';
+import {AlertTriangle, University, Search, ListChecks, ShieldPlus} from 'lucide-react';
 import {PaginationControls} from '@/components/ui/pagination-controls';
 import {MyRequestsTable} from "@/app/_components/my-requests-table";
 import {EnrollmentDialog} from "@/app/_components/enrollment-dialog";
+import Link from "next/link";
+import {UserRoles} from "@/domain/enums/user.roles";
+
+const NonDirectorCallToAction = () => (
+
+    <Card className="bg-gradient-to-br from-primary/10 to-transparent">
+      <CardHeader>
+        <CardTitle className="flex items-center"><ShieldPlus
+            className="mr-3 h-6 w-6 text-primary" /> Torne-se um Diretor de Clube</CardTitle>
+        <CardDescription>
+          Lidere, mentore e construa uma comunidade de debate. Crie seu próprio clube
+          e comece a gerenciar matrículas e membros hoje mesmo.
+        </CardDescription>
+        <div className="pt-4">
+          <Button asChild>
+            <Link href="/dashboard/club-management">Criar Meu Clube</Link>
+          </Button>
+        </div>
+      </CardHeader>
+    </Card>
+);
 
 // --- Funções de Busca de Dados ---
 async function getClubs(accessToken: string, query: SearchClubsQuery): Promise<PaginatedClubDto> {
@@ -50,7 +71,9 @@ async function getMyEnrollmentRequests(accessToken: string): Promise<EnrollmentR
   return res.json();
 }
 
-export default function ClubsAndEnrollmentsPage() {
+export default function ClubsPage() {
+  const {data : session} = useSession({required : true});
+  const isClubDirector = session?.user?.roles?.includes(UserRoles.DONO_DE_CLUBE);
   const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
   const [searchQuery, setSearchQuery] = useState<SearchClubsQuery>({
     name : '',
@@ -61,7 +84,6 @@ export default function ClubsAndEnrollmentsPage() {
   });
   const debouncedSearchQuery = useDebounce({...searchQuery, page : 1}, 500);
   const paginatedQuery = {...debouncedSearchQuery, page : searchQuery.page};
-  const {data : session} = useSession({required : true});
   const accessToken = session?.accessToken ?? '';
   const {data : clubsResponse, isLoading : isLoadingClubs, error : errorClubs} = useQuery({
     queryKey : ['clubs', paginatedQuery],
@@ -90,7 +112,9 @@ export default function ClubsAndEnrollmentsPage() {
   };
   const requestedClubIds = useMemo(() => new Set(enrollmentRequests.map(req => req.clubId)), [enrollmentRequests]);
   return (
+
       <div className="space-y-8">
+        {!isClubDirector && <NonDirectorCallToAction />}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center"><ListChecks

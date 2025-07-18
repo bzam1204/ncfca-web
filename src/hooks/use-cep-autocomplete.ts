@@ -27,7 +27,7 @@ export function useCepAutocomplete(
       setValue('address.street', cepAddress.street);
       setValue('address.state', cepAddress.state);
       setValue('address.city', cepAddress.city);
-    } catch (error) {
+    } catch {
       setError('Erro ao buscar endereço do CEP');
     } finally {
       setIsLoading(false);

@@ -1,8 +1,8 @@
 import type {NextAuthConfig} from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import {jwtDecode} from 'jwt-decode';
 import {UserRoles} from "@/domain/enums/user.roles";
+import {jwtDecode} from "jwt-decode";
 
 // --- TIPOS DE DADOS ---
 interface DecodedAccessToken {

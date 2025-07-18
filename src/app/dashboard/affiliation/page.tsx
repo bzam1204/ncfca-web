@@ -128,7 +128,7 @@ export default async function AffiliationPage() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              O gerenciamento detalhado dos dependentes pode ser feito na seção "Dependentes".
+              O gerenciamento detalhado dos dependentes pode ser feito na seção &quotDependentes&quot.
             </p>
           </CardContent>
         </Card>

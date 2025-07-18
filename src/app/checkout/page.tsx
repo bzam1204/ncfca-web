@@ -14,7 +14,7 @@ export default function CheckoutPage() {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [status, router]);
+  }, [status]);
   const handlePayment = () => {
     const accessToken = session?.accessToken
     if (!accessToken) {

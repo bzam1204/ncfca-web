@@ -58,7 +58,7 @@ export function EnrollmentDialog({ club, dependants, isOpen, onClose }: Enrollme
       <Dialog open={isOpen} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Solicitar Matrícula para "{club.name}"</DialogTitle>
+            <DialogTitle>Solicitar Matrícula para &quot{club.name}&quot</DialogTitle>
             <DialogDescription>Selecione um dependente para enviar a solicitação ao diretor do clube.</DialogDescription>
           </DialogHeader>
 

@@ -1,4 +1,3 @@
-// src/app/dashboard/dependants/_components/dependant-form.tsx
 'use client';
 
 import {Controller, useForm} from 'react-hook-form';
