@@ -1,21 +1,22 @@
 // src/app/login/page.tsx
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {signIn} from 'next-auth/react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import {useSearchParams} from 'next/navigation';
+import {useState, useEffect, Suspense} from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { loginSchema, type LoginInput } from '@/lib/validators/login.schema';
+import {Button} from '@/components/ui/button';
+import {Input} from '@/components/ui/input';
+import {Label} from '@/components/ui/label';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription} from '@/components/ui/card';
+import {loginSchema, type LoginInput} from '@/lib/validators/login.schema';
 import {useNotify} from "@/hooks/use-notify";
+import {Skeleton} from "@/components/ui/skeleton";
 
-export default function LoginPage() {
+function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const notify = useNotify(); // 2. Instanciar o hook
@@ -31,17 +32,17 @@ export default function LoginPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState : {errors},
   } = useForm<LoginInput>({
-    resolver: zodResolver(loginSchema),
+    resolver : zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginInput) => {
     setIsLoading(true);
     await signIn('credentials', {
-      email: data.email,
-      password: data.password,
-      callbackUrl: '/dashboard',
+      email : data.email,
+      password : data.password,
+      callbackUrl : '/dashboard',
     });
     // Em caso de falha, o NextAuth redireciona de volta para esta página com o parâmetro de erro,
     // que o useEffect acima irá capturar.
@@ -84,4 +85,12 @@ export default function LoginPage() {
         </Card>
       </div>
   );
+}
+
+export default function Page() {
+  return (
+      <Suspense fallback={<Skeleton />}>
+        <Login />
+      </Suspense>
+  )
 }
