@@ -4,6 +4,7 @@ import "./globals.css";
 import {QueryProvider} from "@/lib/providers/query-provider";
 import {SessionProvider} from "next-auth/react";
 import {Toaster} from "@/components/ui/sonner";
+import {SessionManager} from "@/components/session-manager";
 
 const inter = Inter({subsets : ["latin"]});
 
@@ -23,6 +24,7 @@ export default function RootLayout({children,}: Readonly<{children: React.ReactN
       <html lang="pt-BR">
       <body className={inter.className}>
       <SessionProvider>
+        <SessionManager />
         <QueryProvider>
           <main className="flex-1">{children}</main>
           <Toaster richColors />
