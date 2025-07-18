@@ -23,7 +23,7 @@ import {useEffect} from "react";
 
 const dependantFormSchema = z.object({
   relationship : z.enum(DependantRelationship, {message : "Selecione um parentesco."}),
-  birthdate : z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use o formato AAAA-MM-DD.'),
+  birthdate : z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use o formato DD-MM-AAAA.'),
   firstName : z.string().min(2, 'O nome é obrigatório.'),
   lastName : z.string().min(2, 'O sobrenome é obrigatório.'),
   email : z.email({message : 'Email inválido.'}).optional().or(z.literal('')),

@@ -1,8 +1,9 @@
-import type {NextAuthConfig} from 'next-auth';
+import type {NextAuthConfig, Session} from 'next-auth';
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import {UserRoles} from "@/domain/enums/user.roles";
 import {jwtDecode} from "jwt-decode";
+import {NextURL} from "next/dist/server/web/next-url";
 
 // --- TIPOS DE DADOS ---
 interface DecodedAccessToken {
@@ -75,56 +76,34 @@ export const authConfig = {
     }),
   ],
   callbacks : {
-    /**
-     * PONTO CRÍTICO 2: O GATEKEEPER NO CALLBACK JWT
-     * Esta lógica permanece a mesma, pois é o motor do fluxo.
-     */
     async jwt({token, user}) {
-      // Primeira vez, após o login.
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         return token;
       }
-
-      // Nas chamadas subsequentes.
-      if (token.accessToken) {
-        const decoded = jwtDecode<DecodedAccessToken>(token.accessToken);
-
-        // Se o token ainda é válido.
-        if (Date.now() < decoded.exp * 1000) {
-          return token;
-        }
-
-        // Se o token expirou, tente renová-lo.
-        if (!token.refreshToken) {
-          console.error("Access token expirado, mas nenhum refresh token disponível.");
-          return {...token, error : "RefreshAccessTokenError"};
-        }
-
-        const newTokens = await refreshAccessToken(token.refreshToken as string);
-
-        if (newTokens) {
-          // Renovação bem-sucedida.
-          token.accessToken = newTokens.accessToken;
-          token.refreshToken = newTokens.refreshToken;
-          token.error = undefined; // Limpa qualquer erro anterior.
-        } else {
-          // Renovação falhou.
-          token.error = "RefreshAccessTokenError";
-        }
+      if (!token.accessToken || !token.refreshToken) throw new Error("Não autorizado. Realize o login novamente. tem accessToken");
+      if (!isTokenExpired(token.accessToken, jwtDecode<DecodedAccessToken>)) {
+        token.error = undefined;
+        return token;
       }
-
+      console.log('!! o c[odigo t[a aqui')
+      const newTokens = await refreshAccessToken(token.refreshToken);
+      if (!newTokens) {
+        console.log('não teve token');
+        token.error = "RefreshAccessTokenError";
+        return token;
+      }
+      token.accessToken = newTokens.accessToken;
+      token.refreshToken = newTokens.refreshToken;
+      token.error = undefined;
       return token;
     },
-
-    /**
-     * PONTO CRÍTICO 3: PROPAGAÇÃO PARA A SESSÃO
-     */
     async session({session, token}) {
       if (token.accessToken) {
-        const decodedToken = jwtDecode<DecodedAccessToken>(token.accessToken as string);
-        session.accessToken = token.accessToken as string;
+        const decodedToken = jwtDecode<DecodedAccessToken>(token.accessToken);
+        session.accessToken = token.accessToken;
+        session.refreshToken = token.refreshToken;
         session.user.id = decodedToken.sub;
         session.user.email = decodedToken.email;
         (session.user as any).roles = decodedToken.roles;
@@ -135,31 +114,49 @@ export const authConfig = {
       }
       return session;
     },
-
-    /**
-     * PONTO CRÍTICO 4: O GUARDA DA FRONTEIRA ATUALIZADO
-     */
-    authorized({auth, request : {nextUrl}}) {
-      const isLoggedIn = !!auth?.user;
-      const isSessionValid = !auth?.error;
-
-      const isOnHomePage = nextUrl.pathname === '/';
-      if (isOnHomePage) return Response.redirect(new URL('/login', nextUrl));
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-
-      if (isOnDashboard) {
-        if (isLoggedIn && isSessionValid) return true;
-        return false;
-      } else if (isLoggedIn && isSessionValid) {
-        const isOnAuthPages = nextUrl.pathname.startsWith('/login') || nextUrl.pathname.startsWith('/register');
-        if (isOnAuthPages) {
-          return Response.redirect(new URL('/dashboard', nextUrl));
-        }
+    async authorized({auth, request : {nextUrl}}) {
+      if (!isSessionValid(auth)) {
+        const refreshToken = auth?.refreshToken;
+        if (!refreshToken) return false;
+        const newTokens = await refreshAccessToken(refreshToken);
+        if (!newTokens) return false;
+        auth.accessToken = newTokens.accessToken;
+        auth.refreshToken = newTokens.refreshToken;
       }
-
-      return true;
+      const isLoggedIn = !!auth?.user;
+      if (isOnHomePage(nextUrl)) return false
+      if (isOnAuthPages(nextUrl) && !everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
+      if (isOnDashboard(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
+      if (isOnAuthPages(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return Response.redirect(new URL('/dashboard', nextUrl));
+      return false;
     },
   },
 } satisfies NextAuthConfig;
 
 export const {handlers, auth, signIn, signOut} = NextAuth(authConfig);
+
+export function isTokenExpired(token: string, decoder: (token: string) => DecodedAccessToken): boolean {
+  const decoded = decoder(token);
+  console.log('expira em: ', (decoded.exp * 1000 - Date.now()) / 1000);
+  return Date.now() >= decoded.exp * 1000;
+}
+
+function isOnAuthPages(nextUrl: NextURL) {
+  return nextUrl.pathname.startsWith('/login') || nextUrl.pathname.startsWith('/register');
+}
+
+function everythingIsAlright(isLoggedIn: boolean, isSessionValid: boolean) {
+  return isLoggedIn && isSessionValid;
+}
+
+function isOnHomePage(nextUrl: NextURL) {
+  return nextUrl.pathname === '/';
+}
+
+function isOnDashboard(nextUrl: NextURL) {
+  return nextUrl.pathname.startsWith('/dashboard');
+}
+
+function isSessionValid(auth: Session | null) {
+  return !auth?.error && !isTokenExpired(auth?.accessToken as string, jwtDecode<DecodedAccessToken>);
+}
