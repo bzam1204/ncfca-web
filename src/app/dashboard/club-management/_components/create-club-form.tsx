@@ -5,9 +5,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useCreateClubMutation } from '@/hooks/use-cases/use-club-management.use-case';
 import { useNotify } from '@/hooks/use-notify';
+import { CreateClubResponseDto } from '@/contracts/api/club-management.dto';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,11 +22,14 @@ const createClubSchema = z.object({
 
 type CreateClubInput = z.infer<typeof createClubSchema>;
 
-export function CreateClubForm() {
-  const { data: session, update: updateSession } = useSession();
+interface CreateClubFormProps {
+  onSuccess: (response: CreateClubResponseDto) => void;
+}
+
+export function CreateClubForm({ onSuccess }: CreateClubFormProps) {
+  const { data: session } = useSession();
   const { mutate: createClub, isPending } = useCreateClubMutation();
   const notify = useNotify();
-  const router = useRouter();
 
   const { register, handleSubmit, formState: { errors } } = useForm<CreateClubInput>({
     resolver: zodResolver(createClubSchema),
@@ -37,12 +40,9 @@ export function CreateClubForm() {
       notify.error("Sessão inválida.");
       return;
     }
+    // PONTO CRÍTICO: O 'onSuccess' da mutation agora passa a resposta completa para o callback do componente pai.
     createClub({ data, accessToken: session.accessToken }, {
-      onSuccess: async () => {
-        notify.success("Clube criado com sucesso! Atualizando sua sessão...");
-        await updateSession();
-        router.refresh();
-      },
+      onSuccess: onSuccess,
       onError: (error) => notify.error(error.message),
     });
   };
@@ -51,9 +51,7 @@ export function CreateClubForm() {
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>Crie o Seu Clube</CardTitle>
-          <CardDescription>
-            Você ainda não gerencia um clube. Preencha os dados abaixo para criar o seu.
-          </CardDescription>
+          <CardDescription>Preencha os dados abaixo para registrar seu clube na plataforma NCFCA.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">

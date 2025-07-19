@@ -78,25 +78,33 @@ export const authConfig = {
     }),
   ],
   callbacks : {
-    async jwt({token, user}) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         return token;
       }
-      if (!token.accessToken || !token.refreshToken) throw new Error("Não autorizado. Realize o login novamente. tem accessToken");
-      if (!isTokenExpired(token.accessToken, jwtDecode<DecodedAccessToken>)) {
+      if (trigger === 'update' && session) {
+        if (session.accessToken && session.refreshToken) {
+          token.accessToken = session.accessToken;
+          token.refreshToken = session.refreshToken;
+        }
+        return token;
+      }
+      if (!token.accessToken || !token.refreshToken) {
+        throw new Error("Não autorizado. Realize o login novamente.");
+      }
+      const decoded = jwtDecode<DecodedAccessToken>(token.accessToken);
+      if (Date.now() >= decoded.exp * 1000) {
+        const newTokens = await refreshAccessToken(token.refreshToken);
+        if (!newTokens) {
+          token.error = "RefreshAccessTokenError";
+          return token;
+        }
+        token.accessToken = newTokens.accessToken;
+        token.refreshToken = newTokens.refreshToken;
         token.error = undefined;
-        return token;
       }
-      const newTokens = await refreshAccessToken(token.refreshToken);
-      if (!newTokens) {
-        token.error = "RefreshAccessTokenError";
-        return token;
-      }
-      token.accessToken = newTokens.accessToken;
-      token.refreshToken = newTokens.refreshToken;
-      token.error = undefined;
       return token;
     },
     async session({session, token}) {
@@ -122,6 +130,8 @@ export const authConfig = {
           if (!newTokens) return false;
           auth.accessToken = newTokens.accessToken;
           auth.refreshToken = newTokens.refreshToken;
+          const decodedToken = jwtDecode<DecodedAccessToken>(newTokens.accessToken);
+          auth.user.roles = decodedToken.roles;
         }
       }
       const isLoggedIn = !!auth?.user;

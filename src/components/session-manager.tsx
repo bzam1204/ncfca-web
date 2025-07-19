@@ -5,7 +5,7 @@ import {useSession} from 'next-auth/react';
 import {jwtDecode} from 'jwt-decode';
 
 const REFRESH_INTERVAL: number = Number(process.env.NEXT_PUBLIC_REFRESH_INTERVAL) ?? 5 * 60 * 1000;
-const REFRESH_THRESHOLD: number = Number(process.env.NEXT_PUBLIC_REFRESH_THRESHOLD) ?? 2 * 60 * 1000;
+const REFRESH_THRESHOLD: number = Number(process.env.NEXT_PUBLIC_REFRESH_THRESHOLD) ?? 9 * 60 * 1000;
 
 interface DecodedAccessToken {
   exp: number;

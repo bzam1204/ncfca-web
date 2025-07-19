@@ -160,9 +160,8 @@ export default function ClubsPage() {
                             <CardDescription>{club.city}, {club.state}</CardDescription>
                           </CardHeader>
                           <CardContent>
-                            <Button className="w-full" onClick={() => setSelectedClub(club)}
-                                    disabled={requestedClubIds.has(club.id)}>
-                              {requestedClubIds.has(club.id) ? 'Solicitação Enviada' : 'Solicitar Matrícula'}
+                            <Button className="w-full" onClick={() => setSelectedClub(club)}>
+                              Solicitar Matrícula
                             </Button>
                           </CardContent>
                         </Card>

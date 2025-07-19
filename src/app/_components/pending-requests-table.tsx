@@ -1,8 +1,11 @@
-// src/app/dashboard/club-management/_components/pending-requests-table.tsx
 'use client';
 
+import {useState} from 'react';
 import {useSession} from 'next-auth/react';
-import {useClubManagementMutations} from '@/hooks/use-cases/use-club-management.use-case';
+import {
+  useApproveEnrollmentMutation, usePendingEnrollmentsQuery,
+  useRejectEnrollmentMutation
+} from '@/hooks/use-cases/use-club-management.use-case';
 import {useNotify} from '@/hooks/use-notify';
 import {EnrollmentRequestDto} from '@/contracts/api/enrollment.dto';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
@@ -11,45 +14,45 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {Alert, AlertTitle, AlertDescription} from "@/components/ui/alert";
 import {AlertTriangle, Check, X} from "lucide-react";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from '@/components/ui/tooltip';
+import {RejectEnrollmentDialog} from './reject-enrollment-dialog';
 
 interface PendingRequestsTableProps {
-  requests: EnrollmentRequestDto[];
-  isLoading: boolean;
-  error: Error | null;
+  clubId: string;
+  accessToken: string;
 }
 
-export function PendingRequestsTable({requests, isLoading, error}: PendingRequestsTableProps) {
+export function PendingRequestsTable({clubId, accessToken}: PendingRequestsTableProps) {
+  const query = usePendingEnrollmentsQuery(clubId, accessToken);
+  const requests = query.data || [];
+  const [rejectionTarget, setRejectionTarget] = useState<EnrollmentRequestDto | null>(null);
   const {data : session} = useSession();
-  const {useApproveEnrollment, useRejectEnrollment} = useClubManagementMutations();
-  const {mutate : approve, isPending : isApproving} = useApproveEnrollment();
-  const {mutate : reject, isPending : isRejecting} = useRejectEnrollment();
+  const {mutate : approve, isPending : isApproving} = useApproveEnrollmentMutation();
+  const {mutate : reject, isPending : isRejecting} = useRejectEnrollmentMutation();
   const notify = useNotify();
 
-  const handleApprove = (id: string) => {
+  function handleApprove(id: string) {
     if (!session?.accessToken) return;
     approve({enrollmentId : id, accessToken : session.accessToken}, {
       onSuccess : () => notify.success("Matrícula aprovada!"),
       onError : (e) => notify.error(e.message),
     });
-  };
+  }
 
-  const handleReject = (id: string) => {
-    if (!session?.accessToken) return;
-    const reason = prompt("Por favor, informe o motivo da rejeição:");
-    if (!reason || reason.length < 10) {
-      notify.error("É necessário fornecer um motivo com pelo menos 10 caracteres.");
-      return;
-    }
-    reject({enrollmentId : id, data : {reason}, accessToken : session.accessToken}, {
-      onSuccess : () => notify.success("Matrícula rejeitada."),
+  const handleRejectSubmit = ({reason}: {reason: string}) => {
+    if (!rejectionTarget || !session?.accessToken) return;
+    reject({enrollmentId : rejectionTarget.id, data : {reason}, accessToken : session.accessToken}, {
+      onSuccess : () => {
+        notify.success("Matrícula rejeitada.");
+        setRejectionTarget(null); // Fecha o modal
+      },
       onError : (e) => notify.error(e.message),
     });
   };
-
-  if (isLoading) return <Skeleton className="h-24 w-full" />;
-  if (error) return <Alert variant="destructive"><AlertTriangle
-      className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
-
+  if (query.isLoading) return <Skeleton className="h-24 w-full" />;
+  if (query.error) {
+    return <Alert variant="destructive"><AlertTriangle
+        className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert>;
+  }
   return (
       <TooltipProvider>
         <div className="border rounded-md">
@@ -71,18 +74,15 @@ export function PendingRequestsTable({requests, isLoading, error}: PendingReques
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <Button size="icon" variant="outline" onClick={() => handleApprove(req.id)}
-                                      disabled={isApproving || isRejecting}>
-                                <Check className="h-4 w-4 text-green-600" />
-                              </Button>
+                                      disabled={isApproving || isRejecting}><Check className="h-4 w-4 text-green-600" /></Button>
                             </TooltipTrigger>
                             <TooltipContent><p>Aprovar</p></TooltipContent>
                           </Tooltip>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Button size="icon" variant="outline" onClick={() => handleReject(req.id)}
-                                      disabled={isApproving || isRejecting}>
-                                <X className="h-4 w-4 text-red-600" />
-                              </Button>
+                              <Button size="icon" variant="outline" onClick={() => setRejectionTarget(req)}
+                                      disabled={isApproving || isRejecting}><X
+                                  className="h-4 w-4 text-red-600" /></Button>
                             </TooltipTrigger>
                             <TooltipContent><p>Rejeitar</p></TooltipContent>
                           </Tooltip>
@@ -96,6 +96,12 @@ export function PendingRequestsTable({requests, isLoading, error}: PendingReques
             </TableBody>
           </Table>
         </div>
+        <RejectEnrollmentDialog
+            isOpen={!!rejectionTarget}
+            onClose={() => setRejectionTarget(null)}
+            onSubmit={handleRejectSubmit}
+            isPending={isRejecting}
+        />
       </TooltipProvider>
   );
 }

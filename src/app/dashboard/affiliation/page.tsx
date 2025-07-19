@@ -1,7 +1,6 @@
 // src/app/dashboard/affiliation/page.tsx
 
 import { auth } from '@/lib/auth';
-import { FamilyResponseDto } from '@/contracts/api/family.dto';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, AlertTriangle, XCircle, Clock } from 'lucide-react';

@@ -8,7 +8,7 @@ export interface ClubDto {
   id: string;
   name: string;
   city: string;
-  state: string; // O novo DTO inclui 'state'.
+  state: string;
   principalId: string;
 }
 

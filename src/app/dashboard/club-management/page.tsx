@@ -1,73 +1,104 @@
-// src/app/dashboard/club-management/page.tsx
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-import { ClubDto } from '@/contracts/api/club.dto';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle, ShieldCheck } from 'lucide-react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import {CreateClubForm} from "@/app/_components/create-club-form";
-// A tabela de solicitações pendentes será importada aqui quando construída.
-// import { PendingRequestsTable } from './_components/pending-requests-table';
+import {useState} from 'react';
+import {useQueryClient} from '@tanstack/react-query';
+import {useSession} from 'next-auth/react';
+import {useRouter} from 'next/navigation';
+import {useNotify} from '@/hooks/use-notify';
+import {
+  useMyClubQuery,
+} from '@/hooks/use-cases/use-club-management.use-case';
 
-async function getMyClub(accessToken: string): Promise<ClubDto | null> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/club-management/my-club`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` }
-  });
-  if (res.status === 404) return null;
-  if (!res.ok) throw new Error('Falha ao buscar dados do seu clube.');
-  return res.json();
-}
+import {Skeleton} from '@/components/ui/skeleton';
+import {Alert, AlertTitle, AlertDescription} from '@/components/ui/alert';
+import {AlertTriangle, Users, Edit} from 'lucide-react';
+import {CreateClubForm} from './_components/create-club-form';
+import {NonDirectorCTA} from './_components/non-director-cta';
+import {Card, CardHeader, CardTitle, CardDescription, CardContent} from '@/components/ui/card';
+import {UserRoles} from "@/domain/enums/user.roles";
+import {PendingRequestsTable} from '../../_components/pending-requests-table';
+import {MembersTable} from './_components/members-table';
+import {EditClubForm} from './_components/edit-club-form';
+import {Button} from '@/components/ui/button';
+import {Dialog, DialogTrigger} from '@/components/ui/dialog';
+import {CreateClubResponseDto} from '@/contracts/api/club-management.dto';
 
 export default function ClubManagementPage() {
-  const { data: session } = useSession({ required: true });
+  const [view, setView] = useState<'overview' | 'create-form'>('overview');
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const {data : session, update : updateSession} = useSession({required : true});
+  const queryClient = useQueryClient();
+  const notify = useNotify();
+  const router = useRouter();
+
   const accessToken = session?.accessToken ?? '';
+  const isClubDirector = session?.user?.roles?.includes(UserRoles.DONO_DE_CLUBE);
 
-  const { data: myClub, isLoading, error, isSuccess } = useQuery({
-    queryKey: ['my-club'],
-    queryFn: () => getMyClub(accessToken),
-    enabled: !!accessToken,
-    retry: 1,
-  });
+  const {data : myClub, isLoading : isLoadingClub, error : errorClub} = useMyClubQuery(accessToken);
 
-  if (isLoading) {
-    return (
-        <div className="space-y-4">
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-64 w-full" />
-        </div>
-    );
+  const handleClubCreationSuccess = async (response: CreateClubResponseDto) => {
+    notify.success("Clube criado com sucesso! Atualizando sua identidade...");
+
+    await updateSession({
+      accessToken : response.accessToken,
+      refreshToken : response.refreshToken,
+    });
+
+    await queryClient.invalidateQueries({queryKey : ['my-club']});
+    router.refresh();
+    setView('overview');
+  };
+
+  if (isLoadingClub) {
+    return <div className="space-y-4"><Skeleton className="h-48 w-full" /><Skeleton className="h-64 w-full" /></div>;
   }
 
-  if (error) {
-    return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro Crítico</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
+  if (isClubDirector) {
+    if (errorClub) {
+      return <Alert variant="destructive"><AlertTriangle
+          className="h-4 w-4" /><AlertTitle>Erro Crítico</AlertTitle><AlertDescription>{errorClub.message}</AlertDescription></Alert>;
+    }
+
+    if (myClub) {
+      return (
+          <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+            <div className="space-y-8">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <div className="flex gap-2 flex-col">
+                    <CardTitle className="flex items-center"> {myClub.name}</CardTitle>
+                    <CardDescription>{myClub.city}, {myClub.state}</CardDescription>
+                  </div>
+                  <DialogTrigger asChild>
+                    <Button variant="outline" size="sm"><Edit className="mr-2 h-4 w-4" /> Editar Clube</Button>
+                  </DialogTrigger>
+                </CardHeader>
+              </Card>
+
+              <Card>
+                <CardHeader><CardTitle>Solicitações Pendentes</CardTitle></CardHeader>
+                <CardContent>
+                  <PendingRequestsTable clubId={myClub.id} accessToken={accessToken} />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader><CardTitle className="flex items-center"><Users
+                    className="mr-3 h-5 w-5" /> Membros Ativos</CardTitle></CardHeader>
+                <CardContent>
+                  <MembersTable clubId={myClub.id} />
+                </CardContent>
+              </Card>
+            </div>
+            <EditClubForm club={myClub} onSuccess={() => setIsEditModalOpen(false)} />
+          </Dialog>
+      );
+    }
   }
 
-  if (isSuccess && !myClub) {
-    return <CreateClubForm />;
+  if (view === 'create-form') {
+    return <CreateClubForm onSuccess={handleClubCreationSuccess} />;
   }
 
-  if (myClub) {
-    return (
-        <div className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center"><ShieldCheck className="mr-3 h-6 w-6 text-primary"/> Painel de Gestão: {myClub.name}</CardTitle>
-              <CardDescription>{myClub.city}, {myClub.state}</CardDescription>
-            </CardHeader>
-          </Card>
-          <Card>
-            <CardHeader><CardTitle>Solicitações Pendentes</CardTitle></CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">A tabela de solicitações pendentes será implementada aqui.</p>
-              {/* <PendingRequestsTable clubId={myClub.id} /> */}
-            </CardContent>
-          </Card>
-        </div>
-    );
-  }
-
-  return null;
+  return <NonDirectorCTA onCreateClubClick={() => setView('create-form')} />;
 }
