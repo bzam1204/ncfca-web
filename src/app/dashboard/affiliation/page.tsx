@@ -1,23 +1,19 @@
-// src/app/dashboard/affiliation/page.tsx
-
-import { auth } from '@/lib/auth';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, AlertTriangle, XCircle, Clock } from 'lucide-react';
-import { familyStatusTranslation, getFamilyStatusVariant } from '@/lib/translations';
+import {auth} from '@/lib/auth';
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
+import {Badge} from '@/components/ui/badge';
+import {CheckCircle, AlertTriangle, XCircle, Clock} from 'lucide-react';
+import {familyStatusTranslation, getFamilyStatusVariant} from '@/lib/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 import {getMyFamily} from "@/hooks/use-cases/use-my-family.use-case";
 
-
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';
-  // O bloco try-catch lida com strings de data inválidas que a API possa retornar.
   try {
     return new Date(dateString).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
+      day : '2-digit',
+      month : 'long',
+      year : 'numeric',
     });
   } catch {
     return 'Data inválida';
@@ -26,8 +22,6 @@ const formatDate = (dateString: string | null) => {
 
 export default async function AffiliationPage() {
   const session = await auth();
-
-  // Defesa em profundidade: O middleware já deve barrar, mas verificamos novamente.
   if (!session?.accessToken) {
     return (
         <Alert variant="destructive">
@@ -54,12 +48,11 @@ export default async function AffiliationPage() {
     );
   }
 
-  // Mapeamento visual para cada status. Robusto e centralizado.
-  const statusInfo: Record<FamilyStatus, { icon: React.ElementType, color: string }> = {
-    [FamilyStatus.AFFILIATED]: { icon: CheckCircle, color: 'text-green-600' },
-    [FamilyStatus.PENDING_PAYMENT]: { icon: Clock, color: 'text-yellow-600' },
-    [FamilyStatus.EXPIRED]: { icon: XCircle, color: 'text-red-600' },
-    [FamilyStatus.NOT_AFFILIATED]: { icon: AlertTriangle, color: 'text-slate-500' },
+  const statusInfo: Record<FamilyStatus, {icon: React.ElementType, color: string}> = {
+    [FamilyStatus.AFFILIATED] : {icon : CheckCircle, color : 'text-green-600'},
+    [FamilyStatus.PENDING_PAYMENT] : {icon : Clock, color : 'text-yellow-600'},
+    [FamilyStatus.EXPIRED] : {icon : XCircle, color : 'text-red-600'},
+    [FamilyStatus.NOT_AFFILIATED] : {icon : AlertTriangle, color : 'text-slate-500'},
   };
 
   const CurrentStatusIcon = statusInfo[family.status]?.icon || AlertTriangle;

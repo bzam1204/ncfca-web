@@ -1,17 +1,15 @@
 // src/app/dashboard/club-management/_components/members-table.tsx
 'use client';
 
-import {useSession} from 'next-auth/react';
-import {
-  useClubMembersQuery,
-  useRevokeMembershipMutation
-} from '@/hooks/use-cases/use-club-management.use-case';
-import {useNotify} from '@/hooks/use-notify';
-import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Button} from '@/components/ui/button';
-import {Skeleton} from '@/components/ui/skeleton';
-import {Alert, AlertTitle, AlertDescription} from "@/components/ui/alert";
-import {AlertTriangle, Eye, MoreHorizontal, Trash2} from "lucide-react";
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useClubMembersQuery, useRevokeMembershipMutation } from '@/hooks/use-cases/use-club-management.use-case';
+import { useNotify } from '@/hooks/use-notify';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertTriangle, MoreHorizontal, Trash2, Eye } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,42 +20,37 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import {ClubMemberDto} from "@/contracts/api/club-member.dto";
+} from "@/components/ui/alert-dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
-import {useState} from "react";
-import {MemberDetailsDialog} from "@/app/dashboard/club-management/_components/member-details";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import { ClubMemberDto } from "@/contracts/api/club-member.dto";
+import { MemberDetailsDialog } from './member-details';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-interface MembersTableProps {
-  clubId: string;
-}
-
-export function MembersTable({}: MembersTableProps) {
-  const {data : session} = useSession();
+export function MembersTable() {
+  const { data: session } = useSession();
+  const accessToken = session?.accessToken ?? '';
   const notify = useNotify();
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
-  const {mutate : revoke, isPending} = useRevokeMembershipMutation();
 
-  const query = useClubMembersQuery(session?.accessToken ?? '');
-  const members = query.data || [];
+  const { data: members = [], isLoading, error } = useClubMembersQuery(accessToken);
+  const { mutate: revoke, isPending } = useRevokeMembershipMutation();
+
   const handleRevoke = (membershipId: string) => {
-    if (!session?.accessToken) return;
-    revoke({membershipId, accessToken : session.accessToken}, {
-      onSuccess : () => notify.success("Membro removido do clube."),
-      onError : (e) => notify.error(e.message),
+    if (!accessToken) return;
+    revoke({ membershipId, accessToken }, {
+      onSuccess: () => notify.success("Membro removido do clube."),
+      onError: (e) => notify.error(e.message),
     });
   };
 
-  if (query.isLoading) return <Skeleton className="h-40 w-full" />;
-  if (query.error) return <Alert variant="destructive"><AlertTriangle
-      className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert>;
+  if (isLoading) return <Skeleton className="h-40 w-full" />;
+  if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
   return (
       <>
@@ -135,3 +128,4 @@ export function MembersTable({}: MembersTableProps) {
       </>
   );
 }
+

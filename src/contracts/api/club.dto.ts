@@ -9,6 +9,7 @@ export interface ClubDto {
   name: string;
   city: string;
   state: string;
+  corum: number;
   principalId: string;
 }
 
