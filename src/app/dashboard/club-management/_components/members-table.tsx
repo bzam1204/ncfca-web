@@ -45,12 +45,8 @@ export function MembersTable({}: MembersTableProps) {
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
   const {mutate : revoke, isPending} = useRevokeMembershipMutation();
 
-  const {
-    data : members = [],
-    isLoading,
-    error
-  } = useClubMembersQuery(session?.accessToken ?? '');
-
+  const query = useClubMembersQuery(session?.accessToken ?? '');
+  const members = query.data || [];
   const handleRevoke = (membershipId: string) => {
     if (!session?.accessToken) return;
     revoke({membershipId, accessToken : session.accessToken}, {
@@ -59,9 +55,9 @@ export function MembersTable({}: MembersTableProps) {
     });
   };
 
-  if (isLoading) return <Skeleton className="h-40 w-full" />;
-  if (error) return <Alert variant="destructive"><AlertTriangle
-      className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
+  if (query.isLoading) return <Skeleton className="h-40 w-full" />;
+  if (query.error) return <Alert variant="destructive"><AlertTriangle
+      className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert>;
 
   return (
       <>
@@ -77,7 +73,7 @@ export function MembersTable({}: MembersTableProps) {
             <TableBody>
               {members.length > 0 ? (
                   members.map(member => (
-                      <TableRow key={member.id}>
+                      <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
                         <TableCell className="font-medium flex items-center gap-3">
                           <Avatar className="h-8 w-8">
                             <AvatarImage src={member.avatarUrl ?? `https://i.pravatar.cc/150?u=${member.firstName}`}

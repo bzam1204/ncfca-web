@@ -10,7 +10,7 @@ const navItems = [
   {href : '/dashboard/dependants', label : 'Dependentes', icon : Users},
   {href : '/dashboard/affiliation', label : 'Minha Afiliação', icon : ShoppingCart},
   {href : '/dashboard/clubs', label : 'Explorar Clubes', icon : University},
-  {href : '/dashboard/club-management', label : 'Gestão do Clube', icon : Shield},
+  {href : '/dashboard/club-management', label : 'Meu Clube', icon : Shield},
 ];
 
 export function DashboardNav() {
