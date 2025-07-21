@@ -1,4 +1,3 @@
-// src/app/dashboard/club-management/page.tsx
 'use client';
 
 import {Dispatch, SetStateAction, useState} from 'react';
@@ -20,39 +19,23 @@ import {ClubDashboardTab} from './_components/club-dashboard-tab';
 import {MembersTable} from "./_components/members-table";
 import {PendingRequestsTable} from "./_components/pending-requests-table";
 
-async function handleClubCreationSuccess(
-    response: CreateClubResponseDto,
-    setView: Dispatch<SetStateAction<"overview" | "create-form">>,
-    update: UpdateSession
-) {
-  await update({
-    accessToken : response.accessToken,
-    refreshToken : response.refreshToken,
-  });
-  setView('overview');
-};
-
 export default function ClubManagementPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [view, setView] = useState<'overview' | 'create-form'>('overview');
   const [activeTab, setActiveTab] = useState<string>('dashboard');
-  const {data : session, update} = useSession({required : true});
-
-  const isClubDirector = session?.user?.roles?.includes(UserRoles.DONO_DE_CLUBE);
-  const accessToken = session?.accessToken ?? '';
-
-  const {data : myClub, isLoading, error} = useMyClubQuery(accessToken);
-
-  if (isLoading) {
+  const session = useSession({required : true});
+  const isClubDirector = session.data?.user?.roles?.includes(UserRoles.DONO_DE_CLUBE);
+  const accessToken = session.data?.accessToken ?? '';
+  const query = useMyClubQuery(accessToken);
+  const myClub = query.data ?? null;
+  if (query.isLoading) {
     return <div className="space-y-4"><Skeleton className="h-48 w-full" /><Skeleton className="h-64 w-full" /></div>;
   }
-
   if (isClubDirector) {
-    if (error) {
+    if (query.error) {
       return <Alert variant="destructive"><AlertTriangle
-          className="h-4 w-4" /><AlertTitle>Erro Crítico</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
+          className="h-4 w-4" /><AlertTitle>Erro Crítico</AlertTitle><AlertDescription>{query.error.message}</AlertDescription></Alert>;
     }
-
     if (myClub) {
       return (
           <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
@@ -74,7 +57,6 @@ export default function ClubManagementPage() {
                   </div>
                 </CardHeader>
               </Card>
-
               <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="dashboard">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
@@ -85,7 +67,6 @@ export default function ClubManagementPage() {
                   <ClubDashboardTab />
                 </TabsContent>
                 <TabsContent value="requests" className="mt-6">
-                  {/* O componente agora busca seus próprios dados */}
                   <PendingRequestsTable clubId={myClub.id} accessToken={accessToken} />
                 </TabsContent>
                 <TabsContent value="members" className="mt-6">
@@ -100,8 +81,20 @@ export default function ClubManagementPage() {
   }
 
   if (view === 'create-form') {
-    return <CreateClubForm onSuccess={(response) => handleClubCreationSuccess(response, setView, update)} />;
+    return <CreateClubForm onSuccess={(response) => handleClubCreationSuccess(response, setView, session.update)} />;
   }
 
   return <NonDirectorCTA onCreateClubClick={() => setView('create-form')} />;
+}
+
+async function handleClubCreationSuccess(
+    response: CreateClubResponseDto,
+    setView: Dispatch<SetStateAction<"overview" | "create-form">>,
+    update: UpdateSession
+) {
+  await update({
+    accessToken : response.accessToken,
+    refreshToken : response.refreshToken,
+  });
+  setView('overview');
 }

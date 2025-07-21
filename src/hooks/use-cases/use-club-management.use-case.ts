@@ -143,6 +143,7 @@ export const useApproveEnrollmentMutation = () => {
     onSuccess : () => {
       queryClient.invalidateQueries({queryKey : ['pending-enrollments']});
       queryClient.invalidateQueries({queryKey : ['club-members']});
+      queryClient.invalidateQueries({queryKey : ['my-club']})
     }
   });
 }
@@ -163,7 +164,8 @@ export const useRevokeMembershipMutation = () => {
   return useMutation({
     mutationFn : revokeMembership,
     onSuccess : () => {
-      return queryClient.invalidateQueries({queryKey : ['club-members']});
+      queryClient.invalidateQueries({queryKey : ['club-members']});
+      queryClient.invalidateQueries({queryKey : ['my-club']});
     }
   });
 }

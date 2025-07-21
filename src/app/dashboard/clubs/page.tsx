@@ -1,7 +1,6 @@
-// src/app/dashboard/clubs/page.tsx
 'use client';
 
-import {useState, useMemo} from 'react';
+import {useState} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
 import {useDebounce} from '@/hooks/use-debounce';
@@ -19,57 +18,6 @@ import {MyRequestsTable} from "@/app/_components/my-requests-table";
 import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
-
-const NonDirectorCallToAction = () => (
-
-    <Card className="bg-gradient-to-br from-primary/10 to-transparent">
-      <CardHeader>
-        <CardTitle className="flex items-center"><ShieldPlus
-            className="mr-3 h-6 w-6 text-primary" /> Torne-se um Diretor de Clube</CardTitle>
-        <CardDescription>
-          Lidere, mentore e construa uma comunidade de debate. Crie seu próprio clube
-          e comece a gerenciar matrículas e membros hoje mesmo.
-        </CardDescription>
-        <div className="pt-4">
-          <Button asChild>
-            <Link href="/dashboard/club-management">Criar Meu Clube</Link>
-          </Button>
-        </div>
-      </CardHeader>
-    </Card>
-);
-
-// --- Funções de Busca de Dados ---
-async function getClubs(accessToken: string, query: SearchClubsQuery): Promise<PaginatedClubDto> {
-  const params = new URLSearchParams();
-  if (query.name) params.append('filter[name]', query.name);
-  if (query.city) params.append('filter[city]', query.city);
-  if (query.state) params.append('filter[state]', query.state);
-  params.append('pagination[page]', query.page?.toString() || '1');
-  params.append('pagination[limit]', query.limit?.toString() || '6');
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/club?${params.toString()}`, {
-    headers : {'Authorization' : `Bearer ${accessToken}`}
-  });
-  if (!res.ok) throw new Error('Falha ao buscar clubes.');
-  return res.json();
-}
-
-async function getDependants(accessToken: string): Promise<DependantResponseDto[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dependants`, {
-    headers : {'Authorization' : `Bearer ${accessToken}`}
-  });
-  if (!res.ok) throw new Error('Falha ao carregar seus dependentes.');
-  return res.json();
-}
-
-async function getMyEnrollmentRequests(accessToken: string): Promise<EnrollmentRequestDto[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/enrollments/my-requests`, {
-    headers : {'Authorization' : `Bearer ${accessToken}`}
-  });
-  if (!res.ok) throw new Error('Falha ao carregar suas solicitações de matrícula.');
-  return res.json();
-}
 
 export default function ClubsPage() {
   const {data : session} = useSession({required : true});
@@ -110,7 +58,6 @@ export default function ClubsPage() {
       setSearchQuery(prev => ({...prev, page : newPage}));
     }
   };
-  const requestedClubIds = useMemo(() => new Set(enrollmentRequests.map(req => req.clubId)), [enrollmentRequests]);
   return (
 
       <div className="space-y-8">
@@ -182,4 +129,55 @@ export default function ClubsPage() {
         />
       </div>
   );
+}
+
+const NonDirectorCallToAction = () => (
+
+    <Card className="bg-gradient-to-br from-primary/10 to-transparent">
+      <CardHeader>
+        <CardTitle className="flex items-center"><ShieldPlus
+            className="mr-3 h-6 w-6 text-primary" /> Torne-se um Diretor de Clube</CardTitle>
+        <CardDescription>
+          Lidere, mentore e construa uma comunidade de debate. Crie seu próprio clube
+          e comece a gerenciar matrículas e membros hoje mesmo.
+        </CardDescription>
+        <div className="pt-4">
+          <Button asChild>
+            <Link href="/dashboard/club-management">Criar Meu Clube</Link>
+          </Button>
+        </div>
+      </CardHeader>
+    </Card>
+);
+
+// --- Funções de Busca de Dados ---
+async function getClubs(accessToken: string, query: SearchClubsQuery): Promise<PaginatedClubDto> {
+  const params = new URLSearchParams();
+  if (query.name) params.append('filter[name]', query.name);
+  if (query.city) params.append('filter[city]', query.city);
+  if (query.state) params.append('filter[state]', query.state);
+  params.append('pagination[page]', query.page?.toString() || '1');
+  params.append('pagination[limit]', query.limit?.toString() || '6');
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/club?${params.toString()}`, {
+    headers : {'Authorization' : `Bearer ${accessToken}`}
+  });
+  if (!res.ok) throw new Error('Falha ao buscar clubes.');
+  return res.json();
+}
+
+async function getDependants(accessToken: string): Promise<DependantResponseDto[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dependants`, {
+    headers : {'Authorization' : `Bearer ${accessToken}`}
+  });
+  if (!res.ok) throw new Error('Falha ao carregar seus dependentes.');
+  return res.json();
+}
+
+async function getMyEnrollmentRequests(accessToken: string): Promise<EnrollmentRequestDto[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/enrollments/my-requests`, {
+    headers : {'Authorization' : `Bearer ${accessToken}`}
+  });
+  if (!res.ok) throw new Error('Falha ao carregar suas solicitações de matrícula.');
+  return res.json();
 }
