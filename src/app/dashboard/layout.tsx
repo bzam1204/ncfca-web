@@ -47,7 +47,7 @@ export default async function DashboardLayout({
         <div className="flex flex-col">
           <MobileSidebar />
           {/* PONTO CRÍTICO 2: A área de <main> agora é o container de scroll. */}
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-scroll max-h-screen">
+          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-scroll max-h-screen max-w-screen!">
             {children}
           </main>
         </div>

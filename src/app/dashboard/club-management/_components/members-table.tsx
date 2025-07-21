@@ -9,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle, MoreHorizontal, Trash2, Eye } from "lucide-react";
+import {AlertTriangle, MoreHorizontal, Trash2, Eye, RotateCcw} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -38,7 +38,7 @@ export function MembersTable() {
   const notify = useNotify();
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
 
-  const { data: members = [], isLoading, error } = useClubMembersQuery(accessToken);
+  const { data: members = [], isLoading, error, isRefetching, refetch } = useClubMembersQuery(accessToken);
   const { mutate: revoke, isPending } = useRevokeMembershipMutation();
 
   const handleRevoke = (membershipId: string) => {
@@ -49,11 +49,12 @@ export function MembersTable() {
     });
   };
 
-  if (isLoading) return <Skeleton className="h-40 w-full" />;
+  if (isLoading || isRefetching) return <Skeleton className="h-40 w-full" />;
   if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
   return (
-      <>
+      <div className="flex flex-col gap-4">
+        <Button className="w-fit" variant="outline" size="sm" onClick={() => refetch()}><RotateCcw /> Atualizar Solicitações</Button>
         <div className="border rounded-md">
           <Table>
             <TableHeader>
@@ -79,26 +80,26 @@ export function MembersTable() {
                         <TableCell className="text-right">
                           <AlertDialog>
                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
+                              <DropdownMenuTrigger  asChild>
+                                <Button onClick={e => e.stopPropagation()} variant="ghost" size="icon">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>
                               </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
+                              <DropdownMenuContent align="end" onClick={e => e.stopPropagation()}>
                                 <DropdownMenuItem onSelect={() => setSelectedMember(member)}>
                                   <Eye className="mr-2 h-4 w-4" />
                                   Ver Detalhes
                                 </DropdownMenuItem>
                                 <DropdownMenuSeparator />
                                 <AlertDialogTrigger asChild>
-                                  <DropdownMenuItem className="text-red-600">
+                                  <DropdownMenuItem onSelect={(event) => event.stopPropagation()} className="text-red-600">
                                     <Trash2 className="mr-2 h-4 w-4" />
                                     Remover Membro
                                   </DropdownMenuItem>
                                 </AlertDialogTrigger>
                               </DropdownMenuContent>
                             </DropdownMenu>
-                            <AlertDialogContent>
+                            <AlertDialogContent onClick={e => e.stopPropagation()}>
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
                                 <AlertDialogDescription>
@@ -125,7 +126,7 @@ export function MembersTable() {
           </Table>
         </div>
         <MemberDetailsDialog member={selectedMember} onOpenChange={(isOpen) => !isOpen && setSelectedMember(null)} />
-      </>
+      </div>
   );
 }
 

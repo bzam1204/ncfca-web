@@ -40,7 +40,6 @@ export function CreateClubForm({ onSuccess }: CreateClubFormProps) {
       notify.error("Sessão inválida.");
       return;
     }
-    // PONTO CRÍTICO: O 'onSuccess' da mutation agora passa a resposta completa para o callback do componente pai.
     createClub({ data, accessToken: session.accessToken }, {
       onSuccess: onSuccess,
       onError: (error) => notify.error(error.message),

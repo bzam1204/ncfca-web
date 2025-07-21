@@ -16,9 +16,9 @@ import {Input} from '@/components/ui/input';
 import {AlertTriangle, University, Search, ListChecks, ShieldPlus} from 'lucide-react';
 import {PaginationControls} from '@/components/ui/pagination-controls';
 import {MyRequestsTable} from "@/app/_components/my-requests-table";
-import {EnrollmentDialog} from "@/app/_components/enrollment-dialog";
 import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";
+import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 
 const NonDirectorCallToAction = () => (
 
@@ -115,20 +115,14 @@ export default function ClubsPage() {
 
       <div className="space-y-8">
         {!isClubDirector && <NonDirectorCallToAction />}
-        <Card>
+        <Card className="max-w-screen">
           <CardHeader>
             <CardTitle className="flex items-center"><ListChecks
                 className="mr-3 h-6 w-6" /> Minhas Solicitações</CardTitle>
             <CardDescription>Acompanhe o status das suas solicitações de matrícula.</CardDescription>
           </CardHeader>
-          <CardContent>
-            <MyRequestsTable
-                requests={enrollmentRequests}
-                clubs={clubsResponse?.data || []}
-                dependants={dependants}
-                isLoading={false}
-                error={null}
-            />
+          <CardContent className="max-w-screen">
+            <MyRequestsTable />
           </CardContent>
         </Card>
         <Card>

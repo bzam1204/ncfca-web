@@ -8,7 +8,7 @@ import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {AlertTriangle, Users, BarChart2, Clock} from 'lucide-react';
+import {AlertTriangle, BarChart2, Clock} from 'lucide-react';
 import {DashboardCharts} from './dashboard-charts';
 
 const StatCard = ({title, value, icon : Icon}: {title: string, value: string | number, icon: React.ElementType}) => (

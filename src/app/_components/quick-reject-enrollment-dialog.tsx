@@ -29,7 +29,7 @@ interface RejectEnrollmentDialogProps {
   isPending: boolean;
 }
 
-export function RejectEnrollmentDialog({isOpen, onClose, onSubmit, isPending}: RejectEnrollmentDialogProps) {
+export function QuickRejectEnrollmentDialog({isOpen, onClose, onSubmit, isPending}: RejectEnrollmentDialogProps) {
   const {register, handleSubmit, formState : {errors}, reset} = useForm<RejectionInput>({
     resolver : zodResolver(rejectionSchema),
   });
