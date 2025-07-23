@@ -1,17 +1,15 @@
 // src/contracts/api/family.dto.ts
 
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
+import {UserDto} from "@/contracts/api/user.dto";
 import {DependantResponseDto} from "@/contracts/api/dependant.dto";
 
-/**
- * @description Resposta da API para o endpoint GET /dependants/my-family.
- * @source openapi.json - components.schemas.FamilyDto
- */
-export interface FamilyResponseDto {
+export interface AffiliationDto {
   id: string;
   holderId: string;
   status: FamilyStatus;
-  affiliatedAt: string | null; // Datas em JSON são strings no formato ISO
+  affiliatedAt: string | null;
   affiliationExpiresAt: string | null;
+  holder: UserDto;
   dependants: DependantResponseDto[];
 }

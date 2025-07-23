@@ -10,6 +10,7 @@ export interface ClubDto {
   city: string;
   state: string;
   corum: number;
+  createdAt: Date;
   principalId: string;
 }
 

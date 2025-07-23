@@ -22,11 +22,11 @@ export const viewport: Viewport = {
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
   return (
       <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={inter.className + "w-screen h-screen flex justify-center items-center bg-gray-200"}>
       <SessionProvider>
         <SessionManager />
         <QueryProvider>
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 max-w-[2048px] bg-white">{children}</main>
           <Toaster richColors />
         </QueryProvider>
       </SessionProvider>

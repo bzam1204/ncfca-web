@@ -1,3 +1,4 @@
+// src/app/(admin)/_components/admin-mobile-sidebar.tsx
 'use client';
 
 import {
@@ -5,18 +6,18 @@ import {
   SheetContent,
   SheetTrigger,
   SheetFooter,
-  SheetHeader, // 1. Importar SheetHeader
-  SheetTitle,  // 2. Importar SheetTitle
-  SheetDescription // 3. Importar SheetDescription
+  SheetHeader,
+  SheetTitle,
+  SheetDescription
 } from "@/components/ui/sheet";
-import {Button} from "@/components/ui/button";
-import {Menu} from "lucide-react";
-import {useSession} from "next-auth/react";
-import {LogoutButton} from "@/app/_components/logout-button";
-import {DashboardNav} from "@/app/dashboard/_components/dashboard-nav";
+import { Button } from "@/components/ui/button";
+import { Menu } from "lucide-react";
+import { AdminNav } from "./admin-nav";
+import { useSession } from "next-auth/react";
+import { LogoutButton } from "@/app/_components/logout-button";
 
-export function MobileSidebar() {
-  const {data : session} = useSession();
+export function AdminMobileSidebar() {
+  const { data: session } = useSession();
 
   return (
       <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:hidden">
@@ -32,16 +33,15 @@ export function MobileSidebar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="flex flex-col">
-            {/* 4. Adicionar o cabeçalho para acessibilidade */}
-            <SheetHeader className="sr-only">
-              <SheetTitle>Menu de Navegação</SheetTitle>
-              <SheetDescription>
-                Navegue pelas seções do seu painel, como dependentes e afiliação.
+            <SheetHeader>
+              <SheetTitle className='text-left'>Painel Admin</SheetTitle>
+              <SheetDescription className='sr-only'>
+                Navegue pelas seções de administração.
               </SheetDescription>
             </SheetHeader>
 
             <nav className="grid gap-6 text-lg font-medium mt-4">
-              <DashboardNav />
+              <AdminNav />
             </nav>
 
             <SheetFooter className="mt-auto border-t pt-4">
@@ -49,7 +49,7 @@ export function MobileSidebar() {
                 <div className="flex flex-col">
                   <span
                       className="text-sm font-semibold leading-none">{session?.user?.name || session?.user?.email}</span>
-                  <span className="text-xs text-muted-foreground">Responsável Familiar</span>
+                  <span className="text-xs text-muted-foreground">Administrador</span>
                 </div>
                 <LogoutButton />
               </div>
@@ -57,7 +57,7 @@ export function MobileSidebar() {
           </SheetContent>
         </Sheet>
         <div className="w-full flex-1">
-          <span className="font-bold">NCFCA Dashboard</span>
+          <span className="font-bold">NCFCA Admin</span>
         </div>
       </header>
   );

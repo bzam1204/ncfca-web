@@ -1,9 +1,9 @@
 // src/app/dashboard/layout.tsx
 import {auth} from "@/lib/auth";
 import {redirect} from "next/navigation";
-import {DashboardNav} from "@/app/_components/dashboard-nav";
 import {MobileSidebar} from "@/app/_components/mobile-sidebar";
 import {LogoutButton} from "@/app/_components/logout-button";
+import {DashboardNav} from "@/app/dashboard/_components/dashboard-nav";
 
 export default async function DashboardLayout({
                                                 children,
@@ -47,7 +47,7 @@ export default async function DashboardLayout({
         <div className="flex flex-col">
           <MobileSidebar />
           {/* PONTO CRÍTICO 2: A área de <main> agora é o container de scroll. */}
-          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-scroll max-h-screen max-w-screen!">
+          <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-y-scroll max-h-full max-w-full">
             {children}
           </main>
         </div>

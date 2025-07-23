@@ -78,7 +78,7 @@ export const authConfig = {
     }),
   ],
   callbacks : {
-    async jwt({ token, user, trigger, session }) {
+    async jwt({token, user, trigger, session}) {
       if (user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
@@ -114,8 +114,8 @@ export const authConfig = {
         session.refreshToken = token.refreshToken;
         session.user.id = decodedToken.sub;
         session.user.email = decodedToken.email;
-        (session.user as any).roles = decodedToken.roles;
-        (session.user as any).familyId = decodedToken.familyId;
+        session.user.roles = decodedToken.roles;
+        session.user.familyId = decodedToken.familyId;
       }
       if (token.error) {
         session.error = token.error as string;
@@ -123,6 +123,7 @@ export const authConfig = {
       return session;
     },
     async authorized({auth, request : {nextUrl}}) {
+      const isOnAdminPath = nextUrl.pathname.startsWith('/admin');
       if (!isSessionValid(auth)) {
         const refreshToken = auth?.refreshToken;
         if (refreshToken) {
@@ -135,10 +136,13 @@ export const authConfig = {
         }
       }
       const isLoggedIn = !!auth?.user;
+      if (isOnAdminPath) {
+        return everythingIsAlright(isLoggedIn, isSessionValid(auth)) && auth?.user.roles.includes(UserRoles.ADMIN);
+      }
       if (isOnHomePage(nextUrl)) return false
       if (isOnAuthPages(nextUrl) && !everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
       if (isOnCheckout(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth) && !await isAffiliated(auth?.accessToken ?? ''))) return true;
-      if (everythingIsAlright(isLoggedIn, isSessionValid(auth)) && !await isAffiliated(auth?.accessToken ?? '')) return Response.redirect(new URL('/checkout', nextUrl));
+      if (everythingIsAlright(isLoggedIn, isSessionValid(auth)) && !await isAffiliated(auth?.accessToken ?? '') && !auth?.user.roles.includes(UserRoles.ADMIN)) return Response.redirect(new URL('/checkout', nextUrl));
       if (isOnDashboard(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return true;
       if (isOnAuthPages(nextUrl) && everythingIsAlright(isLoggedIn, isSessionValid(auth))) return Response.redirect(new URL('/dashboard', nextUrl));
       return false;
