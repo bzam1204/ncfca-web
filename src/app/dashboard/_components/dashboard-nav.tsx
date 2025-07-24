@@ -7,6 +7,7 @@ import {cn} from '@/lib/utils';
 import {UserRoles} from "@/domain/enums/user.roles";
 import {auth} from "@/lib/auth";
 import {Session} from "next-auth";
+import {useSession} from "next-auth/react";
 
 const navItems = [
   {href : '/dashboard', label : 'Início', icon : LayoutDashboard, requiredRoles : []},
@@ -22,11 +23,11 @@ const navItems = [
   {href : '/admin/dashboard', label : 'Administração', icon : GitFork, requiredRoles : [UserRoles.ADMIN]},
 ];
 
-export async function DashboardNav() {
+export function DashboardNav() {
   const pathname: string = usePathname();
-  const session: Session | null = await auth();
-  const userRoles: UserRoles[] = session?.user?.roles as UserRoles[] || [];
-  
+  const session = useSession();
+  const userRoles: UserRoles[] = session.data?.user.roles as UserRoles[] ?? [];
+
   return (
       <nav className="grid items-start gap-2">
         {navItems.map((item) => (
