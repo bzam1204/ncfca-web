@@ -1,34 +1,23 @@
 // src/app/(admin)/admin/dashboard/users/page.tsx
-import { auth } from "@/lib/auth";
-import { redirect } from "next/navigation";
-import { UserRoles } from "@/domain/enums/user.roles";
+'use client'; // CONVERTIDO PARA CLIENT COMPONENT
+
+import { Suspense, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import {UsersTable} from "@/app/(admin)/admin/dashboard/users/_components/users-table";
+import { UsersTable } from "@/app/(admin)/admin/dashboard/users/_components/users-table";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce"; // Supondo a existência deste hook
+import { useAdminListUsers } from "@/use-cases/use-admin-management.use-case";
+import { useSession } from "next-auth/react";
+import { Search } from "lucide-react";
 
-// A função de fetch precisa ser definida fora do escopo do hook para ser usada em Server Components
-async function getUsers(accessToken: string) {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${BACKEND_URL}/admin/users`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` },
-    cache: 'no-store', // Garante que os dados sejam sempre frescos
-  });
-  if (!res.ok) {
-    // Em um cenário real, trataríamos o erro de forma mais elegante
-    throw new Error('Falha ao buscar a lista de usuários.');
-  }
-  return res.json();
-}
+export default function AdminUsersPage() {
+  const { data: session } = useSession();
+  const [filter, setFilter] = useState('');
+  const debouncedFilter = useDebounce(filter, 300); // Debounce de 300ms
 
-
-export default async function AdminUsersPage() {
-  const session = await auth();
-  if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
-    redirect('/login');
-  }
-
-  const users = await getUsers(session.accessToken);
+  // A busca de dados agora é feita no cliente
+  const { data: users = [], isLoading } = useAdminListUsers(session?.accessToken ?? '');
 
   return (
       <Card>
@@ -37,10 +26,23 @@ export default async function AdminUsersPage() {
           <CardDescription>
             Visualize, filtre e gerencie os perfis de todos os usuários do sistema.
           </CardDescription>
+          <div className="relative pt-4">
+            <Search className="absolute left-3 top-[26px] h-4 w-4 text-muted-foreground" />
+            <Input
+                placeholder="Filtrar por nome ou email..."
+                className="pl-9"
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            <UsersTable initialData={users} />
+            {isLoading ? (
+                <Skeleton className="h-64 w-full" />
+            ) : (
+                <UsersTable initialData={users} filter={debouncedFilter} />
+            )}
           </Suspense>
         </CardContent>
       </Card>

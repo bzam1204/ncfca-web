@@ -3,11 +3,11 @@
 
 import {useState} from 'react';
 import {useSession} from 'next-auth/react';
-import {useDependantDetailsQuery} from '@/hooks/use-cases/use-dependant-details.use-case';
+import {useDependantDetailsQuery} from '@/use-cases/use-dependant-details.use-case';
 import {
   useApproveEnrollmentMutation,
   useRejectEnrollmentMutation
-} from '@/hooks/use-cases/use-club-management.use-case';
+} from '@/use-cases/use-club-management.use-case';
 import {useNotify} from '@/hooks/use-notify';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';

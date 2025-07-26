@@ -1,58 +1,70 @@
-import {Baby, CreditCard, LayoutGrid, School, Shield, ShieldUser, UserSearch} from "lucide-react";
+import {Baby, CreditCard, HomeIcon, LayoutGrid, School, Shield, ShieldUser, UserSearch} from "lucide-react";
+import {UserRoles} from "@/domain/enums/user.roles";
 
 export const navigation = {
   user : [
     {
       title : "Início",
       url : "/dashboard",
-      icon : LayoutGrid,
+      Icon : LayoutGrid,
     },
     {
       title : "Dependentes",
       url : "/dashboard/dependants",
-      icon : Baby,
+      Icon : Baby,
     },
     {
       title : "Minha Afiliação",
       url : "/dashboard/affiliation",
-      icon : CreditCard
+      Icon : CreditCard
     },
     {
       title : "Explorar Clubes",
       url : "/dashboard/clubs",
-      icon : School,
+      Icon : School,
     },
     {
       title : "Meu Clube",
       url : "/dashboard/club-management",
-      icon : Shield,
+      Icon : Shield,
+    },
+    {
+      title : "Administração",
+      url : "/admin/dashboard/",
+      Icon : ShieldUser,
+      requiredRoles : [UserRoles.ADMIN],
     },
   ],
   admin : [
     {
       title : "Início",
       url : "/admin/dashboard",
-      icon : ShieldUser,
+      Icon : ShieldUser,
     },
     {
       title : "Usuários",
       url : "/admin/dashboard/users",
-      icon : UserSearch,
+      Icon : UserSearch,
     },
     {
       title : "Dependentes",
       url : "/admin/dashboard/dependants",
-      icon : Baby,
+      Icon : Baby,
     },
     {
       title : "Clubes",
       url : "/admin/dashboard/clubs",
-      icon : School
+      Icon : School
     },
     {
       title : "Afiliações",
       url : "/admin/dashboard/affiliations",
-      icon : CreditCard,
+      Icon : CreditCard,
+    },
+    {
+      title : "Área de Membro",
+      url : "/dashboard",
+      Icon : HomeIcon,
     },
   ],
   baseRoutes : ['/dashboard', '/admin/dashboard'],

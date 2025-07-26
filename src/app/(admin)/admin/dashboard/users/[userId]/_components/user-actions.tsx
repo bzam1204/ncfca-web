@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useAdminManageUserRoleMutation } from "@/hooks/use-cases/use-admin-management.use-case";
+import { useAdminManageUserRoleMutation } from "@/use-cases/use-admin-management.use-case";
 import { UserDto } from "@/contracts/api/user.dto";
 import { ManageUserRoleDto } from "@/contracts/api/admin.dto";
 import { useNotify } from "@/hooks/use-notify";

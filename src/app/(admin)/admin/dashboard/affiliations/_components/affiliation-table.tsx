@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useAdminListAffiliations } from "@/hooks/use-cases/use-admin-management.use-case";
+import { useAdminListAffiliations } from "@/use-cases/use-admin-management.use-case";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { familyStatusTranslation, getFamilyStatusVariant } from "@/lib/translations";

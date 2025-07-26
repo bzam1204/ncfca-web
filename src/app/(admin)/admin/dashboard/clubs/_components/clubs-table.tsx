@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useAdminChangeClubDirectorMutation, useAdminListClubs } from "@/hooks/use-cases/use-admin-management.use-case";
+import { useAdminChangeClubDirectorMutation, useAdminListClubs } from "@/use-cases/use-admin-management.use-case";
 import { ClubDto } from "@/contracts/api/club.dto";
 import { UserDto } from "@/contracts/api/user.dto";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

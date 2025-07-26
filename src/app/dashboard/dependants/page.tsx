@@ -9,7 +9,7 @@ import {
   useAddDependantMutation,
   useUpdateDependantMutation,
   useDeleteDependantMutation
-} from '@/hooks/use-cases/use-manage-dependants.use-case';
+} from '@/use-cases/use-manage-dependants.use-case';
 import {useNotify} from '@/hooks/use-notify';
 
 import {Button} from "@/components/ui/button";

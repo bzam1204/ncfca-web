@@ -6,7 +6,7 @@ import {
   useApproveEnrollmentMutation,
   usePendingEnrollmentsQuery,
   useRejectEnrollmentMutation
-} from '@/hooks/use-cases/use-club-management.use-case';
+} from '@/use-cases/use-club-management.use-case';
 import {useNotify} from '@/hooks/use-notify';
 import {EnrollmentRequestDto, PendingEnrollmentDto} from '@/contracts/api/enrollment.dto';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";

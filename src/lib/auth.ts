@@ -4,7 +4,7 @@ import Credentials from 'next-auth/providers/credentials';
 import {UserRoles} from "@/domain/enums/user.roles";
 import {jwtDecode} from "jwt-decode";
 import {NextURL} from "next/dist/server/web/next-url";
-import {getMyFamily} from "@/hooks/use-cases/use-my-family.use-case";
+import {getMyFamily} from "@/use-cases/use-my-family.use-case";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 
 // --- TIPOS DE DADOS ---

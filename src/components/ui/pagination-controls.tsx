@@ -12,7 +12,7 @@ interface PaginationControlsProps {
 
 export function PaginationControls({ currentPage, totalPages, onPageChange }: PaginationControlsProps) {
   if (totalPages <= 1) {
-    return null; // Não renderiza nada se houver apenas uma página.
+    return null;
   }
 
   return (

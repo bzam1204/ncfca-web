@@ -7,7 +7,7 @@ import {UpdateSession, useSession} from 'next-auth/react';
 import {UserRoles} from "@/domain/enums/user.roles";
 
 import {CreateClubResponseDto} from '@/contracts/api/club-management.dto';
-import {useMyClubQuery} from '@/hooks/use-cases/use-club-management.use-case';
+import {useMyClubQuery} from '@/use-cases/use-club-management.use-case';
 
 import {Card, CardHeader, CardTitle, CardDescription} from '@/components/ui/card';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
@@ -40,7 +40,7 @@ export default function ClubManagementPage() {
   if (view === 'create-form') {
     return <CreateClubForm onSuccess={(response) => handleClubCreationSuccess(response, setView, session.update)} />;
   }
-  if (true) return NotFoundAlert({message : 'Clube não encontrado.', retry : query.refetch, isRetrying : query.isRefetching});
+  if (!myClub) return NotFoundAlert({message : 'Clube não encontrado.', retry : query.refetch, isRetrying : query.isRefetching});
   return (
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <div className="space-y-8">

@@ -1,10 +1,10 @@
 // src/app/(admin)/admin/dashboard/users/_components/users-table.tsx
 'use client';
 
-import { useState } from "react";
+import { useState, useMemo } from "react"; // Adicionado useMemo
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useAdminListUsers, useAdminManageUserRoleMutation } from "@/hooks/use-cases/use-admin-management.use-case";
+import { useAdminManageUserRoleMutation } from "@/use-cases/use-admin-management.use-case";
 import { UserDto } from "@/contracts/api/user.dto";
 import { ManageUserRoleDto } from "@/contracts/api/admin.dto";
 import { useNotify } from "@/hooks/use-notify";
@@ -15,16 +15,28 @@ import { Badge } from "@/components/ui/badge";
 import { MoreHorizontal } from "lucide-react";
 import { ManageRoleDialog } from "./manage-role-dialog";
 
-export function UsersTable({ initialData }: { initialData: UserDto[] }) {
+// A prop de filtro é adicionada
+export function UsersTable({ initialData, filter }: { initialData: UserDto[], filter: string }) {
   const router = useRouter();
   const { data: session } = useSession();
   const accessToken = session?.accessToken ?? '';
   const notify = useNotify();
 
-  const { data: users = initialData } = useAdminListUsers(accessToken);
   const { mutate: manageRole, isPending } = useAdminManageUserRoleMutation();
 
   const [userForRoleManagement, setUserForRoleManagement] = useState<UserDto | null>(null);
+
+  // Lógica de filtragem
+  const filteredUsers = useMemo(() => {
+    if (!filter) {
+      return initialData;
+    }
+    return initialData.filter(user =>
+        user.firstName.toLowerCase().includes(filter.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(filter.toLowerCase()) ||
+        user.email.toLowerCase().includes(filter.toLowerCase())
+    );
+  }, [initialData, filter]);
 
   const handleRoleChange = (userId: string, roles: ManageUserRoleDto) => {
     manageRole({ userId, data: roles, accessToken }, {
@@ -53,7 +65,7 @@ export function UsersTable({ initialData }: { initialData: UserDto[] }) {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map(user => (
+              {filteredUsers.map(user => (
                   <TableRow key={user.id} onClick={() => navigateToUserDetails(user.id)} className="cursor-pointer hover:bg-muted/50">
                     <TableCell className="font-medium">{`${user.firstName} ${user.lastName}`}</TableCell>
                     <TableCell>{user.email}</TableCell>

@@ -3,7 +3,7 @@
 
 import {useState, useMemo} from 'react';
 import {useSession} from 'next-auth/react';
-import {useClubMembersQuery, useEnrollmentHistoryQuery} from '@/hooks/use-cases/use-club-management.use-case';
+import {useClubMembersQuery, useEnrollmentHistoryQuery} from '@/use-cases/use-club-management.use-case';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';

@@ -11,9 +11,9 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {registerSchema, type RegisterInput} from '@/lib/validators/register.schema';
-import {useRegisterUser} from "@/hooks/use-cases/use-register-user.use-case";
+import {useRegisterUser} from "@/use-cases/use-register-user.use-case";
 import {useCepAutocomplete} from "@/hooks/use-cep-autocomplete";
-import {viaCepService} from "@/lib/providers/via-cep.service";
+import {viaCepService} from "@/lib/services/via-cep.service";
 import {useNotify} from "@/hooks/use-notify";
 import {useEffect} from "react";
 
@@ -134,7 +134,6 @@ function Endereco(input: {formRegister: any, setValue: any, watch: any, errors: 
     errorCep,
   } = useCepAutocomplete(input.setValue, viaCepService);
   const cepValue = input.watch('address.zipCode');
-
   return (
       <fieldset className="grid grid-cols-1 md:grid-cols-6 gap-4 border-t pt-4">
         <legend className="text-lg font-semibold mb-2 col-span-1 md:col-span-6">Endereço</legend>

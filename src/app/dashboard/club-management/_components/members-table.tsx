@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useClubMembersQuery, useRevokeMembershipMutation } from '@/hooks/use-cases/use-club-management.use-case';
+import { useClubMembersQuery, useRevokeMembershipMutation } from '@/use-cases/use-club-management.use-case';
 import { useNotify } from '@/hooks/use-notify';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from '@/components/ui/button';

@@ -13,16 +13,16 @@ export class ViaCepService implements CepService {
       const data: ViaCepResponse = await response.json();
       if (data.erro) return null;
       return {
-        street : data.logradouro,
         district : data.bairro,
-        city : data.localidade,
-        state : data.uf,
         zipCode : data.cep,
+        street : data.logradouro,
+        state : data.uf,
+        city : data.localidade,
       };
     } catch {
       return null;
     }
   };
-};
+}
 
 export const viaCepService = new ViaCepService();

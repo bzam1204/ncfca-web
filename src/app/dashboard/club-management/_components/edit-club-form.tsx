@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { useUpdateClubMutation } from '@/hooks/use-cases/use-club-management.use-case';
+import { useUpdateClubMutation } from '@/use-cases/use-club-management.use-case';
 import { useNotify } from '@/hooks/use-notify';
 import { ClubDto } from '@/contracts/api/club.dto';
 import { Button } from '@/components/ui/button';

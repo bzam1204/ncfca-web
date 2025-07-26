@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRequestEnrollmentMutation } from '@/hooks/use-cases/use-enrollment.use-case';
+import { useRequestEnrollmentMutation } from '@/use-cases/use-enrollment.use-case';
 import { useNotify } from '@/hooks/use-notify';
 import { ClubDto } from '@/contracts/api/club.dto';
 import { DependantResponseDto } from '@/contracts/api/dependant.dto';

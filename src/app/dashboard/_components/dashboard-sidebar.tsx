@@ -1,13 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-  CreditCard,
-  LayoutGrid,
-  Shield,
-  School,
-  Baby,
-} from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
 import {NavUser} from "@/components/nav-user"
@@ -15,10 +8,12 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader, SidebarMenuButton,
+  SidebarHeader, SidebarMenuButton, SidebarMenuSkeleton,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {AppConfig} from "@/lib/config";
+import {useSession} from "next-auth/react";
+import {UserRoles} from "@/domain/enums/user.roles";
 
 export function DashboardSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (

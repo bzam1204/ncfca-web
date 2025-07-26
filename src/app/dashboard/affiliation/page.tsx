@@ -5,7 +5,7 @@ import {CheckCircle, AlertTriangle, XCircle, Clock} from 'lucide-react';
 import {familyStatusTranslation, getFamilyStatusVariant} from '@/lib/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {getMyFamily} from "@/hooks/use-cases/use-my-family.use-case";
+import {getMyFamily} from "@/use-cases/use-my-family.use-case";
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';

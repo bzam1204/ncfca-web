@@ -1,7 +1,7 @@
 // src/hooks/use-debounce.ts
 'use client';
 
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useRef} from 'react';
 
 /**
  * Hook customizado para "debounce" de um valor.
@@ -11,20 +11,19 @@ import { useState, useEffect } from 'react';
  * @returns O valor "debounced".
  */
 export function useDebounce<T>(value: T, delay: number): T {
+  const isFirstRender = useRef<boolean>(true);
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
-
   useEffect(() => {
-    // Configura um timer para atualizar o valor debounced após o delay.
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     const timer = setTimeout(() => {
       setDebouncedValue(value);
     }, delay);
-
-    // Limpa o timer se o valor mudar antes do delay terminar.
-    // Isso garante que a atualização só aconteça após o usuário parar de digitar.
     return () => {
       clearTimeout(timer);
     };
-  }, [value, delay]); // Re-executa o efeito apenas se o valor ou o delay mudarem.
-
+  }, [value, delay]);
   return debouncedValue;
 }
