@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { FamilyResponseDto } from "@/contracts/api/family.dto";
 import { ClubDto } from "@/contracts/api/club.dto";

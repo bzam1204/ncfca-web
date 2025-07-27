@@ -1,12 +1,11 @@
 // src/app/(admin)/_components/change-director-dialog.tsx
 'use client';
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { ClubDto } from "@/contracts/api/club.dto";
 import { UserDto } from "@/contracts/api/user.dto";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 

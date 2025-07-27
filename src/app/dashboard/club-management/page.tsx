@@ -1,7 +1,7 @@
 'use client';
 
 import {Dispatch, SetStateAction, useState} from 'react';
-import {AlertTriangle, CircleArrowLeft, Edit, Flag, RefreshCw, SearchX, Users} from 'lucide-react';
+import {AlertTriangle, Edit, RefreshCw, SearchX, Users} from 'lucide-react';
 import {UpdateSession, useSession} from 'next-auth/react';
 
 import {UserRoles} from "@/domain/enums/user.roles";
@@ -96,7 +96,7 @@ async function handleClubCreationSuccess(
   setView('overview');
 }
 
-export function ErrorAlert(input: {message: string; retry: Function, isRetrying: boolean}) {
+ function ErrorAlert(input: {message: string; retry: () => void, isRetrying: boolean}) {
   return <Alert variant="destructive" className='flex flex-col gap-6 justify-center items-center'>
     <div className='flex gap-2 items-center'>
       <AlertTriangle className="h-4 w-4" /> <AlertTitle>Algo Deu Errado</AlertTitle>
@@ -112,7 +112,7 @@ export function ErrorAlert(input: {message: string; retry: Function, isRetrying:
   </Alert>;
 }
 
-export function NotFoundAlert(input: {message: string, retry: Function, isRetrying: boolean}) {
+ function NotFoundAlert(input: {message: string, retry: () => void, isRetrying: boolean}) {
   return (<Alert variant="default" className='flex flex-col gap-6 justify-center items-center'>
     <div className='flex gap-2 items-center'>
       <SearchX className="h-4 w-4" /> <AlertTitle> Não Encontrado</AlertTitle>

@@ -44,7 +44,7 @@ export default function RegisterPage() {
   useEffect(() => {
     if (!registerError) return;
     notify.error(registerError.message || 'Erro ao registrar usuário');
-  }, [registerError]);
+  }, [registerError, notify]);
   const onSubmit = (data: RegisterInput) => {
     register(data);
   };

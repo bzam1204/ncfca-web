@@ -1,14 +1,12 @@
-// src/app/(admin)/admin/dashboard/affiliations/_components/affiliation-details-dialog.tsx
 'use client';
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AffiliationDto } from "@/contracts/api/affiliation.dto";
 import { familyStatusTranslation, getFamilyStatusVariant } from "@/lib/translations";
-import { DependantRelationship, DependantRelationshipTranslation } from "@/domain/enums/dependant-relationship.enum";
+import { DependantRelationshipTranslation } from "@/domain/enums/dependant-relationship.enum";
 
 interface AffiliationDetailsDialogProps {
   isOpen: boolean;

@@ -1,13 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-  CreditCard,
-  LayoutGrid,
-  Shield,
-  School,
-  Baby,
-} from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
 import {NavUser} from "@/components/nav-user"

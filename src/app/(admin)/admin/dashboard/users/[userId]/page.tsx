@@ -1,11 +1,9 @@
-// src/app/(admin)/admin/dashboard/users/[userId]/page.tsx
 import {auth} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
-import {Separator} from "@/components/ui/separator";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertTriangle, User, Home, Users as FamilyIcon, ChevronLeft} from "lucide-react";
 import {FamilyResponseDto} from "@/contracts/api/family.dto";
@@ -44,15 +42,14 @@ const calculateAge = (birthdate: string) => {
   return age;
 };
 
-export default async function UserDetailsPage({params}: {params: {userId: string}}) {
+export default async function UserDetailsPage({params}: {params: Promise<{userId: string}>}) {
+  const {userId} = await params;
   const session = await auth();
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     redirect('/login');
   }
-
-  const familyData = await getUserFamily(params.userId, session.accessToken);
-
-  if (!familyData || !familyData) {
+  const familyData = await getUserFamily(userId, session.accessToken);
+  if (!familyData || !familyData) { 
     return (
         <div className="space-y-4">
           <Button variant="outline" asChild>

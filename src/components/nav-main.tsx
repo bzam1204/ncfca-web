@@ -13,8 +13,7 @@ import {
 import {AppConfig} from "@/lib/config";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {useSession} from "next-auth/react";
-import {RefObject, useEffect, useRef} from "react";
-import {useDebounce} from "@/hooks/use-debounce";
+import {useRef} from "react";
 
 export function NavMain(props: NavMainProps) {
   const path = usePathname();

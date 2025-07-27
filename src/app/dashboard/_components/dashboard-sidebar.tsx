@@ -5,15 +5,14 @@ import * as React from "react"
 import {NavMain} from "@/components/nav-main"
 import {NavUser} from "@/components/nav-user"
 import {
-  Sidebar,
+  SidebarMenuButton,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader, SidebarMenuButton, SidebarMenuSkeleton,
+  SidebarHeader, 
   SidebarRail,
+  Sidebar,
 } from "@/components/ui/sidebar"
 import {AppConfig} from "@/lib/config";
-import {useSession} from "next-auth/react";
-import {UserRoles} from "@/domain/enums/user.roles";
 
 export function DashboardSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (
