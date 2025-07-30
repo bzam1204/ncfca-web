@@ -1,10 +1,14 @@
 import type {Metadata, Viewport} from "next";
-import {Inter} from "next/font/google";
-import "./globals.css";
-import {QueryProvider} from "@/lib/providers/query-provider";
+
 import {SessionProvider} from "next-auth/react";
-import {Toaster} from "@/components/ui/sonner";
+import {Inter} from "next/font/google";
+
 import {SessionManager} from "@/components/session-manager";
+import {Toaster} from "@/components/ui/sonner";
+
+import {QueryProvider} from "@/infraestructure/providers/query-provider";
+
+import "./globals.css";
 
 const inter = Inter({subsets : ["latin"]});
 

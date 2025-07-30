@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Users, Shield, CreditCard, BarChart3 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { cn } from '@/infraestructure/utils';
 
 const navItems = [
   { href: '/admin/dashboard', label: 'Visão Geral', icon: BarChart3 },

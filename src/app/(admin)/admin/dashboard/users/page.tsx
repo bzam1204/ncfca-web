@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { UsersTable } from "@/app/(admin)/admin/dashboard/users/_components/users-table";
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/use-debounce"; // Supondo a existência deste hook
-import { useAdminListUsers } from "@/use-cases/use-admin-management.use-case";
+import { useAdminListUsers } from "@/application/use-cases/use-admin-management.use-case";
 import { useSession } from "next-auth/react";
 import { Search } from "lucide-react";
 

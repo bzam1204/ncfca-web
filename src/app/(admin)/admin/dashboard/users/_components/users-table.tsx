@@ -4,7 +4,7 @@
 import { useState, useMemo } from "react"; // Adicionado useMemo
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useAdminManageUserRoleMutation } from "@/use-cases/use-admin-management.use-case";
+import { useAdminManageUserRoleMutation } from "@/application/use-cases/use-admin-management.use-case";
 import { UserDto } from "@/contracts/api/user.dto";
 import { ManageUserRoleDto } from "@/contracts/api/admin.dto";
 import { useNotify } from "@/hooks/use-notify";

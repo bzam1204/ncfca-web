@@ -1,14 +1,13 @@
 import {useQuery} from "@tanstack/react-query";
-import {PaginatedClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
-import {SearchClubs} from "@/use-cases/clubs/search-clubs.use-case";
-import {ApiQueryService} from "@/lib/services/query.service.api";
 
-export function useSearchClubs(accessToken: string, query: SearchClubsQuery) {
-  const queryService = ApiQueryService.create(accessToken);
-  const searchClubs = new SearchClubs(queryService);
+import {PaginatedClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
+
+import {searchClubsAction} from "@/infraestructure/actions/search-clubs.action";
+import {QueryKeys} from "@/infraestructure/query-keys";
+
+export function useSearchClubs(query: SearchClubsQuery) {
   return useQuery<PaginatedClubDto>({
-    queryKey : ['search-clubs', query],
-    queryFn : () => searchClubs.execute(query),
-    enabled : !!accessToken,
+    queryKey : QueryKeys.clubs.search(query),
+    queryFn : () => searchClubsAction(query),
   });
 }

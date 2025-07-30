@@ -1,32 +1,18 @@
-'use client';
 
-import {useState} from 'react';
-import {useQuery} from '@tanstack/react-query';
-import {useSession} from 'next-auth/react';
-import {ClubDto} from '@/contracts/api/club.dto';
-import {DependantResponseDto} from '@/contracts/api/dependant.dto';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {ListChecks, ShieldPlus} from 'lucide-react';
-import {MyRequestsTable} from "@/app/_components/my-requests-table";
 import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";
-import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 import {ExploreClubs} from "@/app/dashboard/clubs/_components/explore-clubs";
+import {MyRequestsTable} from "@/app/dashboard/clubs/_components/my-requests-table";
+import {auth} from "@/infraestructure/auth";
+import {redirect} from "next/navigation";
 
-export default function ClubsPage() {
-  const {data : session} = useSession({required : true});
-  const isClubDirector = session?.user?.roles?.includes(UserRoles.DONO_DE_CLUBE);
-  const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
-
-  const accessToken = session?.accessToken ?? '';
-
-  const {data : dependants = []} = useQuery({
-    queryKey : ['dependants'],
-    queryFn : () => getDependants(accessToken),
-    enabled : !!accessToken
-  });
-
+export default async function ClubsPage() {
+  const session = await auth();
+  if (!session?.user) redirect('/login');
+  const isClubDirector = session.user.roles?.includes(UserRoles.DONO_DE_CLUBE);
   return (
       <div className="space-y-8">
         {!isClubDirector && <NonDirectorCallToAction />}
@@ -40,13 +26,8 @@ export default function ClubsPage() {
             <MyRequestsTable />
           </CardContent>
         </Card>
-        <ExploreClubs setSelectedClub={setSelectedClub} accessToken={accessToken} />
-        <EnrollmentDialog
-            club={selectedClub}
-            dependants={dependants}
-            isOpen={!!selectedClub}
-            onClose={() => setSelectedClub(null)}
-        />
+        <ExploreClubs accessToken={session.accessToken} />
+
       </div>
   );
 }
@@ -71,10 +52,3 @@ function NonDirectorCallToAction() {
   );
 }
 
-async function getDependants(accessToken: string): Promise<DependantResponseDto[]> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/dependants`, {
-    headers : {'Authorization' : `Bearer ${accessToken}`}
-  });
-  if (!res.ok) throw new Error('Falha ao carregar seus dependentes.');
-  return res.json();
-}

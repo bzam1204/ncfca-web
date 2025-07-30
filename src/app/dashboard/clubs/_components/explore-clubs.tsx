@@ -1,3 +1,5 @@
+'use client'
+
 import {Dispatch, SetStateAction, useState} from "react";
 import {AlertTriangle, Search, University} from "lucide-react";
 
@@ -13,11 +15,14 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 
+import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
+
 export function ExploreClubs(props: ClubSearchTableProps) {
+  const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
   const [searchQuery, setSearchQuery] = useState<SearchClubsQuery>(initialQuery);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const query = {...debouncedSearchQuery, page : searchQuery.page};
-  const clubQuery = useSearchClubs(props.accessToken, query);
+  const clubQuery = useSearchClubs(query);
   return (
       <Card>
         <CardHeader>
@@ -48,7 +53,7 @@ export function ExploreClubs(props: ClubSearchTableProps) {
                           <CardDescription>{club.city}, {club.state}</CardDescription>
                         </CardHeader>
                         <CardContent>
-                          <Button className="w-full" onClick={() => props.setSelectedClub(club)}>
+                          <Button className="w-full cursor-pointer" onClick={() => setSelectedClub(club)}>
                             Solicitar Matrícula
                           </Button>
                         </CardContent>
@@ -67,13 +72,17 @@ export function ExploreClubs(props: ClubSearchTableProps) {
               </>
           )}
         </CardContent>
+        <EnrollmentDialog
+            club={selectedClub}
+            isOpen={!!selectedClub}
+            onClose={() => setSelectedClub(null)}
+        />
       </Card>
 
   )
 }
 
 interface ClubSearchTableProps {
-  setSelectedClub: (club: ClubDto | null) => void;
   accessToken: string;
 }
 
@@ -94,3 +103,4 @@ const handlePageChange = (newPage: number, totalPages: number, setClubsQuery: Di
     setClubsQuery(prev => ({...prev, page : newPage}));
   }
 };
+

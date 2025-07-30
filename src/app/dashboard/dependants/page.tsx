@@ -1,15 +1,13 @@
-// src/app/dashboard/dependants/page.tsx
 'use client';
 
 import {useState} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
-import {DependantResponseDto} from '@/contracts/api/dependant.dto';
 import {
   useAddDependantMutation,
   useUpdateDependantMutation,
   useDeleteDependantMutation
-} from '@/use-cases/use-manage-dependants.use-case';
+} from '@/application/use-cases/use-manage-dependants.use-case';
 import {useNotify} from '@/hooks/use-notify';
 
 import {Button} from "@/components/ui/button";
@@ -25,10 +23,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {MoreHorizontal, PlusCircle, AlertTriangle} from "lucide-react";
 import {Skeleton} from '@/components/ui/skeleton';
-import {DependantForm, DependantFormInput} from "@/app/_components/dependant-form";
 import {DeleteConfirmationDialog} from "@/app/_components/delete-confirmation-dialog";
+import {DependantForm, DependantFormInput} from "@/app/dashboard/dependants/_components/dependant-form";
+import {Dependant} from "@/domain/entities/dependant.entity";
 
-async function getDependants(accessToken: string): Promise<DependantResponseDto[]> {
+async function getDependants(accessToken: string): Promise<Dependant[]> {
   const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
   if (!accessToken) throw new Error("Token de autenticação não encontrado.");
 
@@ -46,7 +45,7 @@ const TableSkeleton = () => (
 export default function DependantsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [selectedDependant, setSelectedDependant] = useState<DependantResponseDto | null>(null);
+  const [selectedDependant, setSelectedDependant] = useState<Dependant | null>(null);
 
   const notify = useNotify();
   const {data : session} = useSession({required : true});
@@ -89,19 +88,19 @@ export default function DependantsPage() {
     });
   };
 
-  const openForm = (dependant: DependantResponseDto | null = null) => {
+  const openForm = (dependant: Dependant | null = null) => {
     setSelectedDependant(dependant);
     setIsFormOpen(true);
   };
   const closeForm = () => setIsFormOpen(false);
 
-  const openDeleteConfirm = (dependant: DependantResponseDto) => {
+  const openDeleteConfirm = (dependant: Dependant) => {
     setSelectedDependant(dependant);
     setIsDeleteConfirmOpen(true);
   };
   const closeDeleteConfirm = () => setIsDeleteConfirmOpen(false);
 
-  const calculateAge = (birthdate: string) => {
+  const calculateAge = (birthdate: Date) => {
     const birthDate = new Date(birthdate);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();

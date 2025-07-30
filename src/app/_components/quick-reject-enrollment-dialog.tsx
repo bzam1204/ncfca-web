@@ -1,4 +1,4 @@
-// src/app/dashboard/club-management/_components/reject-enrollment-dialog.tsx
+// src/app/dashboard/club-management/_components/reject-enrollments-dialog.tsx
 'use client';
 
 import {useForm} from 'react-hook-form';

@@ -1,6 +1,6 @@
 import {redirect} from "next/navigation";
 
-import {auth} from "@/lib/auth";
+import {auth} from "@/infraestructure/auth";
 
 import {DashboardSidebar} from "@/app/dashboard/_components/dashboard-sidebar";
 

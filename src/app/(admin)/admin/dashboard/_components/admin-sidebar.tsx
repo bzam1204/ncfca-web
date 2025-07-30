@@ -11,7 +11,7 @@ import {
   SidebarHeader, SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import {AppConfig} from "@/lib/config";
+import {AppConfig} from "@/infraestructure/config";
 
 export function AdminSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (

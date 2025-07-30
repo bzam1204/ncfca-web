@@ -1,4 +1,4 @@
-import {auth} from "@/lib/auth";
+import {auth} from "@/infraestructure/auth";
 import {redirect} from "next/navigation";
 import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";

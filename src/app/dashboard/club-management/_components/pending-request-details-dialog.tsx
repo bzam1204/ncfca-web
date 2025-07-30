@@ -3,11 +3,11 @@
 
 import {useState} from 'react';
 import {useSession} from 'next-auth/react';
-import {useDependantDetailsQuery} from '@/use-cases/use-dependant-details.use-case';
+import {useDependantDetailsQuery} from '@/application/use-cases/use-dependant-details.use-case';
 import {
   useApproveEnrollmentMutation,
   useRejectEnrollmentMutation
-} from '@/use-cases/use-club-management.use-case';
+} from '@/application/use-cases/use-club-management.use-case';
 import {useNotify} from '@/hooks/use-notify';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -109,11 +109,6 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: 
           {dependant && (
               <>
                 <DialogHeader className="text-center items-center">
-                  <Avatar className="h-24 w-24 mb-4">
-                    <AvatarImage src={dependant.avatarUrl ?? `https://i.pravatar.cc/150?u=${dependant.firstName}`}
-                                 alt={dependant.firstName} />
-                    <AvatarFallback>{dependant.firstName.charAt(0)}{dependant.lastName.charAt(0)}</AvatarFallback>
-                  </Avatar>
                   <DialogTitle className="text-2xl">{dependant.firstName} {dependant.lastName}</DialogTitle>
                   <DialogDescription>
                     Solicitado em: {request ? new Date(request.requestedAt).toLocaleDateString('pt-BR') : ''}

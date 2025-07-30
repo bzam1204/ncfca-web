@@ -7,7 +7,7 @@ import {UpdateSession, useSession} from 'next-auth/react';
 import {UserRoles} from "@/domain/enums/user.roles";
 
 import {CreateClubResponseDto} from '@/contracts/api/club-management.dto';
-import {useMyClubQuery} from '@/use-cases/use-club-management.use-case';
+import {useMyClubQuery} from '@/application/use-cases/use-club-management.use-case';
 
 import {Card, CardHeader, CardTitle, CardDescription} from '@/components/ui/card';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";

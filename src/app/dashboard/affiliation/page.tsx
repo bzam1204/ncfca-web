@@ -1,11 +1,11 @@
-import {auth} from '@/lib/auth';
+import {auth} from '@/infraestructure/auth';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 import {CheckCircle, AlertTriangle, XCircle, Clock} from 'lucide-react';
-import {familyStatusTranslation, getFamilyStatusVariant} from '@/lib/translations';
+import {familyStatusTranslation, getFamilyStatusVariant} from '@/infraestructure/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {getMyFamily} from "@/use-cases/use-my-family.use-case";
+import {getMyFamily} from "@/application/use-cases/use-my-family.use-case";
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';

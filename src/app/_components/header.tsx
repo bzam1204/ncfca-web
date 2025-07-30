@@ -1,6 +1,6 @@
 // src/app/_components/header.tsx
 import Link from "next/link";
-import {auth} from "@/lib/auth";
+import {auth} from "@/infraestructure/auth";
 import {Button} from "@/components/ui/button";
 import {LogoutButton} from "./logout-button";
 

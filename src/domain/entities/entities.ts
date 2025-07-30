@@ -7,27 +7,29 @@ import {MembershipStatus} from "@/domain/enums/membership-status.enum";
 import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
 import {DependantRelationship} from "@/domain/enums/dependant-relationship.enum";
 import {TransactionContextType} from "@/domain/enums/transaction-context-type.enum";
+import {DependantType} from "@/domain/enums/dependant-type.enum";
+import {Dependant} from "@/domain/entities/dependant.entity";
 
 export interface Address {
-  street: string;
-  number: string;
-  district: string;
   city: string;
   state: string;
+  street: string;
+  number: string;
   zipCode: string;
+  district: string;
   complement?: string;
 }
 
 export interface User {
   id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
   rg: string;
   cpf: string;
+  email: string;
   phone: string;
   roles: UserRoles[];
   address: Address;
+  lastName: string;
+  firstName: string;
 }
 
 export interface Family {
@@ -39,25 +41,13 @@ export interface Family {
   affiliationExpiresAt: Date | null;
 }
 
-export interface Dependant {
-  id: string;
-  firstName: string;
-  lastName: string;
-  familyId: string;
-  relationship: DependantRelationship;
-  sex: Sex;
-  birthdate: Date;
-  email?: string;
-  phone?: string;
-}
-
 export interface Club {
   id: string;
   name: string;
   city: string;
   state: string;
   status: boolean;
-  ownerId: string; // no schema: principal_id
+  ownerId: string;
 }
 
 export interface ClubMembership {

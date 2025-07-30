@@ -12,7 +12,7 @@ import {
   SidebarRail,
   Sidebar,
 } from "@/components/ui/sidebar"
-import {AppConfig} from "@/lib/config";
+import {AppConfig} from "@/infraestructure/config";
 
 export function DashboardSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (

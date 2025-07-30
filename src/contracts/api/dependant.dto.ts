@@ -14,18 +14,6 @@ export interface AddDependantRequestDto {
 
 export type UpdateDependantRequestDto = Partial<AddDependantRequestDto>;
 
-export interface DependantResponseDto {
-  id: string;
-  firstName: string;
-  lastName: string;
-  familyId: string;
-  relationship: DependantRelationship;
-  sex: Sex;
-  birthdate: string;
-  email?: string | null;
-  phone?: string | null;
-}
-
 export interface DependantDetailsDto {
   id: string;
   firstName: string;

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { AffiliationDto } from "@/contracts/api/affiliation.dto";
-import { familyStatusTranslation, getFamilyStatusVariant } from "@/lib/translations";
+import { familyStatusTranslation, getFamilyStatusVariant } from "@/infraestructure/translations";
 import { DependantRelationshipTranslation } from "@/domain/enums/dependant-relationship.enum";
 
 interface AffiliationDetailsDialogProps {

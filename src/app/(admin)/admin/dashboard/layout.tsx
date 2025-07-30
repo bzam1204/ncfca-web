@@ -2,7 +2,7 @@ import {redirect} from "next/navigation";
 
 import {UserRoles} from "@/domain/enums/user.roles";
 
-import {auth} from "@/lib/auth";
+import {auth} from "@/infraestructure/auth";
 
 import {AdminSidebar} from "@/app/(admin)/admin/dashboard/_components/admin-sidebar";
 

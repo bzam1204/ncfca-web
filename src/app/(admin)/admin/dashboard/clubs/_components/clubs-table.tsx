@@ -1,16 +1,20 @@
-// src/app/(admin)/_components/clubs-table.tsx
 'use client';
 
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useAdminChangeClubDirectorMutation, useAdminListClubs } from "@/use-cases/use-admin-management.use-case";
-import { ClubDto } from "@/contracts/api/club.dto";
-import { UserDto } from "@/contracts/api/user.dto";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { MoreHorizontal } from "lucide-react";
-import { useNotify } from "@/hooks/use-notify";
+import {useState} from "react";
+import {useSession} from "next-auth/react";
+import {MoreHorizontal} from "lucide-react";
+
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Button} from "@/components/ui/button";
+
+import {useAdminChangeClubDirectorMutation, useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
+
+import {ClubDto} from "@/contracts/api/club.dto";
+import {UserDto} from "@/contracts/api/user.dto";
+
+import {useNotify} from "@/hooks/use-notify";
+
 import {ChangePrincipalDialog} from "@/app/(admin)/admin/dashboard/clubs/_components/change-principal-dialog";
 
 interface ClubsTableProps {
@@ -18,13 +22,13 @@ interface ClubsTableProps {
   allUsers: UserDto[];
 }
 
-export function ClubsTable({ initialClubs, allUsers }: ClubsTableProps) {
-  const { data: session } = useSession();
+export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
+  const {data : session} = useSession();
   const accessToken = session?.accessToken ?? '';
   const notify = useNotify();
 
-  const { data: clubs = initialClubs } = useAdminListClubs(accessToken);
-  const { mutate: changeDirector, isPending } = useAdminChangeClubDirectorMutation();
+  const {data : clubs = initialClubs} = useAdminListClubs(accessToken);
+  const {mutate : changeDirector, isPending} = useAdminChangeClubDirectorMutation();
 
   const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
 
@@ -34,12 +38,12 @@ export function ClubsTable({ initialClubs, allUsers }: ClubsTableProps) {
   };
 
   const handleDirectorChange = (clubId: string, newDirectorId: string) => {
-    changeDirector({ clubId, data: { newDirectorId }, accessToken }, {
-      onSuccess: () => {
+    changeDirector({clubId, data : {newDirectorId}, accessToken}, {
+      onSuccess : () => {
         notify.success("Diretor do clube alterado com sucesso.");
         setSelectedClub(null);
       },
-      onError: (error) => notify.error(error.message),
+      onError : (error) => notify.error(error.message),
     });
   };
 

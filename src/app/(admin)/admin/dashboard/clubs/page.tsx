@@ -1,5 +1,5 @@
 // src/app/(admin)/admin/dashboard/clubs/page.tsx
-import { auth } from "@/lib/auth";
+import { auth } from "@/infraestructure/auth";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/domain/enums/user.roles";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";

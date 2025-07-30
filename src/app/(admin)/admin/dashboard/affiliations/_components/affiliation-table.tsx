@@ -3,10 +3,10 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { useAdminListAffiliations } from "@/use-cases/use-admin-management.use-case";
+import { useAdminListAffiliations } from "@/application/use-cases/use-admin-management.use-case";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { familyStatusTranslation, getFamilyStatusVariant } from "@/lib/translations";
+import { familyStatusTranslation, getFamilyStatusVariant } from "@/infraestructure/translations";
 import { AffiliationDto } from "@/contracts/api/affiliation.dto";
 import {
   AffiliationDetailsDialog

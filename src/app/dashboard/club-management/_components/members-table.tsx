@@ -1,14 +1,14 @@
 // src/app/dashboard/club-management/_components/members-table.tsx
 'use client';
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useClubMembersQuery, useRevokeMembershipMutation } from '@/use-cases/use-club-management.use-case';
-import { useNotify } from '@/hooks/use-notify';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import {useState} from 'react';
+import {useSession} from 'next-auth/react';
+import {useClubMembersQuery, useRevokeMembershipMutation} from '@/application/use-cases/use-club-management.use-case';
+import {useNotify} from '@/hooks/use-notify';
+import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
+import {Button} from '@/components/ui/button';
+import {Skeleton} from '@/components/ui/skeleton';
+import {Alert, AlertTitle, AlertDescription} from "@/components/ui/alert";
 import {AlertTriangle, MoreHorizontal, Trash2, Eye, RotateCcw} from "lucide-react";
 import {
   AlertDialog,
@@ -28,29 +28,31 @@ import {
   DropdownMenuTrigger,
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
-import { ClubMemberDto } from "@/contracts/api/club-member.dto";
-import { MemberDetailsDialog } from './member-details';
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {ClubMemberDto} from "@/contracts/api/club-member.dto";
+import {MemberDetailsDialog} from './member-details';
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
+import {Sex} from "@/domain/enums/sex.enum";
 
 export function MembersTable() {
-  const { data: session } = useSession();
+  const {data : session} = useSession();
   const accessToken = session?.accessToken ?? '';
   const notify = useNotify();
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
 
-  const { data: members = [], isLoading, error, isRefetching, refetch } = useClubMembersQuery(accessToken);
-  const { mutate: revoke, isPending } = useRevokeMembershipMutation();
+  const {data : members = [], isLoading, error, isRefetching, refetch} = useClubMembersQuery(accessToken);
+  const {mutate : revoke, isPending} = useRevokeMembershipMutation();
 
   const handleRevoke = (membershipId: string) => {
     if (!accessToken) return;
-    revoke({ membershipId, accessToken }, {
-      onSuccess: () => notify.success("Membro removido do clube."),
-      onError: (e) => notify.error(e.message),
+    revoke({membershipId, accessToken}, {
+      onSuccess : () => notify.success("Membro removido do clube."),
+      onError : (e) => notify.error(e.message),
     });
   };
 
   if (isLoading || isRefetching) return <Skeleton className="h-40 w-full" />;
-  if (error) return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
+  if (error) return <Alert variant="destructive"><AlertTriangle
+      className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error.message}</AlertDescription></Alert>;
 
   return (
       <div className="flex flex-col gap-4">
@@ -69,18 +71,13 @@ export function MembersTable() {
                   members.map(member => (
                       <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
                         <TableCell className="font-medium flex items-center gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={member.avatarUrl ?? `https://i.pravatar.cc/150?u=${member.firstName}`}
-                                         alt={member.firstName} />
-                            <AvatarFallback>{member.firstName.charAt(0)}{member.lastName.charAt(0)}</AvatarFallback>
-                          </Avatar>
                           {member.firstName} {member.lastName}
                         </TableCell>
                         <TableCell>{member.memberSince ? new Date(member.memberSince).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <AlertDialog>
                             <DropdownMenu>
-                              <DropdownMenuTrigger  asChild>
+                              <DropdownMenuTrigger asChild>
                                 <Button onClick={e => e.stopPropagation()} variant="ghost" size="icon">
                                   <MoreHorizontal className="h-4 w-4" />
                                 </Button>

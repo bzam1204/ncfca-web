@@ -10,7 +10,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton,
 } from "@/components/ui/sidebar";
-import {AppConfig} from "@/lib/config";
+import {AppConfig} from "@/infraestructure/config";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {useSession} from "next-auth/react";
 import {useRef} from "react";

@@ -39,12 +39,6 @@ export function MemberDetailsDialog({member, onOpenChange}: MemberDetailsDialogP
       <Dialog open={!!member} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[480px]">
           <DialogHeader className="flex flex-col items-center text-center">
-            <Avatar className="h-24 w-24 mb-4">
-              {/* O backend ainda não fornece, então usamos um placeholder. */}
-              <AvatarImage src={member.avatarUrl ?? `https://i.pravatar.cc/150?u=${member.firstName}`}
-                           alt={`${member.firstName} ${member.lastName}`} />
-              <AvatarFallback>{member.firstName.charAt(0)}{member.lastName.charAt(0)}</AvatarFallback>
-            </Avatar>
             <DialogTitle className="text-2xl">{member.firstName} {member.lastName}</DialogTitle>
             <DialogDescription>
               Membro desde {new Date(member.memberSince).toLocaleDateString('pt-BR')}

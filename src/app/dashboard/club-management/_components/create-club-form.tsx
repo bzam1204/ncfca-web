@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { useCreateClubMutation } from '@/use-cases/use-club-management.use-case';
+import { useCreateClubMutation } from '@/application/use-cases/use-club-management.use-case';
 import { useNotify } from '@/hooks/use-notify';
 import { CreateClubResponseDto } from '@/contracts/api/club-management.dto';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

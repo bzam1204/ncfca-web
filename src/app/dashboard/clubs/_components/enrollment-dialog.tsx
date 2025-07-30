@@ -1,47 +1,38 @@
-// src/app/dashboard/clubs/_components/enrollment-dialog.tsx
 'use client';
 
-import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRequestEnrollmentMutation } from '@/use-cases/use-enrollment.use-case';
-import { useNotify } from '@/hooks/use-notify';
-import { ClubDto } from '@/contracts/api/club.dto';
-import { DependantResponseDto } from '@/contracts/api/dependant.dto';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import {Loader2, AlertTriangle} from 'lucide-react';
+import {useState} from 'react';
 
-interface EnrollmentDialogProps {
-  club: ClubDto | null;
-  dependants: DependantResponseDto[];
-  isOpen: boolean;
-  onClose: () => void;
-}
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter} from '@/components/ui/dialog';
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
+import {Button} from '@/components/ui/button';
+import {Label} from '@/components/ui/label';
 
-export function EnrollmentDialog({ club, dependants, isOpen, onClose }: EnrollmentDialogProps) {
+import {useRequestEnrollment} from "@/hooks/use-request-enrollment";
+import {useGetDependants} from "@/hooks/use-get-dependants";
+import {useNotify} from '@/hooks/use-notify';
+
+import {ClubDto} from '@/contracts/api/club.dto';
+
+export function EnrollmentDialog({club, isOpen, onClose}: EnrollmentDialogProps) {
   const [selectedDependantId, setSelectedDependantId] = useState<string>('');
   const notify = useNotify();
-  const { data: session } = useSession();
-  const { mutate: requestEnrollment, isPending } = useRequestEnrollmentMutation();
+  const {mutate : requestEnrollment, isPending} = useRequestEnrollment();
+  const dependantsQuery = useGetDependants();
+  const dependants = dependantsQuery.data ?? [];
 
   const handleSubmit = () => {
-    if (!selectedDependantId || !club?.id || !session?.accessToken) {
+    if (!selectedDependantId || !club?.id) {
       notify.error("Informações incompletas para solicitar a matrícula.");
       return;
     }
-
-    requestEnrollment({
-      data: { dependantId: selectedDependantId, clubId: club.id },
-      accessToken: session.accessToken
-    }, {
-      onSuccess: () => {
+    requestEnrollment({dependantId : selectedDependantId, clubId : club.id}, {
+      onSuccess : () => {
         notify.success(`Solicitação de matrícula para o clube "${club.name}" enviada com sucesso!`);
         handleClose();
       },
-      onError: (error) => {
+      onError : (error) => {
         notify.error(error.message);
       }
     });
@@ -58,10 +49,9 @@ export function EnrollmentDialog({ club, dependants, isOpen, onClose }: Enrollme
       <Dialog open={isOpen} onOpenChange={handleClose}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Solicitar Matrícula para &quot{club.name}&quot</DialogTitle>
+            <DialogTitle>Solicitar Matrícula para {club.name}</DialogTitle>
             <DialogDescription>Selecione um dependente para enviar a solicitação ao diretor do clube.</DialogDescription>
           </DialogHeader>
-
           <div className="py-4 space-y-4">
             {dependants.length > 0 ? (
                 <div className="space-y-2">
@@ -87,15 +77,20 @@ export function EnrollmentDialog({ club, dependants, isOpen, onClose }: Enrollme
                 </Alert>
             )}
           </div>
-
           <DialogFooter>
             <Button variant="ghost" onClick={handleClose} disabled={isPending}>Cancelar</Button>
             <Button onClick={handleSubmit} disabled={isPending || !selectedDependantId}>
-              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin"/>}
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Confirmar Solicitação
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
   );
+}
+
+interface EnrollmentDialogProps {
+  onClose: () => void;
+  isOpen: boolean;
+  club: ClubDto | null;
 }
