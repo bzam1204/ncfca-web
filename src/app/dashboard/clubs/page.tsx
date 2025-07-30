@@ -1,13 +1,16 @@
+import {redirect} from "next/navigation";
+import Link from "next/link";
+import {ListChecks, ShieldPlus} from 'lucide-react';
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
-import {ListChecks, ShieldPlus} from 'lucide-react';
-import Link from "next/link";
+
 import {UserRoles} from "@/domain/enums/user.roles";
-import {ExploreClubs} from "@/app/dashboard/clubs/_components/explore-clubs";
-import {MyRequestsTable} from "@/app/dashboard/clubs/_components/my-requests-table";
+
 import {auth} from "@/infraestructure/auth";
-import {redirect} from "next/navigation";
+
+import {MyRequestsTable} from "@/app/dashboard/clubs/_components/my-requests-table";
+import {ExploreClubs} from "@/app/dashboard/clubs/_components/explore-clubs";
 
 export default async function ClubsPage() {
   const session = await auth();
@@ -27,7 +30,6 @@ export default async function ClubsPage() {
           </CardContent>
         </Card>
         <ExploreClubs accessToken={session.accessToken} />
-
       </div>
   );
 }

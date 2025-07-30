@@ -34,8 +34,6 @@ export function DependantForm({dependant, onSubmit, isPending, onClose}: Dependa
     },
   });
 
- 
-
   useEffect(() => {
     if (dependant) {
       reset({
@@ -43,6 +41,7 @@ export function DependantForm({dependant, onSubmit, isPending, onClose}: Dependa
         birthdate : new Date(dependant.birthdate).toISOString().substring(0, 10),
         firstName : dependant.firstName,
         lastName : dependant.lastName,
+        type : dependant.type,
         phone : dependant.phone ?? '',
         email : dependant.email ?? '',
         sex : dependant.sex,
@@ -50,7 +49,7 @@ export function DependantForm({dependant, onSubmit, isPending, onClose}: Dependa
     } else {
       reset({
         firstName : '', lastName : '', birthdate : '', email : '', phone : '',
-        sex : undefined, relationship : undefined
+        sex : undefined, relationship : undefined, type : undefined,
       });
     }
   }, [dependant, reset]);
@@ -67,7 +66,7 @@ export function DependantForm({dependant, onSubmit, isPending, onClose}: Dependa
     (onClose)();
     reset();
   }
-  
+
   return (
       <DialogContent onPointerDownOutside={(e) => {
         if (isPending) e.preventDefault()

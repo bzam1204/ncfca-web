@@ -38,7 +38,7 @@ function NavItem(input: NavItemProps) {
   const {title, Icon, url, path} = input;
   const hasBeenRendered = useRef<boolean>(false);
   const session = useSession();
-  const element = (
+  const element = () => (
       <SidebarMenuItem>
         {hasBeenRendered.current ? null : hasBeenRendered.current = true}
         <SidebarMenuButton
@@ -51,11 +51,11 @@ function NavItem(input: NavItemProps) {
         </SidebarMenuButton>
       </SidebarMenuItem>
   );
-  if (hasBeenRendered.current) return element;
-  if (!input.requiredRoles) return element;
+  if (hasBeenRendered.current) return element();
+  if (!input.requiredRoles) return element();
   if (session.status !== 'authenticated') return null;
   if (!userCanAccess(session.data.user.roles, input.requiredRoles)) return null;
-  return element;
+  return element();
 }
 
 function isHrefCurrentPath(href: string, path: string) {

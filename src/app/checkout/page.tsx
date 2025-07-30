@@ -2,7 +2,7 @@
 
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {useCheckout} from "@/use-cases/use-checkout.use-case";
+import {useCheckout} from "@/application/use-cases/use-checkout.use-case";
 import {useSession} from "next-auth/react";
 import {useEffect} from "react";
 import {router} from "next/client";

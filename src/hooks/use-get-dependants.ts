@@ -8,6 +8,6 @@ import {QueryKeys} from "@/infraestructure/query-keys";
 export function useGetDependants() {
   return useQuery<Dependant[]>({
     queryKey : QueryKeys.dependants.all,
-    queryFn : () => GetDependantsAction(),
+    queryFn : () => GetDependantsAction().then(res => res.map(d => new Dependant(d))),
   });
 }

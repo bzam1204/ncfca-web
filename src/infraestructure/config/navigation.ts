@@ -1,4 +1,4 @@
-import {Baby, CreditCard, HomeIcon, LayoutGrid, School, Shield, ShieldUser, UserSearch} from "lucide-react";
+import {Baby, CreditCard, HomeIcon, LayoutGrid, PlayCircle, School, Shield, ShieldUser, UserSearch} from "lucide-react";
 import {UserRoles} from "@/domain/enums/user.roles";
 
 export const navigation = {
@@ -60,6 +60,11 @@ export const navigation = {
       title : "Afiliações",
       url : "/admin/dashboard/affiliations",
       Icon : CreditCard,
+    },
+    {
+      title : "Treinamentos",
+      url : "/admin/dashboard/trainings",
+      Icon : PlayCircle,
     },
     {
       title : "Área de Membro",

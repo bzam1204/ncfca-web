@@ -1,6 +1,6 @@
 'use client';
 
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useRouter} from 'next/navigation';
 import Link from 'next/link';
@@ -11,11 +11,12 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {registerSchema, type RegisterInput} from '@/infraestructure/validators/register.schema';
-import {useRegisterUser} from "@/use-cases/use-register-user.use-case";
+import {useRegisterUser} from "@/application/use-cases/use-register-user.use-case";
 import {useCepAutocomplete} from "@/hooks/use-cep-autocomplete";
 import {viaCepService} from "@/infraestructure/services/via-cep.service";
 import {useNotify} from "@/hooks/use-notify";
 import {useEffect} from "react";
+import {StateCombobox} from "@/app/_components/state-combobox";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function RegisterPage() {
     register : formRegister,
     handleSubmit,
     setValue,
+    control,
     watch,
     formState : {errors},
   } = useForm<RegisterInput>({
@@ -49,7 +51,7 @@ export default function RegisterPage() {
     register(data);
   };
   return (
-      <div className="flex items-center justify-center min-h-screen py-8">
+      <div className="flex items-start justify-center max-h-screen py-8 px-2 overflow-y-auto">
         <Card className="w-full max-w-lg">
           <CardHeader>
             <CardTitle>Criar Conta</CardTitle>
@@ -92,7 +94,7 @@ export default function RegisterPage() {
                       {errors.cpf && <p className="text-red-500 text-sm">{errors.cpf.message}</p>}
                     </div>
                   </fieldset>
-                  <Endereco watch={watch} errors={errors} formRegister={formRegister} setValue={setValue} />
+                  <Endereco watch={watch} errors={errors} formRegister={formRegister} setValue={setValue} control={control} />
                   <fieldset className="grid grid-cols-1 gap-4 border-t pt-4">
                     <legend className="text-lg font-semibold mb-2">Segurança</legend>
                     <div className="space-y-2">
@@ -127,7 +129,7 @@ export default function RegisterPage() {
   );
 }
 
-function Endereco(input: {formRegister: any, setValue: any, watch: any, errors: any}) {
+function Endereco(input: {formRegister: any, setValue: any, watch: any, errors: any, control: any}) {
   const {
     handleCepChange,
     isLoadingCep,
@@ -165,14 +167,23 @@ function Endereco(input: {formRegister: any, setValue: any, watch: any, errors: 
           {input.errors.address?.district &&
               <p className="text-red-500 text-sm">{input.errors.address.district.message}</p>}
         </div>
-        <div className="space-y-2 md:col-span-4">
+        <div className="space-y-2 md:col-span-3">
           <Label htmlFor="address.city">Cidade</Label>
           <Input id="address.city" {...input.formRegister('address.city')} />
           {input.errors.address?.city && <p className="text-red-500 text-sm">{input.errors.address.city.message}</p>}
         </div>
-        <div className="space-y-2 md:col-span-2">
-          <Label htmlFor="address.state">Estado (UF)</Label>
-          <Input id="address.state" {...input.formRegister('address.state')} />
+        <div className="space-y-2 md:col-span-3">
+          <Label htmlFor="address.city">Estado</Label>
+          <Controller
+              control={input.control}
+              name="address.state"
+              render={({field}) => (
+                  <StateCombobox
+                      value={field.value}
+                      onValueChange={field.onChange}
+                  />
+              )}
+          />
           {input.errors.address?.state && <p className="text-red-500 text-sm">{input.errors.address.state.message}</p>}
         </div>
       </fieldset>

@@ -1,7 +1,7 @@
 'use client';
 
 import {Dispatch, SetStateAction, useState} from 'react';
-import {AlertTriangle, Edit, RefreshCw, SearchX, Users} from 'lucide-react';
+import {AlertTriangle, Edit, RefreshCw, SearchX, Users, PlayCircle} from 'lucide-react';
 import {UpdateSession, useSession} from 'next-auth/react';
 
 import {UserRoles} from "@/domain/enums/user.roles";
@@ -9,7 +9,7 @@ import {UserRoles} from "@/domain/enums/user.roles";
 import {CreateClubResponseDto} from '@/contracts/api/club-management.dto';
 import {useMyClubQuery} from '@/application/use-cases/use-club-management.use-case';
 
-import {Card, CardHeader, CardTitle, CardDescription} from '@/components/ui/card';
+import {Card, CardHeader, CardTitle, CardDescription, CardContent} from '@/components/ui/card';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Alert, AlertTitle, AlertDescription} from '@/components/ui/alert';
 import {Dialog, DialogTrigger} from '@/components/ui/dialog';
@@ -22,6 +22,7 @@ import {CreateClubForm} from './_components/create-club-form';
 import {NonDirectorCTA} from './_components/non-director-cta';
 import {MembersTable} from "./_components/members-table";
 import {EditClubForm} from './_components/edit-club-form';
+import {TrainingsTab} from './_components/trainings-tab';
 
 export default function ClubManagementPage() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -32,15 +33,19 @@ export default function ClubManagementPage() {
   const accessToken = session.data?.accessToken ?? '';
   const query = useMyClubQuery(accessToken);
   const myClub = query.data ?? null;
+
   if (query.isLoading || query.isRefetching || !session.data) {
     return <div className="space-y-4"><Skeleton className="h-48 w-full" /><Skeleton className="h-64 w-full" /></div>;
   }
-  if (!isClubDirector) return <NonDirectorCTA onCreateClubClick={() => setView('create-form')} />;
-  if (query.error) return ErrorAlert({message : query.error.message, retry : query.refetch, isRetrying : query.isRefetching});
+
   if (view === 'create-form') {
     return <CreateClubForm onSuccess={(response) => handleClubCreationSuccess(response, setView, session.update)} />;
   }
+
+  if (query.error) return ErrorAlert({message : query.error.message, retry : query.refetch, isRetrying : query.isRefetching});
+  if (!isClubDirector) return <NonDirectorCTA onCreateClubClick={() => setView('create-form')} />;
   if (!myClub) return NotFoundAlert({message : 'Clube não encontrado.', retry : query.refetch, isRetrying : query.isRefetching});
+
   return (
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <div className="space-y-8">
@@ -51,37 +56,61 @@ export default function ClubManagementPage() {
                 <CardDescription>{myClub.city}, {myClub.state}</CardDescription>
               </div>
               <div className="flex-1 flex flex-col gap-2">
-                <Button variant="outline" size="sm" onClick={() => setActiveTab('members')}><Users
-                    className="mr-2 h-4w-4/5 flex justify-start " />Total de Membros : {myClub.corum}
+                <Button variant="outline" size="sm" onClick={() => setActiveTab('members')}>
+                  <Users className="mr-2 h-4 w-4" />
+                  Total de Membros: {myClub.corum}
                 </Button>
                 <DialogTrigger asChild>
-                  <Button variant="outline" size="sm"><Edit
-                      className="mr-2 h-4  w-4/5" /> Editar Clube</Button>
+                  <Button variant="outline" size="sm">
+                    <Edit className="mr-2 h-4 w-4" />
+                    Editar Clube
+                  </Button>
                 </DialogTrigger>
               </div>
             </CardHeader>
           </Card>
+
           <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="dashboard">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="flex w-full overflow-x-auto flex-nowrap gap-1 justify-start no-scrollbar">
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="requests">Solicitações</TabsTrigger>
               <TabsTrigger value="members">Membros</TabsTrigger>
+              <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
             </TabsList>
+
             <TabsContent value="dashboard" className="mt-6">
               <ClubDashboardTab />
             </TabsContent>
+
             <TabsContent value="requests" className="mt-6">
               <PendingRequestsTable clubId={myClub.id} accessToken={accessToken} />
             </TabsContent>
+
             <TabsContent value="members" className="mt-6">
               <MembersTable />
+            </TabsContent>
+
+            <TabsContent value="trainings" className="mt-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <PlayCircle className="mr-3 h-6 w-6" />
+                    Treinamentos
+                  </CardTitle>
+                  <CardDescription>
+                    Acesse os vídeos de treinamento disponíveis para seu clube.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <TrainingsTab />
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>
         <EditClubForm club={myClub} onSuccess={() => setIsEditModalOpen(false)} />
       </Dialog>
   );
-
 }
 
 async function handleClubCreationSuccess(
@@ -96,7 +125,7 @@ async function handleClubCreationSuccess(
   setView('overview');
 }
 
- function ErrorAlert(input: {message: string; retry: () => void, isRetrying: boolean}) {
+function ErrorAlert(input: {message: string; retry: () => void, isRetrying: boolean}) {
   return <Alert variant="destructive" className='flex flex-col gap-6 justify-center items-center'>
     <div className='flex gap-2 items-center'>
       <AlertTriangle className="h-4 w-4" /> <AlertTitle>Algo Deu Errado</AlertTitle>
@@ -112,7 +141,7 @@ async function handleClubCreationSuccess(
   </Alert>;
 }
 
- function NotFoundAlert(input: {message: string, retry: () => void, isRetrying: boolean}) {
+function NotFoundAlert(input: {message: string, retry: () => void, isRetrying: boolean}) {
   return (<Alert variant="default" className='flex flex-col gap-6 justify-center items-center'>
     <div className='flex gap-2 items-center'>
       <SearchX className="h-4 w-4" /> <AlertTitle> Não Encontrado</AlertTitle>

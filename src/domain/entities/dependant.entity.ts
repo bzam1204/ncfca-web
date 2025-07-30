@@ -26,6 +26,17 @@ export class Dependant {
     this.birthdate = props.birthdate;
     this.relationship = props.relationship;
   }
+
+  public getAge(): number {
+    const birthDate = new Date(this.birthdate);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
 }
 
 interface CreateDependantProps {

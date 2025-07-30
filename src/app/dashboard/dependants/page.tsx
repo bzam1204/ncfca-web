@@ -1,7 +1,6 @@
 'use client';
 
 import {useState} from 'react';
-import {useQuery} from '@tanstack/react-query';
 import {useSession} from 'next-auth/react';
 import {
   useAddDependantMutation,
@@ -26,15 +25,7 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {DeleteConfirmationDialog} from "@/app/_components/delete-confirmation-dialog";
 import {DependantForm, DependantFormInput} from "@/app/dashboard/dependants/_components/dependant-form";
 import {Dependant} from "@/domain/entities/dependant.entity";
-
-async function getDependants(accessToken: string): Promise<Dependant[]> {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  if (!accessToken) throw new Error("Token de autenticação não encontrado.");
-
-  const res = await fetch(`${BACKEND_URL}/dependants`, {headers : {'Authorization' : `Bearer ${accessToken}`}});
-  if (!res.ok) throw new Error('Falha ao carregar a lista de dependentes.');
-  return res.json();
-}
+import {useGetDependants} from "@/hooks/use-get-dependants";
 
 const TableSkeleton = () => (
     <div className="space-y-2 mt-4">
@@ -57,12 +48,8 @@ export default function DependantsPage() {
 
   const isMutating = isAdding || isUpdating || isDeleting;
 
-  const {data : dependants = [], isLoading, error} = useQuery({
-    queryKey : ['dependants'],
-    queryFn : () => getDependants(accessToken),
-    enabled : !!accessToken,
-  });
-
+  const {data, isLoading, error} = useGetDependants();
+  const dependants = data ?? [] as Dependant[];
   const handleFormSubmit = (data: DependantFormInput) => {
     const onSuccess = () => {
       notify.success(`Dependente ${selectedDependant ? 'atualizado' : 'adicionado'} com sucesso!`);
@@ -99,17 +86,6 @@ export default function DependantsPage() {
     setIsDeleteConfirmOpen(true);
   };
   const closeDeleteConfirm = () => setIsDeleteConfirmOpen(false);
-
-  const calculateAge = (birthdate: Date) => {
-    const birthDate = new Date(birthdate);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
 
   return (
       <>
@@ -148,7 +124,7 @@ export default function DependantsPage() {
                             <TableRow key={d.id}>
                               <TableCell className="font-medium">{`${d.firstName} ${d.lastName}`}</TableCell>
                               <TableCell className="hidden md:table-cell">{d.email || 'N/A'}</TableCell>
-                              <TableCell className="hidden md:table-cell">{calculateAge(d.birthdate)}</TableCell>
+                              <TableCell className="hidden md:table-cell">{d.getAge()}</TableCell>
                               <TableCell>
                                 <DropdownMenu>
                                   <DropdownMenuTrigger asChild>

@@ -24,7 +24,7 @@ export function NonDirectorCTA({onCreateClubClick}: NonDirectorCTAProps) {
                   e comece a gerenciar matrículas e membros hoje mesmo.
                 </CardDescription>
               </div>
-              <Button onClick={onCreateClubClick} size="lg" className="flex-shrink-0">
+              <Button onClick={onCreateClubClick} size="lg" className="flex-shrink-0 cursor-pointer">
                 Criar Meu Clube Agora
               </Button>
             </div>
