@@ -1,4 +1,3 @@
-// src/app/dashboard/club-management/_components/pending-request-details-dialog.tsx
 'use client';
 
 import {useState} from 'react';
@@ -21,7 +20,6 @@ import {
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';

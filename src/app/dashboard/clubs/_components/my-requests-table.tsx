@@ -32,7 +32,7 @@ export function MyRequestsTable() {
   }
   return (
       <>
-        <div className="border rounded-md">
+        <div className="border rounded-md max-h-[300px] overflow-y-auto scrollbar">
           <Table>
             <TableHeader>
               <TableRow>

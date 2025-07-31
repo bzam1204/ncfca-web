@@ -41,9 +41,11 @@ async function refreshAccessToken(refreshToken: string): Promise<BackendTokens |
 }
 
 export const authConfig = {
-  pages : {
-    signIn : '/login',
-  },
+  trustHost : true,
+  secret : process.env.NEXTAUTH_SECRET,
+  session : {strategy : 'jwt'},
+  debug : process.env.NODE_ENV === 'development',
+  pages : {signIn : '/login'},
   providers : [
     Credentials({
       async authorize(credentials) {

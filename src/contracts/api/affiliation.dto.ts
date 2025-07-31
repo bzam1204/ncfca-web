@@ -1,8 +1,6 @@
-// src/contracts/api/family.dto.ts
-
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
+import {Dependant} from "@/domain/entities/dependant.entity";
 import {UserDto} from "@/contracts/api/user.dto";
-import {DependantResponseDto} from "@/contracts/api/dependant.dto";
 
 export interface AffiliationDto {
   id: string;
@@ -11,5 +9,5 @@ export interface AffiliationDto {
   affiliatedAt: string | null;
   affiliationExpiresAt: string | null;
   holder: UserDto;
-  dependants: DependantResponseDto[];
+  dependants: Dependant[];
 }

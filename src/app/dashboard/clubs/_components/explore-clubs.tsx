@@ -17,7 +17,7 @@ import {Input} from "@/components/ui/input";
 
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 
-export function ExploreClubs(props: ClubSearchTableProps) {
+export function ExploreClubs() {
   const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
   const [searchQuery, setSearchQuery] = useState<SearchClubsQuery>(initialQuery);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
@@ -82,9 +82,6 @@ export function ExploreClubs(props: ClubSearchTableProps) {
   )
 }
 
-interface ClubSearchTableProps {
-  accessToken: string;
-}
 
 const initialQuery: SearchClubsQuery = {
   name : '',

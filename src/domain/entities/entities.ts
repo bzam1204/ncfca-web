@@ -1,13 +1,10 @@
-import {Sex} from "@/domain/enums/sex.enum";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 import {PaymentStatus} from "@/domain/enums/payment-status.enum";
 import {PaymentMethod} from "@/domain/enums/payment-method.enum";
 import {MembershipStatus} from "@/domain/enums/membership-status.enum";
 import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
-import {DependantRelationship} from "@/domain/enums/dependant-relationship.enum";
 import {TransactionContextType} from "@/domain/enums/transaction-context-type.enum";
-import {DependantType} from "@/domain/enums/dependant-type.enum";
 import {Dependant} from "@/domain/entities/dependant.entity";
 
 export interface Address {

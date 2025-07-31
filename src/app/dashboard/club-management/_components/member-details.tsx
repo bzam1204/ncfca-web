@@ -2,7 +2,6 @@
 
 import {ClubMemberDto} from "@/contracts/api/club-member.dto";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from "@/components/ui/dialog";
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import {User, Phone, Mail, Shield, MessageSquare, VenusAndMars, CalendarIcon} from "lucide-react";
 import {Sex} from "@/domain/enums/sex.enum";
@@ -12,7 +11,6 @@ interface MemberDetailsDialogProps {
   onOpenChange: (isOpen: boolean) => void;
 }
 
-// Subcomponente para evitar repetição
 const InfoField = ({icon : Icon, label, value}: {
   icon: React.ElementType,
   label: string,
@@ -31,7 +29,6 @@ export function MemberDetailsDialog({member, onOpenChange}: MemberDetailsDialogP
   const handleWhatsAppClick = () => {
     if (!member.holder.phone) return;
     const sanitizedPhone = member.holder.phone.replace(/\D/g, '');
-    // Assumindo DDI 55 para o Brasil. Isso deve ser parametrizado no futuro.
     window.open(`https://wa.me/55${sanitizedPhone}`, '_blank', 'noopener,noreferrer');
   };
 

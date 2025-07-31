@@ -12,6 +12,7 @@ import {Button} from "@/components/ui/button";
 import {UserActions} from "./_components/user-actions";
 import {UserDto} from "@/contracts/api/user.dto";
 import {Badge} from "@/components/ui/badge";
+import {Dependant} from "@/domain/entities/dependant.entity";
 
 async function getUserFamily(userId: string, accessToken: string): Promise<{
   user: UserDto;
@@ -23,7 +24,9 @@ async function getUserFamily(userId: string, accessToken: string): Promise<{
     cache : 'no-store',
   });
   if (!res.ok) return null;
-  return res.json();
+  const response = await res.json();
+  const family = {...response.family, dependants : response.family.dependants.map((d: Dependant) => new Dependant(d))};
+  return {user : response.user, family};
 }
 
 const InfoField = ({label, value}: {label: string; value: React.ReactNode}) => (
@@ -33,15 +36,6 @@ const InfoField = ({label, value}: {label: string; value: React.ReactNode}) => (
     </div>
 );
 
-const calculateAge = (birthdate: string) => {
-  const birthDate = new Date(birthdate);
-  const today = new Date();
-  let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-  return age;
-};
-
 export default async function UserDetailsPage({params}: {params: Promise<{userId: string}>}) {
   const {userId} = await params;
   const session = await auth();
@@ -49,7 +43,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
     redirect('/login');
   }
   const familyData = await getUserFamily(userId, session.accessToken);
-  if (!familyData || !familyData) { 
+  if (!familyData || !familyData) {
     return (
         <div className="space-y-4">
           <Button variant="outline" asChild>
@@ -127,7 +121,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
                   {dependants.length > 0 ? dependants.map(dep => (
                       <TableRow key={dep.id}>
                         <TableCell>{dep.firstName} {dep.lastName}</TableCell>
-                        <TableCell>{calculateAge(dep.birthdate)} anos</TableCell>
+                        <TableCell>{dep.getAge()} anos</TableCell>
                         <TableCell>{DependantRelationshipTranslation[dep.relationship]}</TableCell>
                       </TableRow>
                   )) : (

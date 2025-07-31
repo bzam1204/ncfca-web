@@ -43,7 +43,7 @@ export function TrainingsTab() {
   }
 
   return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 lg gap-6">
         {trainingsQuery.data.map((training) => {
           return (
               <Card key={training.id} className="flex flex-col p-4 justify-between">
@@ -53,7 +53,7 @@ export function TrainingsTab() {
                     {training.title}
                   </CardTitle>
                   <CardDescription className="text-sm">
-                    {training.description}
+                    {training.description.substring(0, 150)}...
                   </CardDescription>
                 </CardHeader>
 

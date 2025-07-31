@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from "react";
-import {AlertTriangle, Plus, PlayCircle, Edit, Trash2, ExternalLink} from "lucide-react";
+import {AlertTriangle, Plus, PlayCircle, Edit, Trash2} from "lucide-react";
 
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Button} from "@/components/ui/button";
@@ -108,11 +108,11 @@ export default function AdminTrainingsPage() {
               <PlayCircle className="h-4 w-4" />
               <AlertTitle>Nenhum Treinamento Cadastrado</AlertTitle>
               <AlertDescription>
-                Comece criando seu primeiro treinamento clicando no botão "Novo Treinamento".
+                Comece criando seu primeiro treinamento clicando no botão `&quot;`Novo Treinamento`&quot;`.
               </AlertDescription>
             </Alert>
         ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {trainingsQuery.data?.map((training) => (
                   <Card key={training.id} className="flex flex-col">
                     <CardHeader>
@@ -139,7 +139,7 @@ export default function AdminTrainingsPage() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Confirmar Exclusão</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Tem certeza que deseja excluir o treinamento "{training.title}"?
+                                  Tem certeza que deseja excluir o treinamento `&quot;`{training.title}`&quot;`?
                                   Esta ação não pode ser desfeita.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
@@ -156,7 +156,7 @@ export default function AdminTrainingsPage() {
                           </AlertDialog>
                         </div>
                       </CardTitle>
-                      <CardDescription>{training.description}</CardDescription>
+                      <CardDescription>{training.description.substring(0,150)}...</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1 flex flex-col justify-end">
                         {training.getYouTubeVideoId() ? (

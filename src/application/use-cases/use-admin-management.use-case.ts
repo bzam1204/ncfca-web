@@ -8,6 +8,7 @@ import {FamilyResponseDto} from '@/contracts/api/family.dto';
 import {EnrollmentRequestDto} from '@/contracts/api/enrollment.dto';
 import {ManageUserRoleDto} from "@/contracts/api/admin.dto";
 import {AffiliationDto} from "@/contracts/api/affiliation.dto";
+import {Dependant} from "@/domain/entities/dependant.entity";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -101,21 +102,18 @@ export const useAdminListClubs = (accessToken: string) => useQuery({
   enabled : !!accessToken,
 });
 
-// Hook para UC11: Listar todas as matrículas
 export const useAdminListAllEnrollments = (accessToken: string) => useQuery({
   queryKey : ['admin-enrollments'],
   queryFn : () => listAllEnrollments(accessToken),
   enabled : !!accessToken,
 });
 
-// Hook para UC12: Listar Afiliações
 export const useAdminListAffiliations = (accessToken: string) => useQuery({
   queryKey : ['admin-affiliations'],
-  queryFn : () => listAffiliations(accessToken),
+  queryFn : () => listAffiliations(accessToken).then(res => res.map(p => ({...p, dependants : p.dependants.map(d => new Dependant(d))}))),
   enabled : !!accessToken,
 });
 
-// Hook para UC13 (Parcial): Mutação para Gerenciar Perfis
 export const useAdminManageUserRoleMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({

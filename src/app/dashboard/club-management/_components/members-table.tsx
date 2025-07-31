@@ -1,4 +1,3 @@
-// src/app/dashboard/club-management/_components/members-table.tsx
 'use client';
 
 import {useState} from 'react';
@@ -30,8 +29,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {ClubMemberDto} from "@/contracts/api/club-member.dto";
 import {MemberDetailsDialog} from './member-details';
-import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
-import {Sex} from "@/domain/enums/sex.enum";
 
 export function MembersTable() {
   const {data : session} = useSession();

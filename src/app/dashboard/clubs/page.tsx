@@ -29,7 +29,7 @@ export default async function ClubsPage() {
             <MyRequestsTable />
           </CardContent>
         </Card>
-        <ExploreClubs accessToken={session.accessToken} />
+        <ExploreClubs />
       </div>
   );
 }

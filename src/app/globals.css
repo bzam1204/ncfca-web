@@ -130,3 +130,9 @@
     -ms-overflow-style: none; /* IE e Edge legado (precaução) */
     scrollbar-width: none; /* Firefox */
 }
+
+.scrollbar {
+   scrollbar-width: thin;
+    scrollbar-color: var(--color-ring) transparent;
+    cursor: pointer;
+}
