@@ -5,7 +5,7 @@ export class GetTrainings {
   constructor(private trainingGateway: TrainingGateway) {
   }
 
-  async execute(): Promise<TrainingDto[]> {
-    return await this.trainingGateway.getTrainings();
+  async execute(token: string): Promise<TrainingDto[]> {
+    return await this.trainingGateway.getTrainings(token);
   }
 }

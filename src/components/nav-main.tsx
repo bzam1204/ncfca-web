@@ -8,12 +8,13 @@ import {
   SidebarMenu,
   SidebarGroup,
   SidebarMenuItem,
-  SidebarMenuButton,
+  SidebarMenuButton, useSidebar,
 } from "@/components/ui/sidebar";
 import {AppConfig} from "@/infraestructure/config";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {useSession} from "next-auth/react";
 import {useRef} from "react";
+import Link from "next/link";
 
 export function NavMain(props: NavMainProps) {
   const path = usePathname();
@@ -38,19 +39,22 @@ function NavItem(input: NavItemProps) {
   const {title, Icon, url, path} = input;
   const hasBeenRendered = useRef<boolean>(false);
   const session = useSession();
+  const {isMobile, setOpenMobile} = useSidebar();
   const element = () => (
-      <SidebarMenuItem>
+      <SidebarMenuItem onClick={() => isMobile && setOpenMobile(false)}>
         {hasBeenRendered.current ? null : hasBeenRendered.current = true}
         <SidebarMenuButton
             className={'active:bg-gray-200 transition ' + (isHrefCurrentPath(url, path) ? 'bg-gray-950 text-white hover:bg-gray-700 hover:text-white active:bg-gray-400 active:text-white' : '')}
             asChild>
-          <a href={url} className="font-medium">
+          <Link href={url} className="font-medium">
             <Icon />
             {title}
-          </a>
+          </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
   );
+  if (isMobile) {
+  }
   if (hasBeenRendered.current) return element();
   if (!input.requiredRoles) return element();
   if (session.status !== 'authenticated') return null;

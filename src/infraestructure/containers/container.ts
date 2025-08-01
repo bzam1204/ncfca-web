@@ -68,6 +68,7 @@ function deleteTraining(accessToken: string): DeleteTraining {
 export const Inject = {
   GetMyEnrollmentRequests : getMyEnrollmentRequests,
   RequestEnrollment : requestEnrollment,
+  TrainingGateway : trainingGateway,
   CreateTraining : createTraining,
   UpdateTraining : updateTraining,
   DeleteTraining : deleteTraining,

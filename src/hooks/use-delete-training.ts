@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {deleteTrainingAction} from "@/infraestructure/actions/delete-training.action";
-import {QueryKeys} from "@/infraestructure/query-keys";
+import {QueryKeys} from "@/infraestructure/cache/query-keys";
 
 export function useDeleteTraining() {
   const queryClient = useQueryClient();

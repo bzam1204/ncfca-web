@@ -2,6 +2,7 @@
 
 import {Dispatch, SetStateAction, useState} from "react";
 import {AlertTriangle, Search, University} from "lucide-react";
+import {useSession} from "next-auth/react";
 
 import {ClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
 
@@ -15,6 +16,8 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 
+import {Inject} from "@/infraestructure/containers/container";
+
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 
 export function ExploreClubs() {
@@ -22,7 +25,10 @@ export function ExploreClubs() {
   const [searchQuery, setSearchQuery] = useState<SearchClubsQuery>(initialQuery);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const query = {...debouncedSearchQuery, page : searchQuery.page};
-  const clubQuery = useSearchClubs(query);
+  const session = useSession();
+  const clubQuery = useSearchClubs(query, Inject.SearchClubs(session.data?.accessToken ?? ''));
+  const clubs = clubQuery.data?.data ?? [];
+  if (!session.data?.accessToken) return <Skeleton className="flex items-center justify-center h-screen"></Skeleton>
   return (
       <Card>
         <CardHeader>
@@ -45,7 +51,7 @@ export function ExploreClubs() {
           {!clubQuery.isLoading && !clubQuery.error && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {clubQuery.data?.data.map((club: ClubDto) => (
+                  {clubs.map((club: ClubDto) => (
                       <Card key={club.id} className="flex flex-col justify-between">
                         <CardHeader>
                           <University className="mb-2 h-8 w-8 text-muted-foreground" />
@@ -60,7 +66,7 @@ export function ExploreClubs() {
                       </Card>
                   ))}
                 </div>
-                {clubQuery.data?.data.length === 0 && (
+                {clubs.length === 0 && (
                     <Alert className="mt-6"><AlertTriangle
                         className="h-4 w-4" /><AlertTitle>Nenhum Clube Encontrado</AlertTitle><AlertDescription>Nenhum clube corresponde à sua busca. Tente outros termos.</AlertDescription></Alert>
                 )}
@@ -81,7 +87,6 @@ export function ExploreClubs() {
 
   )
 }
-
 
 const initialQuery: SearchClubsQuery = {
   name : '',
