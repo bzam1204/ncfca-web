@@ -58,10 +58,11 @@ export function ClubDashboardTab() {
     if (isLoading) return {gender : [], age : []};
     const gender = {MALE : 0, FEMALE : 0};
     const age = {'15-17' : 0, '12-14' : 0, '9-11' : 0};
-
+console.log(members);
     members.forEach(member => {
       if (member.sex === 'MALE' || member.sex === 'FEMALE') gender[member.sex]++;
       const memberAge = calculateAge(member.birthDate);
+      console.log({memberAge});
       if (memberAge >= 15 && memberAge <= 17) age['15-17']++;
       else if (memberAge >= 12 && memberAge <= 14) age['12-14']++;
       else if (memberAge >= 9 && memberAge <= 11) age['9-11']++;
@@ -90,7 +91,6 @@ export function ClubDashboardTab() {
     const avgResponseTimeMs = resolvedRequests.length > 0 ? totalResponseTime / resolvedRequests.length : 0;
     const avgResponseTimeDays = (avgResponseTimeMs / (1000 * 60 * 60 * 24)).toFixed(1) + ' dias';
 
-    // Process data for trend chart
     const trendData = Array.from({length : period}, (_, i) => {
       const d = new Date();
       d.setMonth(d.getMonth() - i);

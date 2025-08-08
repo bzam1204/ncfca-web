@@ -1,5 +1,7 @@
-import {TrainingGateway} from "@/application/gateways/training/training.gateway";
 import {TrainingDto, CreateTrainingDto, UpdateTrainingDto} from "@/contracts/api/training.dto";
+
+import {TrainingGateway} from "@/application/gateways/training/training.gateway";
+
 import {NextKeys} from "@/infraestructure/cache/next-keys";
 
 export class TrainingGatewayApi implements TrainingGateway {

@@ -1,6 +1,7 @@
 'use server';
 
 import {CreateTrainingDto, TrainingDto} from "@/contracts/api/training.dto";
+
 import {Inject} from "@/infraestructure/containers/container";
 import {auth} from "@/infraestructure/auth";
 

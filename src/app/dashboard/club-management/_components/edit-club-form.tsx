@@ -20,6 +20,7 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
+import {Club} from "@/domain/entities/entities";
 
 const editClubSchema = z.object({
   name: z.string().min(3, 'O nome deve ter pelo menos 3 caracteres.'),
@@ -30,7 +31,7 @@ const editClubSchema = z.object({
 type EditClubInput = z.infer<typeof editClubSchema>;
 
 interface EditClubFormProps {
-  club: ClubDto;
+  club: Club;
   onSuccess: () => void;
 }
 
@@ -43,8 +44,8 @@ export function EditClubForm({ club, onSuccess }: EditClubFormProps) {
     resolver: zodResolver(editClubSchema),
     defaultValues: {
       name: club.name,
-      city: club.city,
-      state: club.state,
+      city: club.address.city,
+      state: club.address.state,
     }
   });
 

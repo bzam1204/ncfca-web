@@ -18,21 +18,15 @@ import {
 
 import {useDeleteTraining} from "@/hooks/use-delete-training";
 import {useGetTrainings} from "@/hooks/use-get-trainings";
+
 import {EditTrainingDialog} from "@/app/(admin)/admin/dashboard/trainings/_components/edit-training-dialog";
 
 export function TrainingsList() {
-  const trainingsQuery = useGetTrainings();
+  const query = useGetTrainings();
   const deleteTrainingMutation = useDeleteTraining();
-  const handleDelete = async (id: string) => {
-    try {
-      await deleteTrainingMutation.mutateAsync(id);
-    } catch (error) {
-      console.error('Erro ao deletar treinamento:', error);
-    }
-  };
-  if (trainingsQuery.isLoading) return <Fallback />;
+  if (query.isLoading) return <Fallback />;
   return (<>
-        {trainingsQuery.trainings.length === 0 ? (
+        {query.trainings.length === 0 ? (
             <Alert>
               <PlayCircle className="h-4 w-4" />
               <AlertTitle>Nenhum Treinamento Cadastrado</AlertTitle>
@@ -42,7 +36,7 @@ export function TrainingsList() {
             </Alert>
         ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-              {trainingsQuery.trainings.map((training) => (
+              {query.trainings.map((training) => (
                   <Card key={training.id} className="flex flex-col">
                     <CardHeader>
                       <CardTitle className="flex items-center justify-between">

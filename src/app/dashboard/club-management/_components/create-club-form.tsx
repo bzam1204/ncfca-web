@@ -1,89 +1,109 @@
-// src/app/dashboard/club-management/_components/create-club-form.tsx
 'use client';
 
 import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
-import {useSession} from 'next-auth/react';
-import {useCreateClubMutation} from '@/application/use-cases/use-club-management.use-case';
-import {useNotify} from '@/hooks/use-notify';
-import {CreateClubResponseDto} from '@/contracts/api/club-management.dto';
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Loader2} from 'lucide-react';
-import {StateCombobox} from "@/app/_components/state-combobox";
+import {StateCombobox} from '@/app/_components/state-combobox';
+import {useCreateClubRequest} from "@/hooks/use-create-club-request";
 
-const createClubSchema = z.object({
-  name : z.string().min(3, 'O nome deve ter pelo menos 3 caracteres.'),
+const addressSchema = z.object({
+  street : z.string().min(3, 'A rua é obrigatória.'),
+  number : z.string().min(1, 'O número é obrigatório.'),
+  district : z.string().min(3, 'O bairro é obrigatório.'),
   city : z.string().min(3, 'A cidade é obrigatória.'),
-  state : z.string().length(2, 'O estado deve ser uma sigla de 2 letras (UF).').toUpperCase(),
+  state : z.string().length(2, 'UF inválida.'),
+  zipCode : z.string().length(8, 'CEP inválido. Use 8 dígitos.'),
 });
 
-type CreateClubInput = z.infer<typeof createClubSchema>;
+const createClubRequestSchema = z.object({
+  clubName : z.string().min(3, 'O nome deve ter pelo menos 3 caracteres.'),
+  maxMembers : z.number().min(1, 'Mínimo de 1 membro.'),
+  address : addressSchema,
+});
 
-interface CreateClubFormProps {
-  onSuccess: (response: CreateClubResponseDto) => void;
-}
+type CreateClubRequestInput = z.infer<typeof createClubRequestSchema>;
 
-export function CreateClubForm({onSuccess}: CreateClubFormProps) {
-  const {data : session} = useSession();
-  const {mutate : createClub, isPending} = useCreateClubMutation();
-  const notify = useNotify();
-
-  const {register, handleSubmit, formState : {errors}, control} = useForm<CreateClubInput>({
-    resolver : zodResolver(createClubSchema),
+export function CreateClubForm() {
+  const {mutate : createRequest, isPending} = useCreateClubRequest();
+  const {register, handleSubmit, formState : {errors}, control} = useForm<CreateClubRequestInput>({
+    resolver : zodResolver(createClubRequestSchema),
   });
 
-  const onSubmit = (data: CreateClubInput) => {
-    if (!session?.accessToken) {
-      notify.error("Sessão inválida.");
-      return;
-    }
-    createClub({data, accessToken : session.accessToken}, {
-      onSuccess : onSuccess,
-      onError : (error) => notify.error(error.message),
-    });
-  };
+  const onSubmit = (data: CreateClubRequestInput) => createRequest(data);
 
   return (
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Crie o Seu Clube</CardTitle>
-          <CardDescription>Preencha os dados abaixo para registrar seu clube na plataforma NCFCA.</CardDescription>
+          <CardTitle>Solicite a Criação do Seu Clube</CardTitle>
+          <CardDescription>Preencha os dados abaixo. Sua solicitação será analisada por um administrador.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Nome do Clube</Label>
-              <Input id="name" {...register('name')} />
-              {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+              <Label htmlFor="clubName">Nome do Clube</Label>
+              <Input id="clubName" {...register('clubName')} />
+              {errors.clubName && <p className="text-red-500 text-sm">{errors.clubName.message}</p>}
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="city">Cidade</Label>
-                <Input id="city" {...register('city')} />
-                {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="state">Estado (UF)</Label>
-                <Controller
-                    control={control}
-                    name="state"
-                    render={({field}) => (
-                        <StateCombobox
-                            value={field.value}
-                            onValueChange={field.onChange}
-                        />
-                    )}
-                />
-                {errors.state && <p className="text-red-500 text-sm">{errors.state.message}</p>}
-              </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="maxMembers">Número Máximo de Membros</Label>
+              <Input id="maxMembers" type="number" {...register('maxMembers', {valueAsNumber : true})} />
+              {errors.maxMembers && <p className="text-red-500 text-sm">{errors.maxMembers.message}</p>}
             </div>
-            <Button type="submit" className="w-full" disabled={isPending}>
+
+            <fieldset className="space-y-4 border p-4 rounded-md">
+              <legend className="text-sm font-medium px-1">Endereço do Clube</legend>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2 md:col-span-2">
+                  <Label htmlFor="street">Rua / Avenida</Label>
+                  <Input id="street" {...register('address.street')} />
+                  {errors.address?.street && <p className="text-red-500 text-sm">{errors.address.street.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="number">Número</Label>
+                  <Input id="number" {...register('address.number')} />
+                  {errors.address?.number && <p className="text-red-500 text-sm">{errors.address.number.message}</p>}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="district">Bairro</Label>
+                  <Input id="district" {...register('address.district')} />
+                  {errors.address?.district && <p className="text-red-500 text-sm">{errors.address.district.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="city">Cidade</Label>
+                  <Input id="city" {...register('address.city')} />
+                  {errors.address?.city && <p className="text-red-500 text-sm">{errors.address.city.message}</p>}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="state">Estado (UF)</Label>
+                  <Controller control={control} name="address.state" render={({field}) => (
+                      <StateCombobox value={field.value} onValueChange={field.onChange} />
+                  )} />
+                  {errors.address?.state && <p className="text-red-500 text-sm">{errors.address.state.message}</p>}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="zipCode">CEP (somente números)</Label>
+                  <Input id="zipCode" {...register('address.zipCode')} />
+                  {errors.address?.zipCode && <p className="text-red-500 text-sm">{errors.address.zipCode.message}</p>}
+                </div>
+              </div>
+            </fieldset>
+
+            <Button type="submit" className="w-full cursor-pointer" disabled={isPending}>
               {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Criar e Gerenciar Meu Clube
+              Enviar Solicitação
             </Button>
           </form>
         </CardContent>

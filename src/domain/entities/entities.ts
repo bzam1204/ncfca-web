@@ -41,10 +41,12 @@ export interface Family {
 export interface Club {
   id: string;
   name: string;
-  city: string;
-  state: string;
+  corum: number;
   status: boolean;
-  ownerId: string;
+  address: Address;
+  createdAt: Date;
+  maxMembers?: number;
+  principalId: string;
 }
 
 export interface ClubMembership {

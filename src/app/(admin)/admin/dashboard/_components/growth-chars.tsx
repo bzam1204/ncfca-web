@@ -64,7 +64,6 @@ export function GrowthCharts({ affiliations, clubs, enrollments }: GrowthChartsP
           <CardDescription>Novas afiliações, clubes e matrículas nos últimos 12 meses.</CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          {/* CORREÇÃO APLICADA AQUI */}
           <ChartContainer config={chartConfig} className="w-full h-[350px]">
             <AreaChart accessibilityLayer data={monthlyData}>
               <defs>
