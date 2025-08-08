@@ -8,6 +8,6 @@ import {auth} from "@/infraestructure/auth";
 export async function searchClubsAction(query: SearchClubsQuery): Promise<PaginatedClubDto> {
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
-  const searchClubs = Inject.SearchClubs(session.accessToken);
-  return searchClubs.execute(query);
+  const gateway = Inject.ClubGateway(session.accessToken);
+  return await gateway.search(query);
 }

@@ -9,7 +9,7 @@ import {UserRoles} from "@/domain/enums/user.roles";
 
 import {auth} from "@/infraestructure/auth";
 
-import {MyRequestsTable} from "@/app/dashboard/clubs/_components/my-requests-table";
+import {MyEnrollmentRequestsTable} from "@/app/dashboard/clubs/_components/my-enrollment-requests-table";
 import {ExploreClubs} from "@/app/dashboard/clubs/_components/explore-clubs";
 
 export default async function ClubsPage() {
@@ -26,7 +26,7 @@ export default async function ClubsPage() {
             <CardDescription>Acompanhe o status das suas solicitações de matrícula.</CardDescription>
           </CardHeader>
           <CardContent className="max-w-screen">
-            <MyRequestsTable />
+            <MyEnrollmentRequestsTable />
           </CardContent>
         </Card>
         <ExploreClubs />

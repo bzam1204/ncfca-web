@@ -1,61 +1,23 @@
-'use client';
+import {Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "@/components/recharts";
 
-import { useMemo } from "react";
-import { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from "recharts";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { FamilyResponseDto } from "@/contracts/api/family.dto";
-import { ClubDto } from "@/contracts/api/club.dto";
-import { EnrollmentRequestDto } from "@/contracts/api/enrollment.dto";
-import { ChartConfig, ChartContainer, ChartTooltipContent } from "@/components/ui/chart";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {ChartConfig, ChartContainer, ChartTooltipContent} from "@/components/ui/chart";
 
-interface GrowthChartsProps {
-  affiliations: FamilyResponseDto[];
-  clubs: ClubDto[];
-  enrollments: EnrollmentRequestDto[];
-}
+import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
+import {Club, Family} from "@/domain/entities/entities";
 
-const chartConfig = {
-  Afiliações: { label: "Afiliações", color: "var(--chart-5)" },
-  Clubes: { label: "Clubes", color: "magenta" },
-  Matrículas: { label: "Matrículas", color: "#00dfbe" },
-} satisfies ChartConfig;
+import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
+import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollments.action";
+import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
 
-export function GrowthCharts({ affiliations, clubs, enrollments }: GrowthChartsProps) {
-  const monthlyData = useMemo(() => {
-    const data: { [key: string]: { Afiliações: number; Clubes: number; Matrículas: number } } = {};
-    const now = new Date();
+export async function GrowthCharts() {
+  const [affiliations, clubs, enrollments] = await Promise.all([
+    getAffiliationsAction(),
+    getEnrollmentsAction(),
+    getClubsAction(),
+  ]);
 
-    for (let i = 11; i >= 0; i--) {
-      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-      const month = d.toLocaleString('pt-BR', { month: 'short', year: '2-digit' });
-      data[month] = { Afiliações: 0, Clubes: 0, Matrículas: 0 };
-    }
-
-    affiliations.forEach(f => {
-      if (f.affiliatedAt) {
-        const date = new Date(f.affiliatedAt);
-        const month = date.toLocaleString('pt-BR', { month: 'short', year: '2-digit' });
-        if (data[month]) data[month].Afiliações++;
-      }
-    });
-
-    clubs.forEach(c => {
-      // O openapi.json especifica 'createdAt' para o ClubDto
-      if ((c as any).createdAt) {
-        const date = new Date((c as any).createdAt);
-        const month = date.toLocaleString('pt-BR', { month: 'short', year: '2-digit' });
-        if (data[month]) data[month].Clubes++;
-      }
-    });
-
-    enrollments.forEach(e => {
-      const date = new Date(e.requestedAt);
-      const month = date.toLocaleString('pt-BR', { month: 'short', year: '2-digit' });
-      if (data[month]) data[month].Matrículas++;
-    });
-
-    return Object.keys(data).map(month => ({ month, ...data[month] }));
-  }, [affiliations, clubs, enrollments]);
+  const monthlyData = processMonthlyData(affiliations, clubs, enrollments);
 
   return (
       <Card>
@@ -94,3 +56,43 @@ export function GrowthCharts({ affiliations, clubs, enrollments }: GrowthChartsP
       </Card>
   );
 }
+
+const chartConfig = {
+  Afiliações : {label : "Afiliações", color : "var(--chart-5)"},
+  Clubes : {label : "Clubes", color : "magenta"},
+  Matrículas : {label : "Matrículas", color : "#00dfbe"},
+} satisfies ChartConfig;
+
+// A lógica de cálculo foi extraída para uma função pura no servidor.
+const processMonthlyData = (affiliations: Family[], clubs: Club[], enrollments: EnrollmentRequest[]) => {
+  const data: {[key: string]: {Afiliações: number; Clubes: number; Matrículas: number}} = {};
+  const now = new Date();
+
+  // Inicializa os últimos 12 meses
+  for (let i = 11 ; i >= 0 ; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const month = d.toLocaleString('pt-BR', {month : 'short', year : '2-digit'}).replace('.', '');
+    data[month] = {Afiliações : 0, Clubes : 0, Matrículas : 0};
+  }
+
+  affiliations.forEach(f => {
+    if (f.affiliatedAt) {
+      const month = new Date(f.affiliatedAt).toLocaleString('pt-BR', {month : 'short', year : '2-digit'}).replace('.', '');
+      if (data[month]) data[month].Afiliações++;
+    }
+  });
+
+  clubs.forEach(c => {
+    if ((c as any).createdAt) {
+      const month = new Date((c as any).createdAt).toLocaleString('pt-BR', {month : 'short', year : '2-digit'}).replace('.', '');
+      if (data[month]) data[month].Clubes++;
+    }
+  });
+
+  enrollments.forEach(e => {
+    const month = new Date(e.requestedAt).toLocaleString('pt-BR', {month : 'short', year : '2-digit'}).replace('.', '');
+    if (data[month]) data[month].Matrículas++;
+  });
+
+  return Object.keys(data).map(month => ({month, ...data[month]}));
+};

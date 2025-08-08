@@ -22,6 +22,8 @@ import {QueryServiceApi} from "@/infraestructure/services/query.service.api";
 import {AdminGatewayApi} from "@/infraestructure/gateways/admin.gateway.api";
 import {ClubGatewayApi} from "@/infraestructure/gateways/club.gateway.api";
 import {ClubQueryApi} from "@/infraestructure/queries/club.query.api";
+import {FamilyGateway} from "@/application/gateways/family.gateway";
+import {FamilyGatewayApi} from "@/infraestructure/gateways/family.gateway.api";
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
@@ -51,42 +53,16 @@ function clubGateway(accessToken: string): ClubGateway {
   return new ClubGatewayApi(apiUrl, accessToken);
 }
 
-function searchClubs(accessToken: string): SearchClubs {
-  return new SearchClubs(queryService(accessToken))
-}
-
-function getDependants(accessToken: string): GetDependants {
-  return new GetDependants(queryService(accessToken));
-}
-
-function requestEnrollment(accessToken: string): RequestEnrollment {
-  return new RequestEnrollment(enrollmentGateway(accessToken));
-}
-
-function getMyEnrollmentRequests(accessToken: string): GetMyEnrollmentRequests {
-  return new GetMyEnrollmentRequests(enrollmentGateway(accessToken));
-}
-
-function getTrainings(accessToken: string): GetTrainings {
-  return new GetTrainings(trainingGateway(accessToken));
-}
-
-function createTraining(accessToken: string): CreateTraining {
-  return new CreateTraining(trainingGateway(accessToken));
-}
-
-function updateTraining(accessToken: string): UpdateTraining {
-  return new UpdateTraining(trainingGateway(accessToken));
-}
-
-function deleteTraining(accessToken: string): DeleteTraining {
-  return new DeleteTraining(trainingGateway(accessToken));
+function familyGateway(accessToken: string): FamilyGateway {
+  return new FamilyGatewayApi(apiUrl, accessToken);
 }
 
 export const Inject = {
+  QueryService : queryService,
   ClubRequestGateway : clubRequestGateway,
-  RequestEnrollment : requestEnrollment,
+  EnrollmentGateway : enrollmentGateway,
   TrainingGateway : trainingGateway,
+  FamilyGateway : familyGateway,
   AdminGateway : adminGateway,
   ClubGateway : clubGateway,
 }

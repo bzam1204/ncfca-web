@@ -16,8 +16,6 @@ import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 
-import {Inject} from "@/infraestructure/containers/container";
-
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 
 export function ExploreClubs() {
@@ -26,7 +24,7 @@ export function ExploreClubs() {
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const query = {...debouncedSearchQuery, page : searchQuery.page};
   const session = useSession();
-  const clubQuery = useSearchClubs(query, Inject.SearchClubs(session.data?.accessToken ?? ''));
+  const clubQuery = useSearchClubs(query);
   const clubs = clubQuery.data?.data ?? [];
   if (!session.data?.accessToken) return <Skeleton className="flex items-center justify-center h-screen"></Skeleton>
   return (

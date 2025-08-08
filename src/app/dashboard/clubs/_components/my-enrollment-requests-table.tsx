@@ -16,7 +16,7 @@ import {enrollmentStatusTranslation, getEnrollmentStatusVariant} from "@/infraes
 
 import {RequestDetailsDialog} from "@/app/_components/request-details-dialog";
 
-export function MyRequestsTable() {
+export function MyEnrollmentRequestsTable() {
   const [selectedRequest, setSelectedRequest] = useState<MyEnrollmentRequestsDto | null>(null);
   const {isLoading, error, ...query} = useGetMyEnrollmentRequests();
   const requests = query.data ?? [];
