@@ -16,10 +16,11 @@ import {UserDto} from "@/contracts/api/user.dto";
 import {useNotify} from "@/hooks/use-notify";
 
 import {ChangePrincipalDialog} from "@/app/(admin)/admin/dashboard/clubs/_components/change-principal-dialog";
+import {Club, User} from "@/domain/entities/entities";
 
 interface ClubsTableProps {
-  initialClubs: ClubDto[];
-  allUsers: UserDto[];
+  initialClubs: Club[];
+  allUsers: User[];
 }
 
 export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {

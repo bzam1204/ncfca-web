@@ -1,33 +1,12 @@
-// src/app/(admin)/admin/dashboard/clubs/page.tsx
-import { auth } from "@/infraestructure/auth";
-import { redirect } from "next/navigation";
-import { UserRoles } from "@/domain/enums/user.roles";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Suspense } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ClubDto } from "@/contracts/api/club.dto";
-import { UserDto } from "@/contracts/api/user.dto";
-import {ClubsTable} from "@/app/(admin)/admin/dashboard/clubs/_components/clubs-table";
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-async function getClubs(accessToken: string): Promise<ClubDto[]> {
-  const res = await fetch(`${BACKEND_URL}/admin/clubs`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` },
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Falha ao buscar a lista de clubes.');
-  return res.json();
-}
-
-async function getUsers(accessToken: string): Promise<UserDto[]> {
-  const res = await fetch(`${BACKEND_URL}/admin/users`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` },
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Falha ao buscar a lista de usuários.');
-  return res.json();
-}
+import {auth} from "@/infraestructure/auth";
+import {redirect} from "next/navigation";
+import {UserRoles} from "@/domain/enums/user.roles";
+import {Suspense} from "react";
+import {Skeleton} from "@/components/ui/skeleton";
+import {ClubsPageClient} from "./_components/clubs-page-client";
+import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
+import {getUsersAction} from "@/infraestructure/actions/admin/get-users.action";
+import {getPendingClubRequestsAction} from "@/infraestructure/actions/admin/get-pending-club-requests.action";
 
 export default async function AdminClubsPage() {
   const session = await auth();
@@ -35,22 +14,33 @@ export default async function AdminClubsPage() {
     redirect('/login');
   }
 
-  const clubs = await getClubs(session.accessToken);
-  const users = await getUsers(session.accessToken);
+  return (
+      <div className="space-y-4">
+        <div className="space-y-1">
+          <h1 className="text-3xl font-bold">Gerenciamento de Clubes</h1>
+          <p className="text-muted-foreground">
+            Gerencie solicitações de novos clubes e visualize os clubes existentes.
+          </p>
+        </div>
+        <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
+          <ClubsPageLoader />
+        </Suspense>
+      </div>
+  );
+}
+
+async function ClubsPageLoader() {
+  const [clubs, users, pendingRequests] = await Promise.all([
+    getClubsAction(),
+    getUsersAction(),
+    getPendingClubRequestsAction(),
+  ]);
 
   return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Gerenciamento de Clubes</CardTitle>
-          <CardDescription>
-            Visualize e gerencie todos os clubes registrados na plataforma.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Suspense fallback={<Skeleton className="h-64 w-full" />}>
-            <ClubsTable initialClubs={clubs} allUsers={users} />
-          </Suspense>
-        </CardContent>
-      </Card>
+      <ClubsPageClient
+          initialClubs={clubs}
+          initialUsers={users}
+          initialPendingRequests={pendingRequests}
+      />
   );
 }

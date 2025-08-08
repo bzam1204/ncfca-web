@@ -3,6 +3,12 @@ export const NextKeys = {
   family : {
     myDependants : "family.my_dependants"
   },
+  clubRequests : {
+    myRequests : "my_club_requests",
+    admin : {
+      pending : "admin_pending_club_requests"
+    }
+  },
   admin : {
     affiliations : "admin.affiliations",
     enrollments : "admin.enrollments",

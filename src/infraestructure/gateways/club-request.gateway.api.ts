@@ -1,5 +1,7 @@
 import {CreateClubRequestDto, ClubRequestStatusDto} from "@/contracts/api/club-management.dto";
 import {ClubRequestGateway} from "@/application/gateways/club-request.gateway";
+import {NextKeys} from "@/infraestructure/cache/next-keys";
+import {RejectRequestDto} from "@/contracts/api/club-request.dto";
 
 export class ClubRequestGatewayApi implements ClubRequestGateway {
   constructor(
@@ -31,5 +33,37 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
     });
     if (!res.ok) throw new Error('Falha ao buscar solicitações de clube.');
     return res.json();
+  }
+
+  async getPending(): Promise<ClubRequestStatusDto[]> {
+    const res = await fetch(`${this.baseUrl}/club-requests/pending`, {
+      headers : {'Authorization' : `Bearer ${this.accessToken}`},
+      next : {
+        revalidate : 300, // Cache de 5 minutos para solicitações pendentes
+        tags : [NextKeys.clubRequests.admin.pending],
+      },
+    });
+    if (!res.ok) throw new Error('Falha ao buscar solicitações de clube pendentes.');
+    return res.json();
+  }
+
+  async approve(requestId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/club-requests/${requestId}/approve`, {
+      method : 'POST',
+      headers : {'Authorization' : `Bearer ${this.accessToken}`},
+    });
+    if (!res.ok) throw new Error('Falha ao aprovar solicitação de clube.');
+  }
+
+  async reject(requestId: string, dto: RejectRequestDto): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/club-requests/${requestId}/reject`, {
+      method : 'POST',
+      headers : {
+        'Authorization' : `Bearer ${this.accessToken}`,
+        'Content-Type' : 'application/json'
+      },
+      body : JSON.stringify(dto)
+    });
+    if (!res.ok) throw new Error('Falha ao rejeitar solicitação de clube.');
   }
 }
