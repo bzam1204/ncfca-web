@@ -10,7 +10,7 @@ import {QueryKeys} from '@/infraestructure/cache/query-keys';
 export function useMyClub(initialData: Club | null) {
   return useQuery({
     queryKey : QueryKeys.clubs.myClub(),
-    queryFn : () => getMyClubAction(),
+    queryFn : getMyClubAction,
     initialData : initialData,
   });
 }

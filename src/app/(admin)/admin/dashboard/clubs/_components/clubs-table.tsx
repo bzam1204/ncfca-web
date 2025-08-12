@@ -10,9 +10,6 @@ import {Button} from "@/components/ui/button";
 
 import {useAdminChangeClubDirectorMutation, useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
 
-import {ClubDto} from "@/contracts/api/club.dto";
-import {UserDto} from "@/contracts/api/user.dto";
-
 import {useNotify} from "@/hooks/use-notify";
 
 import {ChangePrincipalDialog} from "@/app/(admin)/admin/dashboard/clubs/_components/change-principal-dialog";
@@ -31,7 +28,7 @@ export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
   const {data : clubs = initialClubs} = useAdminListClubs(accessToken);
   const {mutate : changeDirector, isPending} = useAdminChangeClubDirectorMutation();
 
-  const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
 
   const findDirectorName = (principalId: string) => {
     const director = allUsers.find(user => user.id === principalId);

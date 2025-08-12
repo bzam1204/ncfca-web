@@ -3,12 +3,12 @@
 
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {UserDto} from '@/contracts/api/user.dto'; // Supondo que este DTO exista
-import {ClubDto} from '@/contracts/api/club.dto';
 import {FamilyResponseDto} from '@/contracts/api/family.dto';
 import {EnrollmentRequestDto} from '@/contracts/api/enrollment.dto';
 import {ManageUserRoleDto} from "@/contracts/api/admin.dto";
 import {AffiliationDto} from "@/contracts/api/affiliation.dto";
 import {Dependant} from "@/domain/entities/dependant.entity";
+import {Club} from "@/domain/entities/entities";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
@@ -33,7 +33,7 @@ const viewUserFamily = async (userId: string, accessToken: string): Promise<Fami
 };
 
 // UC11: Listar todos os clubes
-const listClubs = async (accessToken: string): Promise<ClubDto[]> => {
+const listClubs = async (accessToken: string): Promise<Club[]> => {
   const res = await fetch(`${BACKEND_URL}/admin/clubs`, {
     headers : {'Authorization' : `Bearer ${accessToken}`},
   });

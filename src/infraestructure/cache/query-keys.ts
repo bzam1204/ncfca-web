@@ -1,4 +1,5 @@
 import {SearchClubsQuery} from "@/contracts/api/club.dto";
+import {SearchUsersQuery} from "@/contracts/api/user.dto";
 
 export const QueryKeys = {
   enrollments : {
@@ -11,13 +12,22 @@ export const QueryKeys = {
   clubs : {
     all : ['clubs'] as const,
     search : (query: SearchClubsQuery) => [...QueryKeys.clubs.all, 'search', query] as const,
-    myClub : () => [...QueryKeys.clubs.all, 'my-club'] as const, // Chave para o clube do diretor
+    myClub : () => [...QueryKeys.clubs.all, 'my-club'] as const,
+    details : (clubId: string) => [...QueryKeys.clubs.all, 'details', clubId] as const,
   },
   clubRequests : {
-    all : ['club-requests'] as const,
+    all : ['clubRequests'] as const,
+    admin : {
+      pending : () => [...QueryKeys.clubRequests.all, 'admin', 'pending'] as const,
+    },
     myRequests : () => [...QueryKeys.clubRequests.all, 'my-requests'] as const,
   },
   trainings : {
     all : ['trainings'] as const,
+  },
+  admin : {
+    clubs : () => ['admin', 'clubs'] as const,
+    clubById : (clubId: string) => ['admin', 'clubs', clubId] as const,
+    searchUsers : (query: SearchUsersQuery) => ['admin', 'users', 'search', query] as const,
   }
 }

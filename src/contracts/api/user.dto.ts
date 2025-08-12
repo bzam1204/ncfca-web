@@ -20,3 +20,29 @@ export interface AddressDto {
   state: string;
   city: string;
 }
+
+/**
+ * @description Query parameters for searching users.
+ */
+export interface SearchUsersQuery {
+  name?: string;
+  email?: string;
+  cpf?: string;
+  rg?: string;
+  role?: UserRoles;
+  page?: number;
+  limit?: number;
+}
+
+/**
+ * @description Paginated response for user search.
+ */
+export interface PaginatedUsersDto {
+  data: UserDto[];
+  meta: {
+    totalPages: number;
+    total: number;
+    limit: number;
+    page: number;
+  };
+}

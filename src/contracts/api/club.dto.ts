@@ -4,22 +4,14 @@
  * @description Schema para os dados de um clube.
  * @source openapi.json - components.schemas.ClubDto
  */
-export interface ClubDto {
-  id: string;
-  name: string;
-  city: string;
-  state: string;
-  corum: number;
-  createdAt: Date;
-  principalId: string;
-}
+import {Club} from "@/domain/entities/entities";
 
 /**
  * @description Schema para a resposta paginada do endpoint GET /club.
  * @source openapi.json - components.schemas.PaginatedClubDto
  */
 export interface PaginatedClubDto {
-  data: ClubDto[];
+  data: Club[];
   meta: {
     totalPages: number;
     total: number;

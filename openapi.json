@@ -15,6 +15,20 @@
         ]
       }
     },
+    "/approve-club-creation": {
+      "post": {
+        "operationId": "AppController_sendoToQueue",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
     "/auth/login": {
       "post": {
         "description": "Autentica um usuário com email e senha, retornando tokens de acesso e de atualização em caso de sucesso.",
@@ -191,41 +205,6 @@
         "tags": [
           "Clubes"
         ]
-      },
-      "post": {
-        "operationId": "ClubController_createClub",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateClubInputDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Clube criado com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateClubOutputDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Cria um novo clube",
-        "tags": [
-          "Clubes"
-        ]
       }
     },
     "/club/{id}": {
@@ -269,18 +248,34 @@
     },
     "/admin/users": {
       "get": {
-        "operationId": "AdminController_listUsers",
-        "parameters": [],
+        "operationId": "AdminController_searchUsers",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Container para os filtros de busca de usuários.",
+            "schema": {
+              "$ref": "#/components/schemas/SearchUsersFilterDto"
+            }
+          },
+          {
+            "name": "pagination",
+            "required": false,
+            "in": "query",
+            "description": "Container para os parâmetros de paginação.",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationDto"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de usuários retornada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/UserDto"
-                  }
+                  "$ref": "#/components/schemas/PaginatedUserDto"
                 }
               }
             }
@@ -291,7 +286,7 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Lista todos os usuários do sistema",
+        "summary": "Busca usuários do sistema com paginação e filtros",
         "tags": [
           "Admin"
         ]
@@ -1094,19 +1089,10 @@
         ]
       }
     },
-    "/club-management/{clubId}": {
+    "/club-management": {
       "patch": {
         "operationId": "ClubManagementController_updateClub",
-        "parameters": [
-          {
-            "name": "clubId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "requestBody": {
           "required": true,
           "content": {
@@ -1328,6 +1314,164 @@
           "Gestão de Clube (Diretor)"
         ]
       }
+    },
+    "/club-requests": {
+      "post": {
+        "operationId": "ClubRequestController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateClubRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Solicitação recebida e pendente de aprovação."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Submete uma nova solicitação para criação de clube (Usuário)",
+        "tags": [
+          "Clubes - Solicitações"
+        ]
+      }
+    },
+    "/club-requests/my-requests": {
+      "get": {
+        "operationId": "ClubRequestController_getMyRequests",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClubRequestStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista as solicitações de clube do usuário autenticado (Usuário)",
+        "tags": [
+          "Clubes - Solicitações"
+        ]
+      }
+    },
+    "/club-requests/pending": {
+      "get": {
+        "operationId": "ClubRequestController_listPending",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClubRequestStatusDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista todas as solicitações de clube pendentes (Admin)",
+        "tags": [
+          "Clubes - Solicitações"
+        ]
+      }
+    },
+    "/club-requests/{id}/approve": {
+      "post": {
+        "operationId": "ClubRequestController_approve",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Solicitação aprovada."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Aprova uma solicitação de clube (Admin)",
+        "tags": [
+          "Clubes - Solicitações"
+        ]
+      }
+    },
+    "/club-requests/{id}/reject": {
+      "post": {
+        "operationId": "ClubRequestController_reject",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Solicitação rejeitada."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Rejeita uma solicitação de clube (Admin)",
+        "tags": [
+          "Clubes - Solicitações"
+        ]
+      }
     }
   },
   "info": {
@@ -1508,6 +1652,54 @@
           }
         }
       },
+      "AddressDto": {
+        "type": "object",
+        "properties": {
+          "zipCode": {
+            "type": "string",
+            "description": "CEP do endereço (somente números).",
+            "example": "69301080"
+          },
+          "street": {
+            "type": "string",
+            "description": "Nome da rua/avenida.",
+            "example": "Avenida Capitão Ene Garcez"
+          },
+          "number": {
+            "type": "string",
+            "description": "Número do imóvel.",
+            "example": "432"
+          },
+          "district": {
+            "type": "string",
+            "description": "Bairro.",
+            "example": "Centro"
+          },
+          "city": {
+            "type": "string",
+            "description": "Cidade.",
+            "example": "Boa Vista"
+          },
+          "state": {
+            "type": "string",
+            "description": "UF do estado (2 caracteres).",
+            "example": "RR"
+          },
+          "complement": {
+            "type": "string",
+            "description": "Complemento do endereço (opcional).",
+            "example": "Apto 101"
+          }
+        },
+        "required": [
+          "zipCode",
+          "street",
+          "number",
+          "district",
+          "city",
+          "state"
+        ]
+      },
       "ClubDto": {
         "type": "object",
         "properties": {
@@ -1522,15 +1714,19 @@
             "description": "Nome oficial do clube.",
             "example": "Clube de Debate Oradores do Amanhã"
           },
-          "city": {
-            "type": "string",
-            "description": "Cidade de localização do clube.",
-            "example": "Brasília"
+          "maxMembers": {
+            "type": "number",
+            "description": "Número máximo de membros para o clube.",
+            "example": 50,
+            "minimum": 2
           },
-          "state": {
-            "type": "string",
-            "description": "Estado de localização do clube.",
-            "example": "DF"
+          "address": {
+            "description": "Endereço de localização do clube.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
           },
           "principalId": {
             "type": "string",
@@ -1553,8 +1749,7 @@
         "required": [
           "id",
           "name",
-          "city",
-          "state",
+          "address",
           "principalId",
           "createdAt",
           "corum"
@@ -1605,121 +1800,40 @@
           "meta"
         ]
       },
-      "CreateClubInputDto": {
+      "SearchUsersFilterDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
-            "description": "Nome do novo clube.",
-            "example": "Clube de Debate Oradores do Amanhã",
-            "minLength": 3
+            "description": "Filtra usuários pelo nome (busca parcial, case-insensitive).",
+            "example": "João Silva"
           },
-          "city": {
+          "email": {
             "type": "string",
-            "description": "Cidade onde o clube está localizado.",
-            "example": "Brasília",
-            "minLength": 3
+            "description": "Filtra usuários pelo email (busca parcial, case-insensitive).",
+            "example": "joao@example.com"
           },
-          "state": {
+          "cpf": {
             "type": "string",
-            "description": "Estado onde o clube está localizado.",
-            "example": "DF",
-            "maxLength": 2,
-            "minLength": 2
+            "description": "Filtra usuários pelo CPF (busca exata).",
+            "example": "12345678901"
+          },
+          "rg": {
+            "type": "string",
+            "description": "Filtra usuários pelo RG (busca exata).",
+            "example": "123456"
+          },
+          "role": {
+            "type": "string",
+            "description": "Filtra usuários pela função/role.",
+            "enum": [
+              "DONO_DE_CLUBE",
+              "SEM_FUNCAO",
+              "ADMIN"
+            ],
+            "example": "SEM_FUNCAO"
           }
-        },
-        "required": [
-          "name",
-          "city",
-          "state"
-        ]
-      },
-      "CreateClubOutputDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Nome do novo clube.",
-            "example": "Clube de Debate Oradores do Amanhã",
-            "minLength": 3
-          },
-          "city": {
-            "type": "string",
-            "description": "Cidade onde o clube está localizado.",
-            "example": "Brasília",
-            "minLength": 3
-          },
-          "state": {
-            "type": "string",
-            "description": "Estado onde o clube está localizado.",
-            "example": "DF",
-            "maxLength": 2,
-            "minLength": 2
-          },
-          "accessToken": {
-            "type": "string",
-            "description": "Novo token de acesso JWT."
-          },
-          "refreshToken": {
-            "type": "string",
-            "description": "Novo token de atualização."
-          }
-        },
-        "required": [
-          "name",
-          "city",
-          "state",
-          "accessToken",
-          "refreshToken"
-        ]
-      },
-      "AddressDto": {
-        "type": "object",
-        "properties": {
-          "zipCode": {
-            "type": "string",
-            "description": "CEP do endereço (somente números).",
-            "example": "69301080"
-          },
-          "street": {
-            "type": "string",
-            "description": "Nome da rua/avenida.",
-            "example": "Avenida Capitão Ene Garcez"
-          },
-          "number": {
-            "type": "string",
-            "description": "Número do imóvel.",
-            "example": "432"
-          },
-          "district": {
-            "type": "string",
-            "description": "Bairro.",
-            "example": "Centro"
-          },
-          "city": {
-            "type": "string",
-            "description": "Cidade.",
-            "example": "Boa Vista"
-          },
-          "state": {
-            "type": "string",
-            "description": "UF do estado (2 caracteres).",
-            "example": "RR"
-          },
-          "complement": {
-            "type": "string",
-            "description": "Complemento do endereço (opcional).",
-            "example": "Apto 101"
-          }
-        },
-        "required": [
-          "zipCode",
-          "street",
-          "number",
-          "district",
-          "city",
-          "state"
-        ]
+        }
       },
       "UserDto": {
         "type": "object",
@@ -1793,6 +1907,24 @@
           "rg",
           "roles",
           "address"
+        ]
+      },
+      "PaginatedUserDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserDto"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
         ]
       },
       "DependantsListItemView": {
@@ -2727,23 +2859,20 @@
             "example": "Clube de Oratória Avançada",
             "minLength": 3
           },
-          "city": {
-            "type": "string",
-            "description": "Nova cidade de localização do clube.",
-            "example": "São Paulo",
-            "minLength": 3
+          "maxMembers": {
+            "type": "number",
+            "description": "Número máximo de membros permitidos no clube. Deve ser um número inteiro. Ex: 100",
+            "example": "30"
           },
-          "state": {
-            "type": "string",
-            "description": "Estado onde o clube está localizado.",
-            "example": "DF",
-            "maxLength": 2,
-            "minLength": 2
+          "address": {
+            "description": "Endereço completo do responsável.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
           }
-        },
-        "required": [
-          "state"
-        ]
+        }
       },
       "ListPendingEnrollmentsOutputDto": {
         "type": "object",
@@ -2902,6 +3031,90 @@
           "memberSince",
           "birthDate",
           "sex"
+        ]
+      },
+      "ClubRequestApprovedEvent": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateClubRequestDto": {
+        "type": "object",
+        "properties": {
+          "clubName": {
+            "type": "string",
+            "description": "Nome desejado para o novo clube.",
+            "example": "Clube de Debate Principia",
+            "minLength": 3
+          },
+          "maxMembers": {
+            "type": "number",
+            "description": "Número máximo de membros para o clube.",
+            "example": 50,
+            "minimum": 1
+          },
+          "address": {
+            "description": "Endereço de localização do clube.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AddressDto"
+              }
+            ]
+          }
+        },
+        "required": [
+          "clubName",
+          "maxMembers",
+          "address"
+        ]
+      },
+      "ClubRequestStatusDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clubName": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "APPROVED",
+              "REJECTED"
+            ]
+          },
+          "requestedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "resolvedAt": {
+            "type": "object"
+          },
+          "rejectionReason": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "id",
+          "clubName",
+          "status",
+          "requestedAt"
+        ]
+      },
+      "RejectRequestDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Motivo detalhado para a rejeição. Mínimo de 10 caracteres.",
+            "example": "A documentação fornecida está incompleta.",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "reason"
         ]
       }
     }

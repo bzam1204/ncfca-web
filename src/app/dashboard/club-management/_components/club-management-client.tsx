@@ -14,6 +14,7 @@ import {PendingRequestsTable} from './pending-requests-table';
 import {TrainingsTab} from './trainings-tab';
 import {useMyClub} from "@/hooks/use-my-club";
 import {Club} from "@/domain/entities/entities";
+import {ClubDashboardTab} from "@/app/dashboard/club-management/_components/club-dashboard-tab";
 
 export function ClubManagementClient({initialClub}: {initialClub: Club | null}) {
   const {data : session} = useSession(); // Apenas para pegar o accessToken
@@ -57,11 +58,15 @@ export function ClubManagementClient({initialClub}: {initialClub: Club | null}) 
           </Card>
 
           <Tabs defaultValue="dashboard" className="w-full">
-            <TabsList>
+            <TabsList className="flex w-full overflow-x-auto flex-nowrap gap-1 justify-start no-scrollbar">
+              <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="requests">Solicitações</TabsTrigger>
               <TabsTrigger value="members">Membros</TabsTrigger>
               <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
             </TabsList>
+            <TabsContent value="dashboard" className="mt-6">
+              <ClubDashboardTab />
+            </TabsContent>
             <TabsContent value="requests" className="mt-6">
               <PendingRequestsTable clubId={myClub.id} accessToken={session?.accessToken ?? ''} />
             </TabsContent>

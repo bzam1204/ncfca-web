@@ -9,10 +9,14 @@ export const NextKeys = {
       pending : "admin_pending_club_requests"
     }
   },
+  clubs : {
+    details : (clubId: string) => `clubs.details.${clubId}`
+  },
   admin : {
     affiliations : "admin.affiliations",
     enrollments : "admin.enrollments",
     clubs : "admin.clubs",
     users : "admin.users",
+    searchUsers : "admin.search_users",
   }
 }

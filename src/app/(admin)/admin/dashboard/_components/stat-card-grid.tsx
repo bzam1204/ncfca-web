@@ -10,12 +10,7 @@ import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollme
 import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
 
 export async function StatCardGrid() {
-  const [allAffiliations, allClubs, allEnrollments] = await Promise.all([
-    getAffiliationsAction(),
-    getEnrollmentsAction(),
-    getClubsAction(),
-  ]);
-
+  const [allAffiliations, allEnrollments, allClubs] = await Promise.all([getAffiliationsAction(), getEnrollmentsAction(), getClubsAction(),]);
   const activeAffiliations = allAffiliations.filter(f => f.status === FamilyStatus.AFFILIATED).length;
   const pendingRenewals = allAffiliations.filter(f => f.status === FamilyStatus.EXPIRED).length;
   const totalClubs = allClubs.length;

@@ -4,8 +4,7 @@ import {UserRoles} from "@/domain/enums/user.roles";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {ClubsPageClient} from "./_components/clubs-page-client";
-import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
-import {getUsersAction} from "@/infraestructure/actions/admin/get-users.action";
+
 import {getPendingClubRequestsAction} from "@/infraestructure/actions/admin/get-pending-club-requests.action";
 
 export default async function AdminClubsPage() {
@@ -13,7 +12,6 @@ export default async function AdminClubsPage() {
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     redirect('/login');
   }
-
   return (
       <div className="space-y-4">
         <div className="space-y-1">
@@ -30,17 +28,6 @@ export default async function AdminClubsPage() {
 }
 
 async function ClubsPageLoader() {
-  const [clubs, users, pendingRequests] = await Promise.all([
-    getClubsAction(),
-    getUsersAction(),
-    getPendingClubRequestsAction(),
-  ]);
-
-  return (
-      <ClubsPageClient
-          initialClubs={clubs}
-          initialUsers={users}
-          initialPendingRequests={pendingRequests}
-      />
-  );
+  const pendingRequests = await getPendingClubRequestsAction();
+  return <ClubsPageClient initialPendingRequests={pendingRequests} />;
 }

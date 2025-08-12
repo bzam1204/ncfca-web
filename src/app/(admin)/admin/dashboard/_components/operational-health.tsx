@@ -4,12 +4,13 @@ import { getEnrollmentsAction } from "@/infraestructure/actions/admin/get-enroll
 import { getClubsAction } from "@/infraestructure/actions/admin/get-clubs.action";
 import { getUsersAction } from "@/infraestructure/actions/admin/get-users.action";
 import { EnrollmentStatus } from "@/domain/enums/enrollment-status.enum";
+import {searchUsersAction} from "@/infraestructure/actions/admin/search-users.action";
 
 export async function OperationalHealth() {
   const [enrollments, clubs, users] = await Promise.all([
     getEnrollmentsAction(),
     getClubsAction(),
-    getUsersAction(),
+    searchUsersAction({limit:9999999}),
   ]);
 
   const pendingMap = new Map<string, number>();
@@ -22,10 +23,10 @@ export async function OperationalHealth() {
   const pendingByClub = Array.from(pendingMap.entries())
       .map(([clubId, count]) => {
         const club = clubs.find(c => c.id === clubId);
-        const director = users.find(u => u.id === club?.principalId);
+        const principal = users.data.find(u => u.id === club?.principalId);
         return {
           clubName: club?.name || 'Clube Desconhecido',
-          directorName: director ? `${director.firstName} ${director.lastName}` : 'N/A',
+          principalName: principal ? `${principal.firstName} ${principal.lastName}` : 'N/A',
           pendingCount: count,
         };
       })
@@ -51,7 +52,7 @@ export async function OperationalHealth() {
               {pendingByClub.length > 0 ? pendingByClub.map(item => (
                   <TableRow key={item.clubName}>
                     <TableCell className="font-medium">{item.clubName}</TableCell>
-                    <TableCell>{item.directorName}</TableCell>
+                    <TableCell>{item.principalName}</TableCell>
                     <TableCell className="text-right font-bold text-lg">{item.pendingCount}</TableCell>
                   </TableRow>
               )) : (

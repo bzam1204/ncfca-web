@@ -19,10 +19,9 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       },
       body : JSON.stringify(dto)
     });
-
-    // 202 Accepted é sucesso para esta rota.
     if (!res.ok && res.status !== 202) {
-      throw new Error('Falha ao solicitar criação de clube.');
+      const body = await res.json()
+      throw new Error(body.message);
     }
   }
 
@@ -31,7 +30,10 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       headers : {'Authorization' : `Bearer ${this.accessToken}`},
       cache : 'no-store', // Dados de solicitações devem ser sempre frescos.
     });
-    if (!res.ok) throw new Error('Falha ao buscar solicitações de clube.');
+    if (!res.ok) {
+      const body = await res.json()
+      throw new Error(body.message);
+    }
     return res.json();
   }
 
@@ -43,7 +45,10 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
         tags : [NextKeys.clubRequests.admin.pending],
       },
     });
-    if (!res.ok) throw new Error('Falha ao buscar solicitações de clube pendentes.');
+    if (!res.ok) {
+      const body = await res.json()
+      throw new Error(body.message);
+    }
     return res.json();
   }
 
@@ -52,7 +57,10 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       method : 'POST',
       headers : {'Authorization' : `Bearer ${this.accessToken}`},
     });
-    if (!res.ok) throw new Error('Falha ao aprovar solicitação de clube.');
+    if (!res.ok) {
+      const body = await res.json()
+      throw new Error(body.message);
+    }
   }
 
   async reject(requestId: string, dto: RejectRequestDto): Promise<void> {
@@ -64,6 +72,9 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       },
       body : JSON.stringify(dto)
     });
-    if (!res.ok) throw new Error('Falha ao rejeitar solicitação de clube.');
+    if (!res.ok) {
+      const body = await res.json()
+      throw new Error(body.message);
+    }
   }
 }
