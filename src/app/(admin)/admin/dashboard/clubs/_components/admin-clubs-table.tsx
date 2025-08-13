@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSearchClubs } from '@/hooks/use-search-clubs';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -22,6 +23,7 @@ const initialQuery: Omit<SearchClubsQuery, 'limit'> = {
 };
 
 export function AdminClubsTable() {
+  const router = useRouter();
   const [filters, setFilters] = useState(initialQuery);
   const debouncedFilters = useDebounce({ name: filters.name, city: filters.city, state: filters.state }, 500);
 
@@ -39,6 +41,10 @@ export function AdminClubsTable() {
 
   const handlePageChange = (newPage: number) => {
     setFilters(prev => ({ ...prev, page: newPage }));
+  };
+
+  const handleRowClick = (clubId: string) => {
+    router.push(`/admin/dashboard/clubs/${clubId}`);
   };
 
   return (
@@ -85,11 +91,13 @@ export function AdminClubsTable() {
                     ))
                 ) : paginatedData?.data && paginatedData.data.length > 0 ? (
                     paginatedData.data.map(club => (
-                        <TableRow key={club.id} className="cursor-pointer hover:bg-muted/50">
-                          <TableCell className="font-medium">
-                            <Link href={`/admin/dashboard/clubs/${club.id}`} className="hover:underline">
-                              {club.name}
-                            </Link>
+                        <TableRow 
+                          key={club.id} 
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={() => handleRowClick(club.id)}
+                        >
+                          <TableCell className="font-medium hover:underline">
+                            {club.name}
                           </TableCell>
                           <TableCell>{club.address.city}, {club.address.state}</TableCell>
                           <TableCell>{club.corum}</TableCell>

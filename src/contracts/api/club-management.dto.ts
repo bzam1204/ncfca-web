@@ -1,7 +1,7 @@
 // src/contracts/api/club-management.dto.ts
 
-import {ClubDto} from "@/contracts/api/club.dto";
 import {AddressDto} from "@/contracts/api/user.dto";
+import {Club} from "@/domain/entities/entities";
 
 export interface CreateClubDto {
   name: string;
@@ -18,7 +18,10 @@ export interface CreateClubRequestDto {
 export interface ClubRequestStatusDto {
   id: string;
   clubName: string;
+  maxMembers?: number;
   status: 'PENDING' | 'APPROVED' | 'REJECTED';
+  address: AddressDto;
+  requesterId: string;
   requestedAt: string;
   resolvedAt?: any;
   rejectionReason?: any;
@@ -35,7 +38,7 @@ export interface RejectEnrollmentDto {
 }
 
 export interface CreateClubResponseDto {
-  club: ClubDto;
+  club: Club;
   accessToken: string;
   refreshToken: string;
 }

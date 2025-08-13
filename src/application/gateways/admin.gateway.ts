@@ -12,6 +12,8 @@ export interface AdminGateway {
 
   getUsers(): Promise<User[]>;
 
+  getUserById(userId: string): Promise<User>;
+
   searchUsers(query: SearchUsersQuery): Promise<PaginatedUsersDto>;
 
   changeClubPrincipal(clubId: string, data: ChangePrincipalDto): Promise<void>;

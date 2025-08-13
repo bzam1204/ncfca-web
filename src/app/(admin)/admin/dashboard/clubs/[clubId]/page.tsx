@@ -3,9 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/infraestructure/auth';
 import { UserRoles } from '@/domain/enums/user.roles';
 
-import Link from 'next/link';
-import { ChevronLeft } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { BackButton } from '@/components/ui/back-button';
 import {getClubAction} from "@/infraestructure/actions/get-club";
 import {AdminClubManagementClient} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/admin-club-management-client";
 import {Skeleton} from "@/components/ui/skeleton";
@@ -32,12 +30,7 @@ export default async function AdminClubDetailsPage({ params }: AdminClubDetailsP
 
   return (
       <div className="space-y-4">
-        <Button asChild variant="outline" size="sm">
-          <Link href="/admin/dashboard/clubs">
-            <ChevronLeft className="mr-2 h-4 w-4" />
-            Voltar para todos os clubes
-          </Link>
-        </Button>
+        <BackButton>Voltar</BackButton>
         <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
           <ClubDetailsLoader clubId={params.clubId} />
         </Suspense>

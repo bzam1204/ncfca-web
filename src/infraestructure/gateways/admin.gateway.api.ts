@@ -47,6 +47,10 @@ export class AdminGatewayApi implements AdminGateway {
     return this.fetchData<User[]>('users', NextKeys.admin.users);
   }
 
+  getUserById(userId: string): Promise<User> {
+    return this.fetchData<User>(`users/${userId}`, NextKeys.admin.users);
+  }
+
   async searchUsers(query: SearchUsersQuery): Promise<PaginatedUsersDto> {
     const params = new URLSearchParams();
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ import { AlertTriangle, RotateCcw } from "lucide-react";
 import { ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
 import { usePendingClubRequests } from "@/hooks/use-pending-club-requests";
 import { ClubRequestActions } from "./club-request-actions";
+import { ClubRequestDetailsDialog } from "./club-request-details-dialog";
 
 interface PendingClubRequestsTableProps {
   initialRequests: ClubRequestStatusDto[];
@@ -19,11 +20,20 @@ interface PendingClubRequestsTableProps {
 export function PendingClubRequestsTable({ initialRequests, onDataChange }: PendingClubRequestsTableProps) {
   // O componente agora consome o hook dedicado.
   const { data: requests, isLoading, isError, error, refetch, isRefetching } = usePendingClubRequests(initialRequests);
+  const [selectedRequest, setSelectedRequest] = useState<ClubRequestStatusDto | null>(null);
 
   // Notifica o componente pai sobre a mudança nos dados para atualizar o badge
   useEffect(() => {
     onDataChange(requests);
   }, [requests, onDataChange]);
+
+  const handleRowClick = (request: ClubRequestStatusDto, event: React.MouseEvent) => {
+    // Prevent opening dialog if clicking on action buttons
+    if ((event.target as Element).closest('button')) {
+      return;
+    }
+    setSelectedRequest(request);
+  };
 
   if (isLoading && !isRefetching) {
     return <Skeleton className="h-[250px] w-full" />;
@@ -43,6 +53,7 @@ export function PendingClubRequestsTable({ initialRequests, onDataChange }: Pend
   }
 
   return (
+    <>
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -70,9 +81,13 @@ export function PendingClubRequestsTable({ initialRequests, onDataChange }: Pend
               <TableBody>
                 {requests.length > 0 ? (
                     requests.map(req => (
-                        <TableRow key={req.id}>
+                        <TableRow 
+                          key={req.id}
+                          className="cursor-pointer hover:bg-muted/50"
+                          onClick={(e) => handleRowClick(req, e)}
+                        >
                           <TableCell className="font-medium">{req.clubName}</TableCell>
-                          <TableCell>{(req as any).address?.city || 'N/A'}, {(req as any).address?.state || 'N/A'}</TableCell>
+                          <TableCell>{req.address.city|| 'N/A'}, {req.address.state || 'N/A'}</TableCell>
                           <TableCell>{new Date(req.requestedAt).toLocaleDateString('pt-BR')}</TableCell>
                           <TableCell>
                             <ClubRequestActions requestId={req.id} />
@@ -89,5 +104,11 @@ export function PendingClubRequestsTable({ initialRequests, onDataChange }: Pend
           </div>
         </CardContent>
       </Card>
+      
+      <ClubRequestDetailsDialog
+        request={selectedRequest}
+        onOpenChange={(isOpen) => !isOpen && setSelectedRequest(null)}
+      />
+    </>
   );
 }

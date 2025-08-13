@@ -4,7 +4,7 @@ import {Dispatch, SetStateAction, useState} from "react";
 import {AlertTriangle, Search, University} from "lucide-react";
 import {useSession} from "next-auth/react";
 
-import {ClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
+import {SearchClubsQuery} from "@/contracts/api/club.dto";
 
 import {useSearchClubs} from "@/hooks/use-search-clubs";
 import {useDebounce} from "@/hooks/use-debounce";
@@ -17,9 +17,10 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
+import {Club} from "@/domain/entities/entities";
 
 export function ExploreClubs() {
-  const [selectedClub, setSelectedClub] = useState<ClubDto | null>(null);
+  const [selectedClub, setSelectedClub] = useState<Club | null>(null);
   const [searchQuery, setSearchQuery] = useState<SearchClubsQuery>(initialQuery);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const query = {...debouncedSearchQuery, page : searchQuery.page};
@@ -49,12 +50,12 @@ export function ExploreClubs() {
           {!clubQuery.isLoading && !clubQuery.error && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {clubs.map((club: ClubDto) => (
+                  {clubs.map((club: Club) => (
                       <Card key={club.id} className="flex flex-col justify-between">
                         <CardHeader>
                           <University className="mb-2 h-8 w-8 text-muted-foreground" />
                           <CardTitle>{club.name}</CardTitle>
-                          <CardDescription>{club.city}, {club.state}</CardDescription>
+                          <CardDescription>{club.address.city}, {club.address.state}</CardDescription>
                         </CardHeader>
                         <CardContent>
                           <Button className="w-full cursor-pointer" onClick={() => setSelectedClub(club)}>

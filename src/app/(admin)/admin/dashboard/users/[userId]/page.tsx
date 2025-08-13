@@ -1,14 +1,14 @@
 import {auth} from "@/infraestructure/auth";
 import {redirect} from "next/navigation";
-import Link from "next/link";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
-import {AlertTriangle, User, Home, Users as FamilyIcon, ChevronLeft} from "lucide-react";
+import {AlertTriangle, User, Home, Users as FamilyIcon} from "lucide-react";
 import {FamilyResponseDto} from "@/contracts/api/family.dto";
 import {DependantRelationshipTranslation} from "@/domain/enums/dependant-relationship.enum";
 import {Button} from "@/components/ui/button";
+import {BackButton} from "@/components/ui/back-button";
 import {UserActions} from "./_components/user-actions";
 import {UserDto} from "@/contracts/api/user.dto";
 import {Badge} from "@/components/ui/badge";
@@ -46,9 +46,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
   if (!familyData || !familyData) {
     return (
         <div className="space-y-4">
-          <Button variant="outline" asChild>
-            <Link href="/admin/dashboard/users"><ChevronLeft className="mr-2 h-4 w-4" /> Voltar para Usuários</Link>
-          </Button>
+          <BackButton>Voltar</BackButton>
           <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
             <AlertTitle>Erro</AlertTitle>
@@ -64,9 +62,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
   return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <Button variant="outline" asChild>
-            <Link href="/admin/dashboard/users"><ChevronLeft className="mr-2 h-4 w-4" /> Voltar para Usuários</Link>
-          </Button>
+          <BackButton>Voltar</BackButton>
           <UserActions user={holder} />
         </div>
 

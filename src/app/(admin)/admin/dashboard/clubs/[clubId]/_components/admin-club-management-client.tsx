@@ -1,12 +1,13 @@
 'use client';
 
 import {useState} from 'react';
+import Link from 'next/link';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
 import {Button} from '@/components/ui/button';
 import {Card, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Dialog, DialogTrigger} from '@/components/ui/dialog';
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {Edit, Users, AlertTriangle, UserCheck} from 'lucide-react';
+import {Edit, Users, AlertTriangle, UserCheck, ExternalLink} from 'lucide-react';
 import {Club} from "@/domain/entities/entities";
 import {useAdminClubById} from '@/hooks/use-admin-club-by-id';
 
@@ -38,9 +39,19 @@ export function AdminClubManagementClient({initialClub}: {initialClub: Club}) {
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-start">
-                  <div>
+                  <div className="space-y-2">
                     <CardTitle>{club.name}</CardTitle>
                     <CardDescription>{club.address.city}, {club.address.state}</CardDescription>
+                    
+                    {/* Director Information */}
+                    <div className="pt-2">
+                      <Link href={`/admin/dashboard/users/${club.principalId}`}>
+                        <Button variant="outline" size="sm">
+                          <ExternalLink className="mr-2 h-4 w-4" />
+                          Ver Diretor
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
                   <div className="flex flex-col gap-2 items-end">
                     <Button variant="outline" size="sm" className="pointer-events-none">

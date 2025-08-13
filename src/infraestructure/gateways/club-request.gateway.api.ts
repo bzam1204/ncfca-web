@@ -2,6 +2,7 @@ import {CreateClubRequestDto, ClubRequestStatusDto} from "@/contracts/api/club-m
 import {ClubRequestGateway} from "@/application/gateways/club-request.gateway";
 import {NextKeys} from "@/infraestructure/cache/next-keys";
 import {RejectRequestDto} from "@/contracts/api/club-request.dto";
+import {revalidateTag} from "next/cache";
 
 export class ClubRequestGatewayApi implements ClubRequestGateway {
   constructor(
@@ -17,18 +18,19 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
         'Authorization' : `Bearer ${this.accessToken}`,
         'Content-Type' : 'application/json'
       },
-      body : JSON.stringify(dto)
+      body : JSON.stringify(dto),
     });
     if (!res.ok && res.status !== 202) {
       const body = await res.json()
       throw new Error(body.message);
     }
+    revalidateTag(NextKeys.clubRequests.admin.pending);
   }
 
   async getMyRequests(): Promise<ClubRequestStatusDto[]> {
     const res = await fetch(`${this.baseUrl}/club-requests/my-requests`, {
       headers : {'Authorization' : `Bearer ${this.accessToken}`},
-      cache : 'no-store', // Dados de solicitações devem ser sempre frescos.
+      cache : 'no-store',
     });
     if (!res.ok) {
       const body = await res.json()
@@ -41,7 +43,7 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
     const res = await fetch(`${this.baseUrl}/club-requests/pending`, {
       headers : {'Authorization' : `Bearer ${this.accessToken}`},
       next : {
-        revalidate : 300, // Cache de 5 minutos para solicitações pendentes
+        revalidate : 300, 
         tags : [NextKeys.clubRequests.admin.pending],
       },
     });
@@ -61,6 +63,7 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       const body = await res.json()
       throw new Error(body.message);
     }
+    revalidateTag(NextKeys.clubRequests.admin.pending);
   }
 
   async reject(requestId: string, dto: RejectRequestDto): Promise<void> {
@@ -76,5 +79,6 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
       const body = await res.json()
       throw new Error(body.message);
     }
+    revalidateTag(NextKeys.clubRequests.admin.pending);
   }
 }
