@@ -8,6 +8,22 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { User, Phone, Mail, MapPin, Calendar, MessageSquare, Building2, Users, FileText, ExternalLink } from "lucide-react";
 import { useAdminUserById } from "@/hooks/use-admin-user-by-id";
+import { useApproveClubRequest } from "@/hooks/use-approve-club-request";
+import { useRejectClubRequest } from "@/hooks/use-reject-club-request";
+import { RejectClubRequestDialog } from "./reject-club-request-dialog";
+import { RejectRequestDto } from "@/contracts/api/club-request.dto";
+import { 
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger 
+} from "@/components/ui/alert-dialog";
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
 
 interface ClubRequestDetailsDialogProps {
   request: ClubRequestStatusDto | null;
@@ -27,6 +43,8 @@ const InfoField = ({ icon: Icon, label, value }: {
 );
 
 export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestDetailsDialogProps) {
+  const [isRejectDialogOpen, setRejectDialogOpen] = useState(false);
+  
   // Only fetch user data when dialog is open and we have a requesterId
   const shouldFetchUser = Boolean(request && request.requesterId);
   const { data: requesterData, isLoading: isLoadingRequester } = useAdminUserById(
@@ -34,7 +52,30 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
     shouldFetchUser
   );
 
+  // Hooks for approve/reject actions
+  const { mutate: approve, isPending: isApproving } = useApproveClubRequest();
+  const { mutate: reject, isPending: isRejecting } = useRejectClubRequest();
+
+  const isProcessing = isApproving || isRejecting;
+
   if (!request) return null;
+
+  const handleRejectSubmit = (dto: RejectRequestDto) => {
+    reject({ requestId: request.id, dto }, {
+      onSuccess: () => {
+        setRejectDialogOpen(false);
+        onOpenChange(false);
+      }
+    });
+  };
+
+  const handleApprove = () => {
+    approve(request.id, {
+      onSuccess: () => {
+        onOpenChange(false);
+      }
+    });
+  };
 
   const handleWhatsAppClick = () => {
     if (!requesterData?.phone) return;
@@ -163,24 +204,68 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
           </div>
         </div>
 
-        {/* WhatsApp Contact Button */}
-        <div className="flex gap-2">
+        {/* Action Buttons */}
+        <div className="space-y-3">
+          {/* WhatsApp Contact button - full width */}
           <Button 
             onClick={handleWhatsAppClick} 
             disabled={!requesterData?.phone} 
-            className="flex-1"
+            className="w-full"
+            variant="outline"
           >
             <MessageSquare className="mr-2 h-4 w-4" />
             Contatar via WhatsApp
           </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => onOpenChange(false)}
-            className="flex-1"
-          >
-            Fechar
-          </Button>
+
+          {/* Approve/Reject buttons - only show if status is PENDING */}
+          {request.status === 'PENDING' && (
+            <div className="flex gap-2">
+              <Button
+                variant="destructive"
+                onClick={() => setRejectDialogOpen(true)}
+                disabled={isProcessing}
+                className="flex-1"
+              >
+                {isRejecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <XCircle className="mr-2 h-4 w-4" />
+                Rejeitar
+              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                    disabled={isProcessing}
+                  >
+                    {isApproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Aprovar
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Aprovar Criação de Clube?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Esta ação criará um novo clube na plataforma e o associará ao diretor solicitante. Esta ação não pode ser desfeita.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleApprove}>Confirmar Aprovação</AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          )}
         </div>
+
+        {/* Reject Dialog */}
+        <RejectClubRequestDialog
+          isOpen={isRejectDialogOpen}
+          onOpenChange={setRejectDialogOpen}
+          onSubmit={handleRejectSubmit}
+          isPending={isRejecting}
+        />
       </DialogContent>
     </Dialog>
   );

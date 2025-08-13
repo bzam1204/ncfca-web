@@ -10,5 +10,6 @@ export function usePendingClubRequests(initialData: ClubRequestStatusDto[]) {
     queryKey: QueryKeys.clubRequests.admin.pending(),
     queryFn: () => getPendingClubRequestsAction(),
     initialData: initialData,
+    select: (data) => data || [], // Ensure we always return an array
   });
 }

@@ -42,10 +42,7 @@ export class ClubRequestGatewayApi implements ClubRequestGateway {
   async getPending(): Promise<ClubRequestStatusDto[]> {
     const res = await fetch(`${this.baseUrl}/club-requests/pending`, {
       headers : {'Authorization' : `Bearer ${this.accessToken}`},
-      next : {
-        revalidate : 300, 
-        tags : [NextKeys.clubRequests.admin.pending],
-      },
+      cache: "no-cache"
     });
     if (!res.ok) {
       const body = await res.json()

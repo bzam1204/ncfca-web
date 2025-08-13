@@ -1,17 +1,18 @@
 'use client';
 
-import {useState} from 'react';
-
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {Badge} from "@/components/ui/badge";
 
 import {ClubRequestStatusDto} from "@/contracts/api/club-management.dto";
+import {usePendingClubRequests} from "@/hooks/use-pending-club-requests";
 
 import {PendingClubRequestsTable} from "./pending-club-requests-table";
 import {AdminClubsTable} from './admin-clubs-table';
 
 export function ClubsPageClient({initialPendingRequests}: ClubsPageClientProps) {
-  const [pendingCount, setPendingCount] = useState(initialPendingRequests.length);
+  // Use React Query hook directly to get real-time pending count
+  const { data: pendingRequests } = usePendingClubRequests(initialPendingRequests);
+  const pendingCount = pendingRequests?.length || 0;
   return (
       <Tabs defaultValue="all_clubs">
         <TabsList>
@@ -27,7 +28,6 @@ export function ClubsPageClient({initialPendingRequests}: ClubsPageClientProps) 
         <TabsContent value="requests" className="mt-6">
           <PendingClubRequestsTable
               initialRequests={initialPendingRequests}
-              onDataChange={(data) => setPendingCount(data.length)}
           />
         </TabsContent>
       </Tabs>
