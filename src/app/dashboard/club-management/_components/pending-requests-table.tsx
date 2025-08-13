@@ -79,7 +79,7 @@ export function PendingRequestsTable({clubId, accessToken}: PendingRequestsTable
 
       <div className="flex flex-col gap-4">
         <Button className="w-fit" variant="outline" size="sm"
-                onClick={() => refetch()}><RotateCcw /> Atualizar Solicitações</Button>
+                onClick={() => refetch()}><RotateCcw /> Atualizar</Button>
         <div className="border rounded-md">
           <Table>
             <TableHeader>
