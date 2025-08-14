@@ -6,6 +6,7 @@ import { UserRoles } from '@/domain/enums/user.roles';
 import { BackButton } from '@/components/ui/back-button';
 import {getClubAction} from "@/infraestructure/actions/get-club";
 import {AdminClubManagementClient} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/admin-club-management-client";
+import {ClubActionsBar} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/club-actions-bar";
 import {Skeleton} from "@/components/ui/skeleton";
 
 interface AdminClubDetailsPageProps {
@@ -19,7 +20,12 @@ async function ClubDetailsLoader({ clubId }: { clubId: string }) {
   if (!club) {
     notFound();
   }
-  return <AdminClubManagementClient initialClub={club} />;
+  return (
+    <div className="space-y-6">
+      <ClubActionsBar club={club} />
+      <AdminClubManagementClient initialClub={club} />
+    </div>
+  );
 }
 
 export default async function AdminClubDetailsPage({ params }: AdminClubDetailsPageProps) {

@@ -11,7 +11,7 @@ import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollme
 import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
 
 export async function GrowthCharts() {
-  const [affiliations, clubs, enrollments] = await Promise.all([
+  const [affiliations, enrollments, clubs] = await Promise.all([
     getAffiliationsAction(),
     getEnrollmentsAction(),
     getClubsAction(),

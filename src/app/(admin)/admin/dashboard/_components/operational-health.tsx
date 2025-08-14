@@ -1,8 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import Link from "next/link";
 import { getEnrollmentsAction } from "@/infraestructure/actions/admin/get-enrollments.action";
 import { getClubsAction } from "@/infraestructure/actions/admin/get-clubs.action";
-import { getUsersAction } from "@/infraestructure/actions/admin/get-users.action";
 import { EnrollmentStatus } from "@/domain/enums/enrollment-status.enum";
 import {searchUsersAction} from "@/infraestructure/actions/admin/search-users.action";
 
@@ -25,6 +25,7 @@ export async function OperationalHealth() {
         const club = clubs.find(c => c.id === clubId);
         const principal = users.data.find(u => u.id === club?.principalId);
         return {
+          clubId: clubId,
           clubName: club?.name || 'Clube Desconhecido',
           principalName: principal ? `${principal.firstName} ${principal.lastName}` : 'N/A',
           pendingCount: count,
@@ -51,7 +52,11 @@ export async function OperationalHealth() {
             <TableBody>
               {pendingByClub.length > 0 ? pendingByClub.map(item => (
                   <TableRow key={item.clubName}>
-                    <TableCell className="font-medium">{item.clubName}</TableCell>
+                    <TableCell className="font-medium">
+                      <Link href={`/admin/dashboard/clubs/${item.clubId}`} className="hover:underline text-primary">
+                        {item.clubName}
+                      </Link>
+                    </TableCell>
                     <TableCell>{item.principalName}</TableCell>
                     <TableCell className="text-right font-bold text-lg">{item.pendingCount}</TableCell>
                   </TableRow>
