@@ -29,8 +29,8 @@ export interface ClubRequestStatusDto {
 
 export interface UpdateClubDto {
   name?: string;
-  city?: string;
-  state?: string;
+  maxMembers?: number | null;
+  address?: AddressDto;
 }
 
 export interface RejectEnrollmentDto {

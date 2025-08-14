@@ -1,5 +1,5 @@
 # GEMINI.md - NCFCA Web Project
-
+sempre me responda em portugues.
 ## Project Overview
 
 This is a Next.js web application for the NCFCA (National Christian Forensics and Communications Association) platform. It serves as the primary interface for users to manage clubs, affiliations, dependents, and other related activities.

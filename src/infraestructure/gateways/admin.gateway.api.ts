@@ -2,10 +2,11 @@ import {Club, Family, User} from "@/domain/entities/entities";
 import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
 
 import {AdminGateway} from "@/application/gateways/admin.gateway";
-import {ChangePrincipalDto} from "@/contracts/api/admin.dto";
+import {ChangePrincipalDto, UpdateClubByAdminDto} from "@/contracts/api/admin.dto";
 import {SearchUsersQuery, PaginatedUsersDto} from "@/contracts/api/user.dto";
 
 import {NextKeys} from "@/infraestructure/cache/next-keys";
+import {revalidateTag} from "next/cache";
 
 export class AdminGatewayApi implements AdminGateway {
   private readonly baseUrl: string;
@@ -83,7 +84,7 @@ export class AdminGatewayApi implements AdminGateway {
 
   async changeClubPrincipal(clubId: string, data: ChangePrincipalDto): Promise<void> {
     const res = await fetch(`${this.baseUrl}/admin/clubs/${clubId}/director`, {
-      method : 'PATCH',
+      method : 'POST',
       headers : {
         'Authorization' : `Bearer ${this.accessToken}`,
         'Content-Type' : 'application/json',
@@ -95,5 +96,23 @@ export class AdminGatewayApi implements AdminGateway {
       const error = await res.json().catch(() => ({}));
       throw new Error(error.message || `Falha ao alterar o principal do clube`);
     }
+  }
+
+  async updateClub(clubId: string, payload: UpdateClubByAdminDto): Promise<Club> {
+    const res = await fetch(`${this.baseUrl}/admin/clubs/${clubId}`, {
+      method : 'POST',
+      headers : {
+        'Authorization' : `Bearer ${this.accessToken}`,
+        'Content-Type' : 'application/json',
+      },
+      body : JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.message || 'Falha ao atualizar clube.');
+    }
+
+    return await res.json();
   }
 }

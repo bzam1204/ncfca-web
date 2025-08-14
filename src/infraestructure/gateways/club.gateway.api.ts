@@ -3,6 +3,7 @@ import {Club} from "@/domain/entities/entities";
 import {ClubGateway} from "@/application/gateways/club.gateway";
 
 import {PaginatedClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
+import {UpdateClubDto} from "@/contracts/api/club-management.dto";
 import {NextKeys} from "@/infraestructure/cache/next-keys";
 
 export class ClubGatewayApi implements ClubGateway {
@@ -50,6 +51,30 @@ export class ClubGatewayApi implements ClubGateway {
     if (!res.ok) {
       throw new Error(`Falha ao buscar dados para o clube ID: ${clubId}`);
     }
+    return res.json();
+  }
+
+  async updateMyClub(payload: UpdateClubDto): Promise<Club> {
+    const res = await fetch(`${this.baseUrl}/club-management`, {
+      method : 'PATCH',
+      headers : {
+        'Authorization' : `Bearer ${this.accessToken}`,
+        'Content-Type' : 'application/json',
+      },
+      body : JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || 'Falha ao atualizar clube.');
+    }
+    
+    // Check if response has content before parsing JSON
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      // If no JSON content, refetch the club data
+      return this.myClub();
+    }
+    
     return res.json();
   }
 

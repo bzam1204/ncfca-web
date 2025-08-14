@@ -11,7 +11,10 @@ export const QueryKeys = {
   },
   clubs : {
     all : ['clubs'] as const,
-    search : (query: SearchClubsQuery) => [...QueryKeys.clubs.all, 'search', query] as const,
+    search : {
+      all : () => [...QueryKeys.clubs.all, 'search'],
+      query : (query: SearchClubsQuery) => [...QueryKeys.clubs.search.all(), query] as const
+    },
     myClub : () => [...QueryKeys.clubs.all, 'my-club'] as const,
     details : (clubId: string) => [...QueryKeys.clubs.all, 'details', clubId] as const,
   },

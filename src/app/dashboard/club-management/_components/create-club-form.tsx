@@ -10,6 +10,8 @@ import {Label} from '@/components/ui/label';
 import {Loader2} from 'lucide-react';
 import {StateCombobox} from '@/app/_components/state-combobox';
 import {useCreateClubRequest} from "@/hooks/use-create-club-request";
+import { useCepAutocompleteGeneric } from '@/hooks/use-cep-autocomplete-generic';
+import { viaCepService } from '@/infraestructure/services/via-cep.service';
 
 const addressSchema = z.object({
   street : z.string().min(3, 'A rua é obrigatória.'),
@@ -30,9 +32,17 @@ type CreateClubRequestInput = z.infer<typeof createClubRequestSchema>;
 
 export function CreateClubForm() {
   const {mutate : createRequest, isPending} = useCreateClubRequest();
-  const {register, handleSubmit, formState : {errors}, control} = useForm<CreateClubRequestInput>({
+  const {register, handleSubmit, setValue, watch, formState : {errors}, control} = useForm<CreateClubRequestInput>({
     resolver : zodResolver(createClubRequestSchema),
   });
+  
+  const {
+    handleCepChange,
+    isLoadingCep,
+    errorCep,
+  } = useCepAutocompleteGeneric(setValue, viaCepService, 'address');
+  
+  const cepValue = watch('address.zipCode');
 
   const onSubmit = (data: CreateClubRequestInput) => createRequest(data);
 
@@ -59,6 +69,17 @@ export function CreateClubForm() {
             <fieldset className="space-y-4 border p-4 rounded-md">
               <legend className="text-sm font-medium px-1">Endereço do Clube</legend>
 
+              <div className="space-y-2 relative">
+                <Label htmlFor="zipCode">CEP</Label>
+                <Input id="zipCode" {...register('address.zipCode')}
+                       onBlur={() => handleCepChange(cepValue)} />
+                {isLoadingCep &&
+                    <Loader2 className="animate-spin h-4 w-4 absolute right-2 top-9 text-slate-400" />}
+                {errors.address?.zipCode &&
+                    <p className="text-red-500 text-sm">{errors.address.zipCode.message}</p>}
+                {errorCep && <p className="text-red-500 text-sm">{errorCep}</p>}
+              </div>
+              
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="street">Rua / Avenida</Label>
@@ -85,19 +106,12 @@ export function CreateClubForm() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="state">Estado (UF)</Label>
-                  <Controller control={control} name="address.state" render={({field}) => (
-                      <StateCombobox value={field.value} onValueChange={field.onChange} />
-                  )} />
-                  {errors.address?.state && <p className="text-red-500 text-sm">{errors.address.state.message}</p>}
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="zipCode">CEP (somente números)</Label>
-                  <Input id="zipCode" {...register('address.zipCode')} />
-                  {errors.address?.zipCode && <p className="text-red-500 text-sm">{errors.address.zipCode.message}</p>}
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="state">Estado (UF)</Label>
+                <Controller control={control} name="address.state" render={({field}) => (
+                    <StateCombobox value={field.value} onValueChange={field.onChange} />
+                )} />
+                {errors.address?.state && <p className="text-red-500 text-sm">{errors.address.state.message}</p>}
               </div>
             </fieldset>
 

@@ -8,6 +8,6 @@ import {auth} from "@/infraestructure/auth";
 export async function requestEnrollmentAction(input: RequestEnrollmentDto): Promise<void> {
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
-  const requestEnrollment = Inject.RequestEnrollment(session.accessToken);
-  return requestEnrollment.execute(input);
+  const enrollmentGateway = Inject.EnrollmentGateway(session.accessToken);
+  return enrollmentGateway.requestEnrollment(input);
 }

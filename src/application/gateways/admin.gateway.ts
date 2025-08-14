@@ -1,6 +1,6 @@
 import {Club, Family, User} from "@/domain/entities/entities";
 import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
-import {ChangePrincipalDto} from "@/contracts/api/admin.dto";
+import {ChangePrincipalDto, UpdateClubByAdminDto} from "@/contracts/api/admin.dto";
 import {SearchUsersQuery, PaginatedUsersDto} from "@/contracts/api/user.dto";
 
 export interface AdminGateway {
@@ -17,4 +17,6 @@ export interface AdminGateway {
   searchUsers(query: SearchUsersQuery): Promise<PaginatedUsersDto>;
 
   changeClubPrincipal(clubId: string, data: ChangePrincipalDto): Promise<void>;
+
+  updateClub(clubId: string, payload: UpdateClubByAdminDto): Promise<Club>;
 }

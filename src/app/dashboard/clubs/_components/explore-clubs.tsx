@@ -15,6 +15,7 @@ import {PaginationControls} from "@/components/ui/pagination-controls";
 import {Skeleton} from "@/components/ui/skeleton";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
+import {Badge} from "@/components/ui/badge";
 
 import {EnrollmentDialog} from "@/app/dashboard/clubs/_components/enrollment-dialog";
 import {Club} from "@/domain/entities/entities";
@@ -56,10 +57,15 @@ export function ExploreClubs() {
                           <University className="mb-2 h-8 w-8 text-muted-foreground" />
                           <CardTitle>{club.name}</CardTitle>
                           <CardDescription>{club.address.city}, {club.address.state}</CardDescription>
+                          <Badge variant="secondary">{club.corum} / {club.maxMembers || '∞'} membros</Badge>
                         </CardHeader>
                         <CardContent>
-                          <Button className="w-full cursor-pointer" onClick={() => setSelectedClub(club)}>
-                            Solicitar Matrícula
+                          <Button 
+                            className="w-full cursor-pointer" 
+                            onClick={() => setSelectedClub(club)}
+                            disabled={club.maxMembers !== null && club.corum >= club.maxMembers}
+                          >
+                            {club.maxMembers !== null && club.corum >= club.maxMembers ? 'Clube Cheio' : 'Solicitar Matrícula'}
                           </Button>
                         </CardContent>
                       </Card>
