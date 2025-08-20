@@ -1,14 +1,14 @@
-import {QueryService} from "@/domain/services/query.service";
+import {ClubGateway} from "@/application/gateways/club.gateway";
 
 import {PaginatedClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
 
 export class SearchClubs {
 
-  constructor(private queryService: QueryService) {
+  constructor(private clubGateway: ClubGateway) {
   };
 
   async execute(query: SearchClubsQuery): Promise<PaginatedClubDto> {
-    return await this.queryService.clubQuery.searchClubs(query);
+    return await this.clubGateway.search(query);
   };
   
 }

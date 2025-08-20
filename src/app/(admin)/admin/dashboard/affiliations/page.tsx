@@ -6,17 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {AffiliationsTable} from "@/app/(admin)/admin/dashboard/affiliations/_components/affiliation-table";
-import {AffiliationDto} from "@/contracts/api/affiliation.dto";
-
-async function getAffiliations(accessToken: string): Promise<AffiliationDto[]> {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${BACKEND_URL}/admin/affiliations`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` },
-    cache: 'no-store',
-  });
-  if (!res.ok) throw new Error('Falha ao buscar a lista de afiliações.');
-  return res.json();
-}
+import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
 
 export default async function AdminAffiliationsPage() {
   const session = await auth();
@@ -24,7 +14,7 @@ export default async function AdminAffiliationsPage() {
     redirect('/login');
   }
 
-  const affiliations = await getAffiliations(session.accessToken);
+  const affiliations = await getAffiliationsAction();
 
   return (
       <Card>

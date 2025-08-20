@@ -4,7 +4,8 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {ChartConfig, ChartContainer, ChartTooltipContent} from "@/components/ui/chart";
 
 import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
-import {Club, Family} from "@/domain/entities/entities";
+import {Club} from "@/domain/entities/entities";
+import {AffiliationDto} from "@/contracts/api/affiliation.dto";
 
 import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
 import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollments.action";
@@ -64,7 +65,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 // A lógica de cálculo foi extraída para uma função pura no servidor.
-const processMonthlyData = (affiliations: Family[], clubs: Club[], enrollments: EnrollmentRequest[]) => {
+const processMonthlyData = (affiliations: AffiliationDto[], clubs: Club[], enrollments: EnrollmentRequest[]) => {
   const data: {[key: string]: {Afiliações: number; Clubes: number; Matrículas: number}} = {};
   const now = new Date();
 

@@ -1,18 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
-
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-
-// Interface para os dados que vêm do backend
-interface BackendClubChartsData {
-  memberCountByType: Array<{ type: string; count: number }>;
-  enrollmentsOverTime: Array<{ month: string; count: number }>;
-  memberCountBySex: Array<{ sex: string; count: number }>;
-  totalActiveMembers: number;
-  totalPendingEnrollments: number;
-}
+import { AdminClubChartsDto } from '@/contracts/api/admin-charts.dto';
+import { QueryKeys } from '@/infraestructure/cache/query-keys';
+import { getClubChartsAction } from '@/infraestructure/actions/admin/get-club-charts.action';
 
 // Interface para os dados que o frontend espera
 interface ClubChartsData {
@@ -23,7 +14,7 @@ interface ClubChartsData {
   trendData: { month: string; approved: number; rejected: number }[];
 }
 
-const transformBackendData = (backendData: BackendClubChartsData): ClubChartsData => {
+const transformBackendData = (backendData: AdminClubChartsDto): ClubChartsData => {
   // Cores para os gráficos
   const genderColors = {
     'MALE': 'var(--chart-1)',
@@ -68,23 +59,13 @@ const transformBackendData = (backendData: BackendClubChartsData): ClubChartsDat
   };
 };
 
-const getAdminClubCharts = async (clubId: string, accessToken: string): Promise<ClubChartsData> => {
-  const res = await fetch(`${BACKEND_URL}/admin/clubs/${clubId}/charts`, {
-    headers: { 'Authorization': `Bearer ${accessToken}` },
-  });
-  if (!res.ok) throw new Error('Falha ao buscar dados dos gráficos do clube.');
-  
-  const backendData: BackendClubChartsData = await res.json();
-  return transformBackendData(backendData);
-};
-
 export function useAdminClubCharts(clubId: string) {
-  const { data: session } = useSession();
-  const accessToken = session?.accessToken ?? '';
-
   return useQuery({
-    queryKey: ['admin-club-charts', clubId],
-    queryFn: () => getAdminClubCharts(clubId, accessToken),
-    enabled: !!clubId && !!accessToken,
+    queryKey: QueryKeys.admin.clubCharts(clubId),
+    queryFn: async () => {
+      const backendData = await getClubChartsAction(clubId);
+      return transformBackendData(backendData);
+    },
+    enabled: !!clubId,
   });
 }

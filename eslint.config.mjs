@@ -11,7 +11,34 @@ const compat = new FlatCompat( {
 
 const eslintConfig = [
   ...compat.extends( "next/core-web-vitals", "next/typescript" ),
-  { rules : { "@typescript-eslint/no-explicit-any" : "off" }, }
+  { 
+    rules : { 
+      "@typescript-eslint/no-explicit-any" : "off",
+    }, 
+  },
+  {
+    files: ["src/hooks/**/*.ts", "src/hooks/**/*.tsx"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          "patterns": [
+            {
+              "group": ["next-auth/react"],
+              "message": "Use Server Actions instead of useSession in hooks. See docs/api-layer-standardization.md"
+            }
+          ]
+        }
+      ],
+      "no-restricted-syntax": [
+        "error",
+        {
+          "selector": "CallExpression[callee.name='fetch']",
+          "message": "Use Server Actions instead of fetch() in hooks. See docs/api-layer-standardization.md"
+        }
+      ]
+    }
+  }
 ];
 
 export default eslintConfig;

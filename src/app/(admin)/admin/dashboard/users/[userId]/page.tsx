@@ -5,28 +5,12 @@ import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/compo
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertTriangle, User, Home, Users as FamilyIcon} from "lucide-react";
-import {FamilyResponseDto} from "@/contracts/api/family.dto";
 import {DependantRelationshipTranslation} from "@/domain/enums/dependant-relationship.enum";
 import {BackButton} from "@/components/ui/back-button";
 import {UserActions} from "./_components/user-actions";
-import {UserDto} from "@/contracts/api/user.dto";
 import {Badge} from "@/components/ui/badge";
 import {Dependant} from "@/domain/entities/dependant.entity";
-
-async function getUserFamily(userId: string, accessToken: string): Promise<{
-  user: UserDto;
-  family: FamilyResponseDto
-} | null> {
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const res = await fetch(`${BACKEND_URL}/admin/users/${userId}/family`, {
-    headers : {'Authorization' : `Bearer ${accessToken}`},
-    cache : 'no-store',
-  });
-  if (!res.ok) return null;
-  const response = await res.json();
-  const family = {...response.family, dependants : response.family.dependants.map((d: Dependant) => new Dependant(d))};
-  return {user : response.user, family};
-}
+import {getUserFamilyAction} from "@/infraestructure/actions/admin/get-user-family.action";
 
 const InfoField = ({label, value}: {label: string; value: React.ReactNode}) => (
     <div>
@@ -41,7 +25,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     redirect('/login');
   }
-  const familyData = await getUserFamily(userId, session.accessToken);
+  const familyData = await getUserFamilyAction(userId).catch(() => null);
   if (!familyData || !familyData) {
     return (
         <div className="space-y-4">
@@ -55,7 +39,7 @@ export default async function UserDetailsPage({params}: {params: Promise<{userId
     );
   }
 
-  const {dependants} = familyData.family;
+  const dependants = familyData.family.dependants.map((d: any) => new Dependant(d));
   const holder = familyData.user;
 
   return (

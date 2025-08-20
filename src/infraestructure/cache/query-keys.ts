@@ -31,7 +31,11 @@ export const QueryKeys = {
   admin : {
     clubs : () => ['admin', 'clubs'] as const,
     clubById : (clubId: string) => ['admin', 'clubs', clubId] as const,
+    clubMembers : (clubId: string) => ['admin', 'clubs', clubId, 'members'] as const,
+    clubCharts : (clubId: string) => ['admin', 'clubs', clubId, 'charts'] as const,
+    clubEnrollmentsPending : (clubId: string) => ['admin', 'clubs', clubId, 'enrollments', 'pending'] as const,
     searchUsers : (query: SearchUsersQuery) => ['admin', 'users', 'search', query] as const,
     userById : (userId: string) => ['admin', 'users', userId] as const,
+    userFamily : (userId: string) => ['admin', 'users', userId, 'family'] as const,
   }
 }

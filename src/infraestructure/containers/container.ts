@@ -1,29 +1,19 @@
-import {QueryService} from "@/domain/services/query.service";
-
 import {ClubRequestGateway} from "@/application/gateways/club-request.gateway";
 import {EnrollmentGateway} from "@/application/gateways/enrollment/enrollment.gateway";
 import {TrainingGateway} from "@/application/gateways/training/training.gateway";
 import {AdminGateway} from "@/application/gateways/admin.gateway";
 import {ClubGateway} from "@/application/gateways/club.gateway";
+import {FamilyGateway} from "@/application/gateways/family.gateway";
 
 import {ClubRequestGatewayApi} from "@/infraestructure/gateways/club-request.gateway.api";
 import {EnrollmentGatewayApi} from "@/infraestructure/gateways/enrollment.gateway.api";
 import {TrainingGatewayApi} from "@/infraestructure/gateways/training.gateway.api";
-import {DependantQueryApi} from "@/infraestructure/queries/dependant.query.api";
-import {QueryServiceApi} from "@/infraestructure/services/query.service.api";
 import {AdminGatewayApi} from "@/infraestructure/gateways/admin.gateway.api";
 import {ClubGatewayApi} from "@/infraestructure/gateways/club.gateway.api";
-import {ClubQueryApi} from "@/infraestructure/queries/club.query.api";
-import {FamilyGateway} from "@/application/gateways/family.gateway";
 import {FamilyGatewayApi} from "@/infraestructure/gateways/family.gateway.api";
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL ?? 'http://localhost:8000';
 
-function queryService(accessToken: string): QueryService {
-  const clubQuery = new ClubQueryApi(apiUrl, accessToken);
-  const dependantQuery = new DependantQueryApi(apiUrl, accessToken);
-  return new QueryServiceApi(clubQuery, dependantQuery);
-}
 
 function enrollmentGateway(accessToken: string): EnrollmentGateway {
   return new EnrollmentGatewayApi(apiUrl, accessToken);
@@ -51,7 +41,6 @@ function familyGateway(accessToken: string): FamilyGateway {
 
 
 export const Inject = {
-  QueryService : queryService,
   ClubRequestGateway : clubRequestGateway,
   EnrollmentGateway : enrollmentGateway,
   TrainingGateway : trainingGateway,

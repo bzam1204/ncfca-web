@@ -73,7 +73,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess, c
 
   const handleApprove = () => {
     if (!request) return;
-    approve({enrollmentId : request.id, clubId, accessToken}, {
+    approve({enrollmentId : request.id, clubId}, {
       onSuccess : () => {
         notify.success("Matrícula aprovada com sucesso.");
         onSuccess();
@@ -84,7 +84,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess, c
 
   const handleRejectSubmit = (data: RejectionInput) => {
     if (!request) return;
-    reject({enrollmentId : request.id, data : {reason : data.reason}, clubId, accessToken}, {
+    reject({enrollmentId : request.id, clubId, rejectionReason : data.reason}, {
       onSuccess : () => {
         notify.success("Matrícula rejeitada.");
         setRejectionMode(false);

@@ -18,5 +18,8 @@ export const NextKeys = {
     clubs : "admin.clubs",
     users : "admin.users",
     searchUsers : "admin.search_users",
+    clubMembers : (clubId: string) => `admin.club_members.${clubId}`,
+    clubCharts : (clubId: string) => `admin.club_charts.${clubId}`,
+    userFamily : (userId: string) => `admin.user_family.${userId}`,
   }
 }

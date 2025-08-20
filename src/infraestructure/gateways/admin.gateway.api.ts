@@ -1,9 +1,14 @@
-import {Club, Family, User} from "@/domain/entities/entities";
+import {Club, User} from "@/domain/entities/entities";
 import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
 
 import {AdminGateway} from "@/application/gateways/admin.gateway";
 import {ChangePrincipalDto, UpdateClubByAdminDto} from "@/contracts/api/admin.dto";
-import {SearchUsersQuery, PaginatedUsersDto} from "@/contracts/api/user.dto";
+import {SearchUsersQuery, PaginatedUsersDto, UserDto} from "@/contracts/api/user.dto";
+import {ClubMemberDto} from "@/contracts/api/club-member.dto";
+import {AdminClubChartsDto} from "@/contracts/api/admin-charts.dto";
+import {FamilyResponseDto} from "@/contracts/api/family.dto";
+import {PendingEnrollmentDto} from "@/contracts/api/enrollment.dto";
+import {AffiliationDto} from "@/contracts/api/affiliation.dto";
 
 import {NextKeys} from "@/infraestructure/cache/next-keys";
 
@@ -31,8 +36,8 @@ export class AdminGatewayApi implements AdminGateway {
     return res.json();
   }
 
-  getAffiliations(): Promise<Family[]> {
-    return this.fetchData<Family[]>('affiliations', NextKeys.admin.affiliations);
+  getAffiliations(): Promise<AffiliationDto[]> {
+    return this.fetchData<AffiliationDto[]>('affiliations', NextKeys.admin.affiliations);
   }
 
   getClubs(): Promise<Club[]> {
@@ -113,5 +118,48 @@ export class AdminGatewayApi implements AdminGateway {
     }
 
     return await res.json();
+  }
+
+  getClubMembers(clubId: string): Promise<ClubMemberDto[]> {
+    return this.fetchData<{members: ClubMemberDto[]}>(`clubs/${clubId}/members`, NextKeys.admin.clubMembers(clubId))
+      .then(response => response.members);
+  }
+
+  getClubCharts(clubId: string): Promise<AdminClubChartsDto> {
+    return this.fetchData<AdminClubChartsDto>(`clubs/${clubId}/charts`, NextKeys.admin.clubCharts(clubId));
+  }
+
+  async approveEnrollment(clubId: string, enrollmentId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/admin/clubs/${clubId}/enrollments/${enrollmentId}/approve`, {
+      method: 'POST',
+      headers: {'Authorization': `Bearer ${this.accessToken}`},
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.message || 'Falha ao aprovar matrícula');
+    }
+  }
+
+  async rejectEnrollment(clubId: string, enrollmentId: string, payload?: { rejectionReason?: string }): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/admin/clubs/${clubId}/enrollments/${enrollmentId}/reject`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: payload ? JSON.stringify(payload) : undefined,
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.message || 'Falha ao rejeitar matrícula');
+    }
+  }
+
+  getUserFamily(userId: string): Promise<{ user: UserDto; family: FamilyResponseDto }> {
+    return this.fetchData<{ user: UserDto; family: FamilyResponseDto }>(`users/${userId}/family`, NextKeys.admin.userFamily(userId));
+  }
+
+  getClubEnrollmentsPending(clubId: string): Promise<PendingEnrollmentDto[]> {
+    return this.fetchData<PendingEnrollmentDto[]>(`clubs/${clubId}/enrollments/pending`, `admin.club_enrollments_pending.${clubId}`);
   }
 }

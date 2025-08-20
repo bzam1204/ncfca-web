@@ -36,19 +36,28 @@ export class ClubGatewayApi implements ClubGateway {
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
       cache: 'no-store'
     });
-    if (!res.ok) throw new Error('Falha ao buscar clubes.');
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message);
+    }
     return res.json();
   }
 
   async getById(clubId: string): Promise<Club> {
-    const res = await fetch(`${this.baseUrl}/club/${clubId}`, {
-      headers: { 'Authorization': `Bearer ${this.accessToken}` },
-      cache: 'no-store'
-    });
-    if (!res.ok) {
-      throw new Error(`Falha ao buscar dados para o clube ID: ${clubId}`);
+    try {
+
+      const res = await fetch(`${this.baseUrl}/club/${clubId}`, {
+        headers: { 'Authorization': `Bearer ${this.accessToken}` },
+        cache: 'no-store'
+      });
+      if (!res.ok) {
+        const body = await res.json();
+        throw new Error(body.message);
+      }
+      return res.json();
+    } catch (error) {
+      throw error;
     }
-    return res.json();
   }
 
   async updateMyClub(payload: UpdateClubDto): Promise<Club> {
