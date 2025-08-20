@@ -1,8 +1,6 @@
 'use client';
 
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-
-import {UpdateClubDto} from "@/contracts/api/club-management.dto";
 import {updateMyClubAction} from '@/infraestructure/actions/update-my-club.action';
 import {QueryKeys} from '@/infraestructure/cache/query-keys';
 

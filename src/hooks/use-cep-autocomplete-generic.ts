@@ -22,10 +22,10 @@ export function useCepAutocompleteGeneric<T extends Record<string, any>>(
       const cepAddress = await cepService.fetchAddress(sanitizedCep);
       if (!cepAddress) throw new Error('Erro ao buscar endereço do CEP');
       
-      setValue(`${addressPrefix}.district` as any, cepAddress.district);
-      setValue(`${addressPrefix}.street` as any, cepAddress.street);
-      setValue(`${addressPrefix}.state` as any, cepAddress.state);
-      setValue(`${addressPrefix}.city` as any, cepAddress.city);
+      setValue(`${addressPrefix}.district` as any, cepAddress.district as any);
+      setValue(`${addressPrefix}.street` as any, cepAddress.street as any);
+      setValue(`${addressPrefix}.state` as any, cepAddress.state as any);
+      setValue(`${addressPrefix}.city` as any, cepAddress.city as any);
     } catch {
       setError('Erro ao buscar endereço do CEP');
     } finally {

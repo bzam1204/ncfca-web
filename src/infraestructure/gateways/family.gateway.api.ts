@@ -1,8 +1,3 @@
-import {Club} from "@/domain/entities/entities";
-
-import {ClubGateway} from "@/application/gateways/club.gateway";
-
-import {PaginatedClubDto, SearchClubsQuery} from "@/contracts/api/club.dto";
 import {FamilyGateway} from "@/application/gateways/family.gateway";
 import {Dependant} from "@/domain/entities/dependant.entity";
 import {NextKeys} from "@/infraestructure/cache/next-keys";

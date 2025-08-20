@@ -9,8 +9,6 @@ export async function getClubAction(clubId: string) {
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     throw new Error('Acesso negado.');
   }
-
-  // Corrigido para usar o gateway correto
-  const gateway = Inject.ClubGateway(session.accessToken);
-  return gateway.getById(clubId);
+  const clubGateway = Inject.ClubGateway(session.accessToken);
+  return clubGateway.getById(clubId);
 }

@@ -8,12 +8,11 @@ import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 
-import {useAdminChangeClubDirectorMutation, useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
+import {useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
 
-import {useNotify} from "@/hooks/use-notify";
 
-import {ChangePrincipalDialog} from "@/app/(admin)/admin/dashboard/clubs/_components/change-principal-dialog";
 import {Club, User} from "@/domain/entities/entities";
+import { ChangePrincipalDialog } from "../[clubId]/_components/change-principal-dialog";
 
 interface ClubsTableProps {
   initialClubs: Club[];
@@ -23,26 +22,14 @@ interface ClubsTableProps {
 export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
   const {data : session} = useSession();
   const accessToken = session?.accessToken ?? '';
-  const notify = useNotify();
 
   const {data : clubs = initialClubs} = useAdminListClubs(accessToken);
-  const {mutate : changeDirector, isPending} = useAdminChangeClubDirectorMutation();
 
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
 
   const findDirectorName = (principalId: string) => {
     const director = allUsers.find(user => user.id === principalId);
     return director ? `${director.firstName} ${director.lastName}` : 'Desconhecido';
-  };
-
-  const handleDirectorChange = (clubId: string, newDirectorId: string) => {
-    changeDirector({clubId, data : {newDirectorId}, accessToken}, {
-      onSuccess : () => {
-        notify.success("Diretor do clube alterado com sucesso.");
-        setSelectedClub(null);
-      },
-      onError : (error) => notify.error(error.message),
-    });
   };
 
   return (
@@ -61,7 +48,7 @@ export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
               {clubs.map(club => (
                   <TableRow key={club.id}>
                     <TableCell className="font-medium">{club.name}</TableCell>
-                    <TableCell>{`${club.city}, ${club.state}`}</TableCell>
+                    <TableCell>{`${club.address.city}, ${club.address.state}`}</TableCell>
                     <TableCell>{findDirectorName(club.principalId)}</TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
@@ -86,10 +73,7 @@ export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
         <ChangePrincipalDialog
             isOpen={!!selectedClub}
             club={selectedClub}
-            users={allUsers}
-            isPending={isPending}
             onClose={() => setSelectedClub(null)}
-            onSubmit={handleDirectorChange}
         />
       </>
   );

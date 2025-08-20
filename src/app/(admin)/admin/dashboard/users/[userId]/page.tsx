@@ -7,7 +7,6 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {AlertTriangle, User, Home, Users as FamilyIcon} from "lucide-react";
 import {FamilyResponseDto} from "@/contracts/api/family.dto";
 import {DependantRelationshipTranslation} from "@/domain/enums/dependant-relationship.enum";
-import {Button} from "@/components/ui/button";
 import {BackButton} from "@/components/ui/back-button";
 import {UserActions} from "./_components/user-actions";
 import {UserDto} from "@/contracts/api/user.dto";

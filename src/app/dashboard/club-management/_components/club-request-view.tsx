@@ -18,7 +18,7 @@ export function ClubRequestView({ initialRequests }: { initialRequests: ClubRequ
           <Hourglass className="h-4 w-4" />
           <AlertTitle>Solicitação em Análise</AlertTitle>
           <AlertDescription>
-            Sua solicitação para criar o clube "{pendingRequest.clubName}" foi recebida e está sendo analisada pela administração.
+            Sua solicitação para criar o clube &quot;{pendingRequest.clubName}&quot; foi recebida e está sendo analisada pela administração.
           </AlertDescription>
         </Alert>
     );

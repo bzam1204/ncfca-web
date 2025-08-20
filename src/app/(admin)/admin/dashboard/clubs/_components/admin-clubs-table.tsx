@@ -1,9 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useQueryClient } from '@tanstack/react-query';
 import { useSearchClubs } from '@/hooks/use-search-clubs';
 import { useDebounce } from '@/hooks/use-debounce';
 import { SearchClubsQuery } from '@/contracts/api/club.dto';

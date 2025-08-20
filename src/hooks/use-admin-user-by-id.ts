@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { User } from '@/domain/entities/entities';
 import { getUserByIdAction } from '@/infraestructure/actions/admin/get-user-by-id.action';
 import { QueryKeys } from '@/infraestructure/cache/query-keys';
 

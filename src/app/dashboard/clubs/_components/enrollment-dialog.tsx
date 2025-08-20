@@ -13,7 +13,7 @@ import {useRequestEnrollment} from "@/hooks/use-request-enrollment";
 import {useGetDependants} from "@/hooks/use-get-dependants";
 import {useNotify} from '@/hooks/use-notify';
 
-import {ClubDto} from '@/contracts/api/club.dto';
+import {Club} from '@/domain/entities/entities';
 
 export function EnrollmentDialog({club, isOpen, onClose}: EnrollmentDialogProps) {
   const [selectedDependantId, setSelectedDependantId] = useState<string>('');
@@ -92,5 +92,5 @@ export function EnrollmentDialog({club, isOpen, onClose}: EnrollmentDialogProps)
 interface EnrollmentDialogProps {
   onClose: () => void;
   isOpen: boolean;
-  club: ClubDto | null;
+  club: Club | null;
 }

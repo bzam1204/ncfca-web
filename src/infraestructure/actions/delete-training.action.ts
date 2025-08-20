@@ -6,6 +6,6 @@ import {auth} from "@/infraestructure/auth";
 export async function deleteTrainingAction(id: string): Promise<void> {
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
-  const deleteTraining = Inject.DeleteTraining(session.accessToken);
-  return deleteTraining.execute(id);
+  const trainingGateway = Inject.TrainingGateway(session.accessToken);
+  return trainingGateway.deleteTraining(id);
 }

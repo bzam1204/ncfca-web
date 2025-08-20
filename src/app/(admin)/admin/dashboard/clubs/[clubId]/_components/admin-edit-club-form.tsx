@@ -32,10 +32,9 @@ const editClubSchema = z.object({
     city : z.string().min(3, 'A cidade é obrigatória.'),
     state : z.string().length(2, 'O estado deve ser uma sigla de 2 letras (UF).').toUpperCase(),
   }),
-  maxMembers : z.preprocess(
-      (val) => (val === "" ? null : Number(val)),
-      z.number().min(1, "O número mínimo de membros é 1.").nullable()
-  )
+  maxMembers: z.string().optional().refine(val => !val || /^[1-9]\d*$/.test(val), {
+    message: "Deve ser um número positivo.",
+  }),
 });
 
 type EditClubInput = z.infer<typeof editClubSchema>;
@@ -61,7 +60,7 @@ export function AdminEditClubForm({club, onSuccess}: AdminEditClubFormProps) {
         city : club.address.city || '',
         state : club.address.state || '',
       },
-      maxMembers : club.maxMembers || "",
+      maxMembers : club.maxMembers?.toString() || '',
     }
   });
 
@@ -76,7 +75,7 @@ export function AdminEditClubForm({club, onSuccess}: AdminEditClubFormProps) {
   const onSubmit = (data: EditClubInput) => {
     const payload = {
       name : data.name,
-      maxMembers : data.maxMembers,
+      maxMembers : data.maxMembers ? Number(data.maxMembers) : null,
       address : data.address,
     };
 
@@ -159,7 +158,7 @@ export function AdminEditClubForm({club, onSuccess}: AdminEditClubFormProps) {
             <Label htmlFor="maxMembers" className="text-right">
               Nº Máximo de Membros
             </Label>
-            <Input id="maxMembers" type="number" {...register('maxMembers')} className="col-span-3" />
+            <Input id="maxMembers" type="text" inputMode="numeric" pattern="[0-9]*" {...register('maxMembers')} className="col-span-3" />
             {errors.maxMembers && <p className="col-span-4 text-red-500 text-sm">{errors.maxMembers.message}</p>}
           </div>
           <DialogFooter>

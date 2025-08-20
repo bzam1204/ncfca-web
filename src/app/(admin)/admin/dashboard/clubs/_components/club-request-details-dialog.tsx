@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -33,7 +33,7 @@ interface ClubRequestDetailsDialogProps {
 const InfoField = ({ icon: Icon, label, value }: {
   icon: React.ElementType,
   label: string,
-  value: string | undefined | null
+  value: React.ReactNode
 }) => (
   <div className="flex items-center gap-3 text-sm">
     <Icon className="h-4 w-4 text-muted-foreground" />
@@ -198,7 +198,7 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
               <InfoField icon={FileText} label="ID da Solicitação" value={request.id} />
               <div className="text-sm text-muted-foreground">
                 Esta é uma solicitação para criar um novo clube na plataforma.
-                O solicitante deseja estabelecer o clube "{request.clubName}".
+                O solicitante deseja estabelecer o clube &quot;{request.clubName}&quot;.
               </div>
             </div>
           </div>

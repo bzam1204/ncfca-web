@@ -1,3 +1,12 @@
+export interface HolderDto {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  cpf: string;
+}
+
 export interface ClubMemberDto {
   id: string;
   dependantId: string;
@@ -10,12 +19,5 @@ export interface ClubMemberDto {
   dependantBirthDate: string;
   joinedAt: string;
   status: string;
-  holder: {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    cpf: string;
-  };
+  holder: HolderDto;
 }

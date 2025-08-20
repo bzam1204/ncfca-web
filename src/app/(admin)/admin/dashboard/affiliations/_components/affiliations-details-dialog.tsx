@@ -25,9 +25,9 @@ const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';
   return new Date(dateString).toLocaleDateString('pt-BR', {year : 'numeric', month : 'long', day : 'numeric'});
 };
-
 export function AffiliationDetailsDialog({isOpen, onClose, affiliation}: AffiliationDetailsDialogProps) {
   if (!affiliation) return null;
+  console.log({affiliation})
 
   return (
       <Dialog open={isOpen} onOpenChange={onClose}>

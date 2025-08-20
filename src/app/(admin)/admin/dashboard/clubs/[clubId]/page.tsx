@@ -9,11 +9,7 @@ import {AdminClubManagementClient} from "@/app/(admin)/admin/dashboard/clubs/[cl
 import {ClubActionsBar} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/club-actions-bar";
 import {Skeleton} from "@/components/ui/skeleton";
 
-interface AdminClubDetailsPageProps {
-  params: {
-    clubId: string;
-  };
-}
+
 
 async function ClubDetailsLoader({ clubId }: { clubId: string }) {
   const club = await getClubAction(clubId);
@@ -28,7 +24,14 @@ async function ClubDetailsLoader({ clubId }: { clubId: string }) {
   );
 }
 
+interface AdminClubDetailsPageProps {
+  params: Promise<{
+    clubId: string;
+  }>;
+}
+
 export default async function AdminClubDetailsPage({ params }: AdminClubDetailsPageProps) {
+  const { clubId } = await params;
   const session = await auth();
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     redirect('/login');
@@ -38,7 +41,7 @@ export default async function AdminClubDetailsPage({ params }: AdminClubDetailsP
       <div className="space-y-4">
         <BackButton>Voltar</BackButton>
         <Suspense fallback={<Skeleton className="h-[400px] w-full" />}>
-          <ClubDetailsLoader clubId={params.clubId} />
+          <ClubDetailsLoader clubId={clubId} />
         </Suspense>
       </div>
   );

@@ -7,7 +7,6 @@ import { z } from 'zod';
 import { useSession } from 'next-auth/react';
 import { useUpdateMyClub } from '@/hooks/use-update-my-club';
 import { useNotify } from '@/hooks/use-notify';
-import { ClubDto } from '@/contracts/api/club.dto';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -35,10 +34,9 @@ const editClubSchema = z.object({
     city: z.string().min(3, 'A cidade é obrigatória.'),
     state: z.string().length(2, 'O estado deve ser uma sigla de 2 letras (UF).').toUpperCase(),
   }),
-  maxMembers: z.preprocess(
-    (val) => (val === "" ? null : Number(val)),
-    z.number().min(1, "O número mínimo de membros é 1.").nullable()
-  )
+  maxMembers: z.union([z.number(), z.null()]).refine(val => val === null || val >= 1, {
+    message: "O número mínimo de membros é 1."
+  })
 });
 
 type EditClubInput = z.infer<typeof editClubSchema>;
@@ -65,7 +63,7 @@ export function EditClubForm({ club, onSuccess }: EditClubFormProps) {
         city: club.address.city || '',
         state: club.address.state || '',
       },
-      maxMembers: club.maxMembers || "",
+      maxMembers: club.maxMembers || null,
     }
   });
 

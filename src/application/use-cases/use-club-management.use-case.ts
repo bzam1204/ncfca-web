@@ -2,7 +2,7 @@
 
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {RejectEnrollmentDto, UpdateClubDto} from '@/contracts/api/club-management.dto';
-import {ClubDto} from '@/contracts/api/club.dto';
+import {Club} from '@/domain/entities/entities';
 import {EnrollmentRequestDto, PendingEnrollmentDto} from '@/contracts/api/enrollment.dto';
 import {ClubMemberDto} from '@/contracts/api/club-member.dto';
 
@@ -10,7 +10,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 // --- API FETCHING FUNCTIONS ---
 
-const getMyClub = async (accessToken: string): Promise<ClubDto | null> => {
+const getMyClub = async (accessToken: string): Promise<Club | null> => {
   const res = await fetch(`${BACKEND_URL}/club-management/my-club`, {
     headers : {'Authorization' : `Bearer ${accessToken}`}
   });

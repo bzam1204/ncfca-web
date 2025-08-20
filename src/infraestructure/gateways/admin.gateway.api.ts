@@ -6,7 +6,6 @@ import {ChangePrincipalDto, UpdateClubByAdminDto} from "@/contracts/api/admin.dt
 import {SearchUsersQuery, PaginatedUsersDto} from "@/contracts/api/user.dto";
 
 import {NextKeys} from "@/infraestructure/cache/next-keys";
-import {revalidateTag} from "next/cache";
 
 export class AdminGatewayApi implements AdminGateway {
   private readonly baseUrl: string;

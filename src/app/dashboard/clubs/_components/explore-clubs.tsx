@@ -63,9 +63,9 @@ export function ExploreClubs() {
                           <Button 
                             className="w-full cursor-pointer" 
                             onClick={() => setSelectedClub(club)}
-                            disabled={club.maxMembers !== null && club.corum >= club.maxMembers}
+                            disabled={club.maxMembers !== null && club.maxMembers !== undefined && club.corum >= club.maxMembers}
                           >
-                            {club.maxMembers !== null && club.corum >= club.maxMembers ? 'Clube Cheio' : 'Solicitar Matrícula'}
+                            {club.maxMembers !== null && club.maxMembers !== undefined && club.corum >= club.maxMembers ? 'Clube Cheio' : 'Solicitar Matrícula'}
                           </Button>
                         </CardContent>
                       </Card>

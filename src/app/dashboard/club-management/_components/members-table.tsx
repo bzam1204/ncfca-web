@@ -68,9 +68,9 @@ export function MembersTable() {
                   members.map(member => (
                       <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
                         <TableCell className="font-medium flex items-center gap-3">
-                          {member.firstName} {member.lastName}
+                          {member.dependantName}
                         </TableCell>
-                        <TableCell>{member.memberSince ? new Date(member.memberSince).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
+                        <TableCell>{member.joinedAt ? new Date(member.joinedAt).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <AlertDialog>
                             <DropdownMenu>
@@ -97,7 +97,7 @@ export function MembersTable() {
                               <AlertDialogHeader>
                                 <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Esta ação irá remover permanentemente {member.firstName} do seu clube.
+                                  Esta ação irá remover permanentemente {member.dependantName} do seu clube.
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
