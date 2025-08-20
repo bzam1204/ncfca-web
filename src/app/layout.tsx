@@ -21,12 +21,13 @@ export const viewport: Viewport = {
   width : 'device-width',
   initialScale : 1,
   maximumScale : 1,
+  userScalable : false,
 };
 
 export default function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) {
   return (
       <html lang="pt-BR">
-      <body className={inter.className + " w-screen h-screen bg-gray-200 overflow-hidden"}>
+      <body className={inter.className + " w-screen h-screen bg-gray-200"}>
       <SessionProvider>
         <SessionManager />
         <QueryProvider>
