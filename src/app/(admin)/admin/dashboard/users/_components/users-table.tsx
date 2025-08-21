@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useAdminManageUserRoleMutation } from "@/application/use-cases/use-admin-management.use-case";
+import { useAdminManageUserRoleMutation } from "@/hooks/use-admin-manage-user-role";
 import { UserDto } from "@/contracts/api/user.dto";
 import { ManageUserRoleDto } from "@/contracts/api/admin.dto";
 import { useNotify } from "@/hooks/use-notify";
@@ -20,16 +19,12 @@ interface UsersTableProps {
 
 export function UsersTable({ users }: UsersTableProps) {
   const router = useRouter();
-  const { data: session } = useSession();
-  const accessToken = session?.accessToken ?? '';
   const notify = useNotify();
-
   const { mutate: manageRole, isPending } = useAdminManageUserRoleMutation();
-
   const [userForRoleManagement, setUserForRoleManagement] = useState<UserDto | null>(null);
 
   const handleRoleChange = (userId: string, roles: ManageUserRoleDto) => {
-    manageRole({ userId, data: roles, accessToken }, {
+    manageRole({ userId, data: roles }, {
       onSuccess: () => {
         notify.success("Perfis do usuário atualizados com sucesso.");
         setUserForRoleManagement(null);

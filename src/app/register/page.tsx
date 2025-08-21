@@ -11,7 +11,7 @@ import {Input} from '@/components/ui/input';
 import {Label} from '@/components/ui/label';
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from '@/components/ui/card';
 import {registerSchema, type RegisterInput} from '@/infraestructure/validators/register.schema';
-import {useRegisterUser} from "@/application/use-cases/use-register-user.use-case";
+import {useRegisterUserMutation} from "@/hooks/use-register-user";
 import {useCepAutocomplete} from "@/hooks/use-cep-autocomplete";
 import {viaCepService} from "@/infraestructure/services/via-cep.service";
 import {useNotify} from "@/hooks/use-notify";
@@ -21,7 +21,7 @@ import {StateCombobox} from "@/app/_components/state-combobox";
 export default function RegisterPage() {
   const router = useRouter();
   const notify = useNotify();
-  const {mutate : register, isPending : isRegistering, error : registerError, isSuccess} = useRegisterUser();
+  const {mutate : register, isPending : isRegistering, error : registerError, isSuccess} = useRegisterUserMutation();
   const {
     register : formRegister,
     handleSubmit,
@@ -48,7 +48,7 @@ export default function RegisterPage() {
     notify.error(registerError.message || 'Erro ao registrar usuário');
   }, [registerError, notify]);
   const onSubmit = (data: RegisterInput) => {
-    register(data);
+    register({ userData: data });
   };
   return (
       <div className="flex items-start justify-center max-h-screen py-8 px-2 overflow-y-auto">

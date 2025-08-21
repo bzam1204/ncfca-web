@@ -1,14 +1,14 @@
 'use client';
 
 import {useState} from "react";
-import {useSession} from "next-auth/react";
 import {MoreHorizontal} from "lucide-react";
 
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from "@/components/ui/button";
 
-import {useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
+// TODO: Migrar para novo padrão Hook → Action → Gateway
+// import {useAdminListClubs} from "@/application/use-cases/use-admin-management.use-case";
 
 
 import {Club, User} from "@/domain/entities/entities";
@@ -20,10 +20,11 @@ interface ClubsTableProps {
 }
 
 export function ClubsTable({initialClubs, allUsers}: ClubsTableProps) {
-  const {data : session} = useSession();
-  const accessToken = session?.accessToken ?? '';
-
-  const {data : clubs = initialClubs} = useAdminListClubs(accessToken);
+  // TODO: Migrar para novo padrão Hook → Action → Gateway
+  // const {data : session} = useSession();
+  // const accessToken = session?.accessToken ?? '';
+  // const {data : clubs = initialClubs} = useAdminListClubs(accessToken);
+  const clubs = initialClubs; // Usar dados iniciais até migração completa
 
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
 

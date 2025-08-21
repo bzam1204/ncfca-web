@@ -1,8 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
-import {useDependantDetailsQuery} from '@/application/use-cases/use-dependant-details.use-case';
+import {useDependantDetails} from '@/hooks/use-dependant-details';
 import {
   useAdminApproveEnrollmentMutation,
   useAdminRejectEnrollmentMutation
@@ -63,9 +62,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess, c
     formState : {errors}
   } = useForm<RejectionInput>({resolver : zodResolver(rejectionSchema)});
 
-  const {data : session} = useSession();
-  const accessToken = session?.accessToken ?? '';
-  const {data : dependant, isLoading, error} = useDependantDetailsQuery(request?.dependantId ?? null, accessToken);
+  const {data : dependant, isLoading, error} = useDependantDetails(request?.dependantId ?? null);
 
   const notify = useNotify();
   const {mutate : approve, isPending : isApproving} = useAdminApproveEnrollmentMutation();
@@ -120,9 +117,9 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess, c
                         className="mr-2 h-4 w-4" /> Responsável Familiar</h3>
                     <div className="space-y-2 pl-6 border-l ml-2">
                       <InfoField icon={User} label="Nome"
-                                 value={`${dependant.holder.firstName} ${dependant.holder.lastName}`} />
-                      <InfoField icon={Mail} label="Email" value={dependant.holder.email} />
-                      <InfoField icon={Phone} label="Telefone" value={dependant.holder.phone} />
+                                 value={`${dependant.firstName} ${dependant.lastName}`} />
+                      <InfoField icon={Mail} label="Email" value={dependant.email} />
+                      <InfoField icon={Phone} label="Telefone" value={dependant.phone} />
                     </div>
                   </div>
 

@@ -18,6 +18,11 @@ export const QueryKeys = {
     myClub : () => [...QueryKeys.clubs.all, 'my-club'] as const,
     details : (clubId: string) => [...QueryKeys.clubs.all, 'details', clubId] as const,
   },
+  club : {
+    members : (clubId: string) => ['club', clubId, 'members'] as const,
+    enrollmentHistory : (clubId: string) => ['club', clubId, 'enrollment-history'] as const,
+    pendingEnrollments : (clubId: string) => ['club', clubId, 'pending-enrollments'] as const,
+  },
   clubRequests : {
     all : ['clubRequests'] as const,
     admin : {
@@ -29,6 +34,7 @@ export const QueryKeys = {
     all : ['trainings'] as const,
   },
   admin : {
+    affiliations : () => ['admin', 'affiliations'] as const,
     clubs : () => ['admin', 'clubs'] as const,
     clubById : (clubId: string) => ['admin', 'clubs', clubId] as const,
     clubMembers : (clubId: string) => ['admin', 'clubs', clubId, 'members'] as const,

@@ -1,12 +1,11 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
+import {usePendingEnrollmentsQuery} from '@/hooks/use-pending-enrollments';
 import {
   useApproveEnrollmentMutation,
-  usePendingEnrollmentsQuery,
   useRejectEnrollmentMutation
-} from '@/application/use-cases/use-club-management.use-case';
+} from '@/hooks/use-club-enrollment-actions';
 import {useNotify} from '@/hooks/use-notify';
 import {EnrollmentRequestDto, PendingEnrollmentDto} from '@/contracts/api/enrollment.dto';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
@@ -21,40 +20,35 @@ import {QuickRejectEnrollmentDialog} from "@/app/_components/quick-reject-enroll
 
 interface PendingRequestsTableProps {
   clubId: string;
-  accessToken: string;
 }
 
-export function PendingRequestsTable({clubId, accessToken}: PendingRequestsTableProps) {
-  // O componente agora busca seus próprios dados.
+export function PendingRequestsTable({clubId}: PendingRequestsTableProps) {
   const {
     data : requests = [],
     isLoading,
     error,
     refetch,
     isRefetching
-  } = usePendingEnrollmentsQuery(clubId, accessToken);
+  } = usePendingEnrollmentsQuery(clubId);
   const [requestToReject, setRequestToReject] = useState<EnrollmentRequestDto | null>(null);
   const [rejectionTarget, setRejectionTarget] = useState<EnrollmentRequestDto | null>(null);
-
-  const {data : session} = useSession();
   const [selectedRequest, setSelectedRequest] = useState<PendingEnrollmentDto | null>(null);
   const {mutate : approve, isPending : isApproving} = useApproveEnrollmentMutation();
   const {mutate : reject, isPending : isRejecting} = useRejectEnrollmentMutation();
   const notify = useNotify();
 
   const handleQuickApprove = (id: string) => {
-    if (!session?.accessToken) return;
-    approve({enrollmentId : id, accessToken : session.accessToken}, {
+    approve({clubId, enrollmentId : id}, {
       onSuccess : () => notify.success("Matrícula aprovada!"),
       onError : (e) => notify.error(e.message),
     });
   };
   const handleQuickRejectSubmit = ({reason}: {reason: string}) => {
-    if (!rejectionTarget || !session?.accessToken) return;
-    reject({enrollmentId : rejectionTarget.id, data : {reason}, accessToken : session.accessToken}, {
+    if (!rejectionTarget) return;
+    reject({clubId, enrollmentId : rejectionTarget.id, rejectionReason : reason}, {
       onSuccess : () => {
         notify.success("Matrícula rejeitada.");
-        setRejectionTarget(null); // Fecha o modal
+        setRejectionTarget(null);
       },
       onError : (e) => notify.error(e.message),
     });
@@ -62,7 +56,7 @@ export function PendingRequestsTable({clubId, accessToken}: PendingRequestsTable
 
   const handleRejectSubmit = (reason: string) => {
     if (!requestToReject) return;
-    reject({enrollmentId : requestToReject.id, data : {reason}, accessToken : session!.accessToken!}, {
+    reject({clubId, enrollmentId : requestToReject.id, rejectionReason : reason}, {
       onSuccess : () => {
         notify.success("Matrícula rejeitada.");
         setRequestToReject(null);
@@ -134,6 +128,7 @@ export function PendingRequestsTable({clubId, accessToken}: PendingRequestsTable
             request={selectedRequest}
             onOpenChange={(isOpen) => !isOpen && setSelectedRequest(null)}
             onSuccess={() => setSelectedRequest(null)}
+            clubId={clubId}
         />
         <RejectEnrollmentDialog
             isOpen={!!requestToReject}

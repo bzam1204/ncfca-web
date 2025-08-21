@@ -1,7 +1,6 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
 import {Button} from '@/components/ui/button';
 import {Card, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
@@ -17,7 +16,6 @@ import {Club} from "@/domain/entities/entities";
 import {ClubDashboardTab} from "@/app/dashboard/club-management/_components/club-dashboard-tab";
 
 export function ClubManagementClient({initialClub}: {initialClub: Club | null}) {
-  const {data : session} = useSession(); // Apenas para pegar o accessToken
   const {data : myClub, error, isFetching, refetch} = useMyClub(initialClub);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
@@ -65,13 +63,13 @@ export function ClubManagementClient({initialClub}: {initialClub: Club | null}) 
               <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
             </TabsList>
             <TabsContent value="dashboard" className="mt-6">
-              <ClubDashboardTab />
+              <ClubDashboardTab clubId={myClub.id} />
             </TabsContent>
             <TabsContent value="requests" className="mt-6">
-              <PendingRequestsTable clubId={myClub.id} accessToken={session?.accessToken ?? ''} />
+              <PendingRequestsTable clubId={myClub.id} />
             </TabsContent>
             <TabsContent value="members" className="mt-6">
-              <MembersTable />
+              <MembersTable clubId={myClub.id} />
             </TabsContent>
             <TabsContent value="trainings" className="mt-6">
               <TrainingsTab />

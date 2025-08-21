@@ -1,11 +1,13 @@
-import {auth} from '@/infraestructure/auth';
+'use client';
+
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 import {CheckCircle, AlertTriangle, XCircle, Clock} from 'lucide-react';
 import {familyStatusTranslation, getFamilyStatusVariant} from '@/infraestructure/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {getMyFamily} from "@/application/use-cases/use-my-family.use-case";
+import {useMyFamily} from "@/hooks/use-my-family";
+import {Skeleton} from "@/components/ui/skeleton";
 
 const formatDate = (dateString: string | null) => {
   if (!dateString) return 'N/A';
@@ -20,21 +22,22 @@ const formatDate = (dateString: string | null) => {
   }
 };
 
-export default async function AffiliationPage() {
-  const session = await auth();
-  if (!session?.accessToken) {
+export default function AffiliationPage() {
+  const { data: family, isLoading, error } = useMyFamily();
+
+  if (isLoading) {
+    return <Skeleton className="h-64 w-full" />;
+  }
+
+  if (error) {
     return (
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Acesso Negado</AlertTitle>
-          <AlertDescription>
-            Sessão inválida ou expirada. Por favor, faça o login novamente.
-          </AlertDescription>
+          <AlertTitle>Erro ao Carregar</AlertTitle>
+          <AlertDescription>{error.message}</AlertDescription>
         </Alert>
     );
   }
-
-  const family = await getMyFamily(session.accessToken);
 
   if (!family) {
     return (
@@ -55,8 +58,8 @@ export default async function AffiliationPage() {
     [FamilyStatus.NOT_AFFILIATED] : {icon : AlertTriangle, color : 'text-slate-500'},
   };
 
-  const CurrentStatusIcon = statusInfo[family.status]?.icon || AlertTriangle;
-  const currentStatusColor = statusInfo[family.status]?.color || 'text-slate-500';
+  const CurrentStatusIcon = (family as any)?.status ? statusInfo[(family as any).status]?.icon : AlertTriangle;
+  const currentStatusColor = (family as any)?.status ? statusInfo[(family as any).status]?.color : 'text-slate-500';
 
   return (
       <div className="space-y-6">
@@ -72,8 +75,8 @@ export default async function AffiliationPage() {
               <CurrentStatusIcon className={`h-10 w-10 flex-shrink-0 ${currentStatusColor}`} />
               <div className="flex-grow">
                 <p className="text-sm text-muted-foreground">Status Atual</p>
-                <Badge variant={getFamilyStatusVariant(family.status)} className="text-base font-semibold">
-                  {familyStatusTranslation[family.status] || 'Status Desconhecido'}
+                <Badge variant={getFamilyStatusVariant((family as any)?.status)} className="text-base font-semibold">
+                  {familyStatusTranslation[(family as any)?.status] || 'Status Desconhecido'}
                 </Badge>
               </div>
             </div>
@@ -81,11 +84,11 @@ export default async function AffiliationPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="p-4 border rounded-lg">
                 <p className="text-sm text-muted-foreground">Data da Afiliação</p>
-                <p className="text-xl font-semibold">{formatDate(family.affiliatedAt)}</p>
+                <p className="text-xl font-semibold">{formatDate((family as any)?.affiliatedAt)}</p>
               </div>
               <div className="p-4 border rounded-lg">
                 <p className="text-sm text-muted-foreground">Data de Expiração</p>
-                <p className="text-xl font-semibold">{formatDate(family.affiliationExpiresAt)}</p>
+                <p className="text-xl font-semibold">{formatDate((family as any)?.affiliationExpiresAt)}</p>
               </div>
             </div>
           </CardContent>
@@ -95,7 +98,7 @@ export default async function AffiliationPage() {
           <CardHeader>
             <CardTitle>Membros da Família</CardTitle>
             <CardDescription>
-              Sua afiliação inclui {family.dependants.length} dependente(s).
+              Sua afiliação inclui {(family as any)?.dependants?.length || 0} dependente(s).
             </CardDescription>
           </CardHeader>
           <CardContent>

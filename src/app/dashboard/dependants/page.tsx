@@ -1,12 +1,12 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
 import {
+  useGetDependants,
   useAddDependantMutation,
   useUpdateDependantMutation,
   useDeleteDependantMutation
-} from '@/application/use-cases/use-manage-dependants.use-case';
+} from '@/hooks/use-manage-dependants';
 import {useNotify} from '@/hooks/use-notify';
 
 import {Button} from "@/components/ui/button";
@@ -25,7 +25,6 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {DeleteConfirmationDialog} from "@/app/_components/delete-confirmation-dialog";
 import {DependantForm, DependantFormInput} from "@/app/dashboard/dependants/_components/dependant-form";
 import {Dependant} from "@/domain/entities/dependant.entity";
-import {useGetDependants} from "@/hooks/use-get-dependants";
 
 const TableSkeleton = () => (
     <div className="space-y-2 mt-4">
@@ -39,8 +38,6 @@ export default function DependantsPage() {
   const [selectedDependant, setSelectedDependant] = useState<Dependant | null>(null);
 
   const notify = useNotify();
-  const {data : session} = useSession({required : true});
-  const accessToken = session?.accessToken ?? '';
 
   const {mutate : addDependant, isPending : isAdding} = useAddDependantMutation();
   const {mutate : updateDependant, isPending : isUpdating} = useUpdateDependantMutation();
@@ -58,15 +55,15 @@ export default function DependantsPage() {
     const onError = (e: Error) => notify.error(e.message);
 
     if (selectedDependant) {
-      updateDependant({id : selectedDependant.id, data, accessToken}, {onSuccess, onError});
+      updateDependant({dependantId : selectedDependant.id, data}, {onSuccess, onError});
     } else {
-      addDependant({data, accessToken}, {onSuccess, onError});
+      addDependant(data, {onSuccess, onError});
     }
   };
 
   const handleDeleteConfirm = () => {
     if (!selectedDependant) return;
-    deleteDependant({id : selectedDependant.id, accessToken}, {
+    deleteDependant(selectedDependant.id, {
       onSuccess : () => {
         notify.success('Dependente excluído com sucesso!');
         closeDeleteConfirm();

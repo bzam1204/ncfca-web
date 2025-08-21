@@ -2,29 +2,30 @@
 
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {useCheckout} from "@/application/use-cases/use-checkout.use-case";
+import {useCheckout} from "@/hooks/use-checkout";
 import {useSession} from "next-auth/react";
 import {useEffect} from "react";
-import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function CheckoutPage() {
   const {mutate : checkout, isPending, error} = useCheckout();
   const {data : session, status} = useSession();
+  const router = useRouter();
+  
   useEffect(() => {
     if (status === 'unauthenticated') {
       router.push('/login');
     }
-  }, [status]);
+  }, [status, router]);
+  
   const handlePayment = () => {
-    const accessToken = session?.accessToken
-    if (!accessToken) {
+    if (!session?.accessToken) {
       alert("Erro de autenticação. Por favor, faça o login novamente.");
       return;
     }
     checkout({
       paymentMethod : 'CREDIT_CARD',
       paymentToken : 'valid-token',
-      accessToken : accessToken,
     });
   };
   return (

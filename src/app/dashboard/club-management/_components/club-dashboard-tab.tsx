@@ -2,8 +2,8 @@
 'use client';
 
 import {useState, useMemo} from 'react';
-import {useSession} from 'next-auth/react';
-import {useClubMembersQuery, useEnrollmentHistoryQuery} from '@/application/use-cases/use-club-management.use-case';
+import {useClubMembersQuery} from '@/hooks/use-club-members';
+import {useEnrollmentHistoryQuery} from '@/hooks/use-enrollment-history';
 import {Card, CardContent, CardHeader, CardTitle} from '@/components/ui/card';
 import {Skeleton} from '@/components/ui/skeleton';
 import {Alert, AlertDescription, AlertTitle} from '@/components/ui/alert';
@@ -34,17 +34,19 @@ const calculateAge = (birthdate: string | Date): number => {
   return age;
 };
 
-export function ClubDashboardTab() {
-  const {data : session} = useSession();
-  const accessToken = session?.accessToken ?? '';
+interface ClubDashboardTabProps {
+  clubId: string;
+}
+
+export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
   const [period, setPeriod] = useState(12);
 
-  const {data : members = [], isLoading : isLoadingMembers, error : errorMembers} = useClubMembersQuery(accessToken);
+  const {data : members = [], isLoading : isLoadingMembers, error : errorMembers} = useClubMembersQuery(clubId);
   const {
     data : allRequests = [],
     isLoading : isLoadingHistory,
     error : errorHistory
-  } = useEnrollmentHistoryQuery(accessToken);
+  } = useEnrollmentHistoryQuery(clubId);
 
   const isLoading = isLoadingMembers || isLoadingHistory;
 

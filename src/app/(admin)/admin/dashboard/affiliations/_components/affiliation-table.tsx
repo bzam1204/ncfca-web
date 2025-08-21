@@ -2,8 +2,7 @@
 'use client';
 
 import { useState } from "react";
-import { useSession } from "next-auth/react";
-import { useAdminListAffiliations } from "@/application/use-cases/use-admin-management.use-case";
+import { useAdminAffiliations } from "@/hooks/use-admin-affiliations";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { familyStatusTranslation, getFamilyStatusVariant } from "@/infraestructure/translations";
@@ -18,11 +17,8 @@ const formatDate = (dateString: string | null) => {
 };
 
 export function AffiliationsTable({ initialData }: { initialData: AffiliationDto[] }) {
-  const { data: session } = useSession();
-  const accessToken = session?.accessToken ?? '';
-
   const [selectedAffiliation, setSelectedAffiliation] = useState<AffiliationDto | null>(null);
-  const { data: affiliations = initialData } = useAdminListAffiliations(accessToken);
+  const { data: affiliations = initialData } = useAdminAffiliations();
 
   return (
       <>

@@ -4,7 +4,7 @@ import { ClubGateway } from "@/application/gateways/club.gateway";
 
 import { PaginatedClubDto, SearchClubsQuery } from "@/contracts/api/club.dto";
 import { UpdateClubDto } from "@/contracts/api/club-management.dto";
-import { NextKeys } from "@/infraestructure/cache/next-keys";
+import { ClubMemberDto } from "@/contracts/api/club-member.dto";
 
 export class ClubGatewayApi implements ClubGateway {
   constructor(
@@ -81,6 +81,79 @@ export class ClubGatewayApi implements ClubGateway {
       return this.myClub();
     }
 
+    return res.json();
+  }
+
+  async getMembers(clubId: string): Promise<ClubMemberDto[]> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/members`, {
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar membros do clube');
+    }
+    return res.json();
+  }
+
+  async getEnrollmentHistory(clubId: string): Promise<any[]> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollment-history`, {
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar histórico de matrículas');
+    }
+    return res.json();
+  }
+
+  async revokeMembership(clubId: string, memberId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/members/${memberId}`, {
+      method: 'DELETE',
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao revogar membership');
+    }
+  }
+
+  async approveEnrollment(clubId: string, enrollmentId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/${enrollmentId}/approve`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao aprovar matrícula');
+    }
+  }
+
+  async rejectEnrollment(clubId: string, enrollmentId: string, payload: { rejectionReason: string }): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/${enrollmentId}/reject`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao rejeitar matrícula');
+    }
+  }
+
+  async getPendingEnrollments(clubId: string): Promise<any[]> {
+    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/pending`, {
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar matrículas pendentes');
+    }
     return res.json();
   }
 

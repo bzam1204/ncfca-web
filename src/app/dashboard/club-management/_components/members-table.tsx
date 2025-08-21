@@ -1,8 +1,8 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
-import {useClubMembersQuery, useRevokeMembershipMutation} from '@/application/use-cases/use-club-management.use-case';
+import {useClubMembersQuery} from '@/hooks/use-club-members';
+import {useRevokeMembershipMutation} from '@/hooks/use-revoke-membership';
 import {useNotify} from '@/hooks/use-notify';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table";
 import {Button} from '@/components/ui/button';
@@ -30,18 +30,19 @@ import {
 import {ClubMemberDto} from "@/contracts/api/club-member.dto";
 import {MemberDetailsDialog} from './member-details';
 
-export function MembersTable() {
-  const {data : session} = useSession();
-  const accessToken = session?.accessToken ?? '';
+interface MembersTableProps {
+  clubId: string;
+}
+
+export function MembersTable({ clubId }: MembersTableProps) {
   const notify = useNotify();
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
 
-  const {data : members = [], isLoading, error, isRefetching, refetch} = useClubMembersQuery(accessToken);
+  const {data : members = [], isLoading, error, isRefetching, refetch} = useClubMembersQuery(clubId);
   const {mutate : revoke, isPending} = useRevokeMembershipMutation();
 
-  const handleRevoke = (membershipId: string) => {
-    if (!accessToken) return;
-    revoke({membershipId, accessToken}, {
+  const handleRevoke = (memberId: string) => {
+    revoke({clubId, memberId}, {
       onSuccess : () => notify.success("Membro removido do clube."),
       onError : (e) => notify.error(e.message),
     });

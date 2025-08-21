@@ -1,12 +1,11 @@
 'use client';
 
 import {useState} from 'react';
-import {useSession} from 'next-auth/react';
-import {useDependantDetailsQuery} from '@/application/use-cases/use-dependant-details.use-case';
+import {useDependantDetails} from '@/hooks/use-dependant-details';
 import {
   useApproveEnrollmentMutation,
   useRejectEnrollmentMutation
-} from '@/application/use-cases/use-club-management.use-case';
+} from '@/hooks/use-club-enrollment-actions';
 import {useNotify} from '@/hooks/use-notify';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -40,6 +39,7 @@ interface PendingRequestDetailsDialogProps {
   request: EnrollmentRequestDto | null;
   onOpenChange: (isOpen: boolean) => void;
   onSuccess: () => void;
+  clubId: string;
 }
 
 const InfoField = ({icon : Icon, label, value}: {
@@ -54,7 +54,7 @@ const InfoField = ({icon : Icon, label, value}: {
     </div>
 );
 
-export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: PendingRequestDetailsDialogProps) {
+export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess, clubId}: PendingRequestDetailsDialogProps) {
   const [isRejectionMode, setRejectionMode] = useState(false);
   const {
     register,
@@ -62,9 +62,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: 
     formState : {errors}
   } = useForm<RejectionInput>({resolver : zodResolver(rejectionSchema)});
 
-  const {data : session} = useSession();
-  const accessToken = session?.accessToken ?? '';
-  const {data : dependant, isLoading, error} = useDependantDetailsQuery(request?.dependantId ?? null, accessToken);
+  const {data : dependant, isLoading, error} = useDependantDetails(request?.dependantId ?? null);
 
   const notify = useNotify();
   const {mutate : approve, isPending : isApproving} = useApproveEnrollmentMutation();
@@ -72,7 +70,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: 
 
   const handleApprove = () => {
     if (!request) return;
-    approve({enrollmentId : request.id, accessToken}, {
+    approve({clubId, enrollmentId : request.id}, {
       onSuccess : () => {
         notify.success("Matrícula aprovada com sucesso.");
         onSuccess();
@@ -83,7 +81,7 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: 
 
   const handleRejectSubmit = (data: RejectionInput) => {
     if (!request) return;
-    reject({enrollmentId : request.id, data : {reason : data.reason}, accessToken}, {
+    reject({clubId, enrollmentId : request.id, rejectionReason : data.reason}, {
       onSuccess : () => {
         notify.success("Matrícula rejeitada.");
         setRejectionMode(false);
@@ -119,9 +117,9 @@ export function PendingRequestDetailsDialog({request, onOpenChange, onSuccess}: 
                         className="mr-2 h-4 w-4" /> Responsável Familiar</h3>
                     <div className="space-y-2 pl-6 border-l ml-2">
                       <InfoField icon={User} label="Nome"
-                                 value={`${dependant.holder.firstName} ${dependant.holder.lastName}`} />
-                      <InfoField icon={Mail} label="Email" value={dependant.holder.email} />
-                      <InfoField icon={Phone} label="Telefone" value={dependant.holder.phone} />
+                                 value={`${dependant.firstName} ${dependant.lastName}`} />
+                      <InfoField icon={Mail} label="Email" value={dependant.email} />
+                      <InfoField icon={Phone} label="Telefone" value={dependant.phone} />
                     </div>
                   </div>
 

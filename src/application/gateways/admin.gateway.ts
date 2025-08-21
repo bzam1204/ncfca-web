@@ -1,6 +1,6 @@
 import { Club, User } from "@/domain/entities/entities";
 import { EnrollmentRequest } from "@/domain/entities/enrollment-request.entity";
-import { ChangePrincipalDto, UpdateClubByAdminDto } from "@/contracts/api/admin.dto";
+import { ChangePrincipalDto, UpdateClubByAdminDto, ManageUserRoleDto } from "@/contracts/api/admin.dto";
 import { SearchUsersQuery, PaginatedUsersDto, UserDto } from "@/contracts/api/user.dto";
 import { ClubMemberDto } from "@/contracts/api/club-member.dto";
 import { AdminClubChartsDto } from "@/contracts/api/admin-charts.dto";
@@ -25,9 +25,7 @@ export interface AdminGateway {
 
   updateClub(clubId: string, payload: UpdateClubByAdminDto): Promise<Club>;
 
-
   getClubMembers(clubId: string): Promise<ClubMemberDto[]>;
-
 
   getClubCharts(clubId: string): Promise<AdminClubChartsDto>;
 
@@ -38,4 +36,10 @@ export interface AdminGateway {
   getUserFamily(userId: string): Promise<{ user: UserDto; family: FamilyResponseDto }>;
 
   getClubEnrollmentsPending(clubId: string): Promise<PendingEnrollmentDto[]>;
+
+  /**
+   * Gerencia os perfis/roles de um usuário
+   * OpenAPI: PATCH /admin/users/{userId}/roles
+   */
+  manageUserRole(userId: string, data: ManageUserRoleDto): Promise<void>;
 }

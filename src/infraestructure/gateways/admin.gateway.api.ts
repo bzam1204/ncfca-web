@@ -2,7 +2,7 @@ import {Club, User} from "@/domain/entities/entities";
 import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
 
 import {AdminGateway} from "@/application/gateways/admin.gateway";
-import {ChangePrincipalDto, UpdateClubByAdminDto} from "@/contracts/api/admin.dto";
+import {ChangePrincipalDto, UpdateClubByAdminDto, ManageUserRoleDto} from "@/contracts/api/admin.dto";
 import {SearchUsersQuery, PaginatedUsersDto, UserDto} from "@/contracts/api/user.dto";
 import {ClubMemberDto} from "@/contracts/api/club-member.dto";
 import {AdminClubChartsDto} from "@/contracts/api/admin-charts.dto";
@@ -161,5 +161,20 @@ export class AdminGatewayApi implements AdminGateway {
 
   getClubEnrollmentsPending(clubId: string): Promise<PendingEnrollmentDto[]> {
     return this.fetchData<PendingEnrollmentDto[]>(`clubs/${clubId}/enrollments/pending`, `admin.club_enrollments_pending.${clubId}`);
+  }
+
+  async manageUserRole(userId: string, data: ManageUserRoleDto): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/admin/users/${userId}/roles`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.message || 'Falha ao gerenciar perfis do usuário');
+    }
   }
 }
