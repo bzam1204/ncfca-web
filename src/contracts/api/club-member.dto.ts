@@ -1,3 +1,5 @@
+import { Sex } from '@/domain/enums/sex.enum';
+
 export interface HolderDto {
   id: string;
   firstName: string;
@@ -9,15 +11,12 @@ export interface HolderDto {
 
 export interface ClubMemberDto {
   id: string;
-  dependantId: string;
-  dependantName: string;
-  dependantAge: number;
-  dependantType: string;
-  dependantSex: string;
-  dependantEmail: string | null;
-  dependantPhone: string | null;
-  dependantBirthDate: string;
-  joinedAt: string;
-  status: string;
+  lastName: string;
+  firstName: string;
+  email: string;
+  phone: string;
   holder: HolderDto;
+  memberSince: string;
+  birthDate: string;
+  sex: Sex;
 }
