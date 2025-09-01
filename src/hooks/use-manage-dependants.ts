@@ -7,14 +7,20 @@ import { addDependantAction } from '@/infraestructure/actions/add-dependant.acti
 import { updateDependantAction } from '@/infraestructure/actions/update-dependant.action';
 import { deleteDependantAction } from '@/infraestructure/actions/delete-dependant.action';
 import { AddDependantRequestDto, UpdateDependantRequestDto } from '@/contracts/api/dependant.dto';
+import { DependantMapper } from '@/infraestructure/mappers/dependant.mapper';
 
+//todo: move to a its own file
 export function useGetDependants() {
   return useQuery({
     queryKey: QueryKeys.dependants.all,
-    queryFn: () => GetDependantsAction(),
+    queryFn: async () => {
+      const dtos = await GetDependantsAction();
+      return dtos.map(DependantMapper.mapDtoToEntity);
+    },
   });
 }
 
+//todo: move to a its own file
 export function useAddDependantMutation() {
   const queryClient = useQueryClient();
 
@@ -26,6 +32,7 @@ export function useAddDependantMutation() {
   });
 }
 
+//todo: move to a its own file
 export function useUpdateDependantMutation() {
   const queryClient = useQueryClient();
 
@@ -38,6 +45,7 @@ export function useUpdateDependantMutation() {
   });
 }
 
+//todo: move to a its own file
 export function useDeleteDependantMutation() {
   const queryClient = useQueryClient();
 

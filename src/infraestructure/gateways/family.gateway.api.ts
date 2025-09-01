@@ -12,9 +12,9 @@ export class FamilyGatewayApi implements FamilyGateway {
   }
 
   async getMyFamily(): Promise<Family> {
-    const res = await fetch(`${this.baseUrl}/family/me`, {
+    const res = await fetch(`${this.baseUrl}/dependants/my-family`, {
       headers: {'Authorization': `Bearer ${this.accessToken}`},
-      next: {tags: [NextKeys.family.me]}
+      next: {tags: [NextKeys.family.mine]}
     });
     if (!res.ok) throw new Error('Falha ao buscar informações da família.');
     return res.json();

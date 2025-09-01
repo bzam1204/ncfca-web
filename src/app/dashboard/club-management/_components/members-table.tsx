@@ -41,8 +41,8 @@ export function MembersTable({ clubId }: MembersTableProps) {
   const {data : members = [], isLoading, error, isRefetching, refetch} = useClubMembersQuery(clubId);
   const {mutate : revoke, isPending} = useRevokeMembershipMutation();
 
-  const handleRevoke = (memberId: string) => {
-    revoke({clubId, memberId}, {
+  const handleRevoke = (membershipId: string) => {
+    revoke({clubId, membershipId}, {
       onSuccess : () => notify.success("Membro removido do clube."),
       onError : (e) => notify.error(e.message),
     });

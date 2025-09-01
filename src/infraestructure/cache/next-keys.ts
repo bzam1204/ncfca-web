@@ -1,7 +1,7 @@
 export const NextKeys = {
   trainings : "trainings",
   family : {
-    me : "family.me",
+    mine : "family.me",
     myDependants : "family.my_dependants"
   },
   clubRequests : {

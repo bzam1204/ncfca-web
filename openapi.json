@@ -1540,7 +1540,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RequestEnrollmentDto"
+                "$ref": "#/components/schemas/RequestEnrollmentInputDto"
               }
             }
           }
@@ -1591,7 +1591,7 @@
         ]
       }
     },
-    "/club-management/my-club": {
+    "/my-club": {
       "get": {
         "operationId": "ClubManagementController_getMyClubInfo",
         "parameters": [],
@@ -1616,10 +1616,8 @@
         "tags": [
           "Gestão de Clube (Diretor)"
         ]
-      }
-    },
-    "/club-management": {
-      "patch": {
+      },
+      "post": {
         "operationId": "ClubManagementController_updateClub",
         "parameters": [],
         "requestBody": {
@@ -1648,7 +1646,7 @@
         ]
       }
     },
-    "/club-management/my-club/enrollments": {
+    "/my-club/enrollments": {
       "get": {
         "operationId": "ClubManagementController_listEnrollments",
         "parameters": [],
@@ -1678,7 +1676,7 @@
         ]
       }
     },
-    "/club-management/{clubId}/enrollments/pending": {
+    "/my-club/enrollments/pending": {
       "get": {
         "operationId": "ClubManagementController_listPending",
         "parameters": [
@@ -1717,7 +1715,37 @@
         ]
       }
     },
-    "/club-management/enrollments/{enrollmentId}/approve": {
+    "/my-club/members": {
+      "get": {
+        "operationId": "ClubManagementController_listMembersOfMyClub",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de membros ativos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClubMemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista todos os membros ativos do meu clube",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/enrollments/{enrollmentId}/approve": {
       "post": {
         "operationId": "ClubManagementController_approve",
         "parameters": [
@@ -1746,7 +1774,7 @@
         ]
       }
     },
-    "/club-management/enrollments/{enrollmentId}/reject": {
+    "/enrollments/{enrollmentId}/reject": {
       "post": {
         "operationId": "ClubManagementController_reject",
         "parameters": [
@@ -1785,37 +1813,7 @@
         ]
       }
     },
-    "/club-management/my-club/members": {
-      "get": {
-        "operationId": "ClubManagementController_listMembersOfMyClub",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Lista de membros ativos.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClubMemberDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Lista todos os membros ativos do meu clube",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
-    "/club-management/membership/{membershipId}/revoke": {
+    "/membership/{membershipId}/revoke": {
       "post": {
         "operationId": "ClubManagementController_removeMember",
         "parameters": [
@@ -1999,6 +1997,465 @@
         "summary": "Rejeita uma solicitação de clube (Admin)",
         "tags": [
           "Clubes - Solicitações"
+        ]
+      }
+    },
+    "/tournaments/create": {
+      "post": {
+        "operationId": "TournamentController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTournamentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Torneio criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos."
+          },
+          "403": {
+            "description": "Acesso negado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Cria um novo torneio",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/{id}/update": {
+      "post": {
+        "operationId": "TournamentController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTournamentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Torneio atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos."
+          },
+          "403": {
+            "description": "Acesso negado."
+          },
+          "404": {
+            "description": "Torneio não encontrado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Atualiza um torneio existente",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/{id}/delete": {
+      "post": {
+        "operationId": "TournamentController_delete",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Torneio removido com sucesso."
+          },
+          "403": {
+            "description": "Acesso negado."
+          },
+          "404": {
+            "description": "Torneio não encontrado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Remove um torneio (soft delete)",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments": {
+      "get": {
+        "operationId": "TournamentController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de torneios retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TournamentListItemView"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista torneios com filtros e paginação",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/my-pending-registrations": {
+      "get": {
+        "operationId": "TournamentController_listMyPendingRegistrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de inscrições pendentes retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetMyPendingRegistrationsListItemView"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista inscrições de dupla pendentes para meus dependentes",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/{id}": {
+      "get": {
+        "operationId": "TournamentController_getById",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Detalhes do torneio retornados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TournamentDetailsView"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado."
+          },
+          "404": {
+            "description": "Torneio não encontrado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Obtém detalhes de um torneio específico",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/registrations/request-individual": {
+      "post": {
+        "operationId": "TournamentController_registerIndividualCompetitor",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestIndividualRegistrationInputDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Inscrição realizada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestIndividualRegistrationOutputDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos."
+          },
+          "404": {
+            "description": "Torneio ou competidor não encontrado."
+          },
+          "409": {
+            "description": "Competidor já está inscrito neste torneio."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Solicita inscrição individual em um torneio",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/registrations/request-duo": {
+      "post": {
+        "operationId": "TournamentController_requestDuoCompetitorRegistration",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestDuoRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Solicitação de inscrição de dupla criada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RequestDuoRegistrationOutputDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Dados inválidos."
+          },
+          "404": {
+            "description": "Torneio, competidor ou parceiro não encontrado."
+          },
+          "409": {
+            "description": "Competidor ou parceiro já está inscrito neste torneio."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Solicita inscrição de dupla em um torneio",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/registrations/{id}/accept": {
+      "post": {
+        "operationId": "TournamentController_acceptDuoCompetitorRegistration",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inscrição de dupla aceita com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AcceptDuoRegistrationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Registro não está pendente de aprovação."
+          },
+          "403": {
+            "description": "Acesso negado."
+          },
+          "404": {
+            "description": "Torneio ou registro não encontrado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Aceita uma inscrição de dupla pendente",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/registrations/{id}/reject": {
+      "post": {
+        "operationId": "TournamentController_rejectDuoCompetitorRegistration",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Inscrição de dupla rejeitada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RejectDuoRegistrationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Registro não está pendente de aprovação."
+          },
+          "403": {
+            "description": "Acesso negado."
+          },
+          "404": {
+            "description": "Torneio ou registro não encontrado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Rejeita uma inscrição de dupla pendente",
+        "tags": [
+          "Torneios"
+        ]
+      }
+    },
+    "/tournaments/registrations/cancel": {
+      "post": {
+        "operationId": "TournamentController_cancelCompetitorRegistration",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CancelRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inscrição cancelada com sucesso."
+          },
+          "400": {
+            "description": "Dados inválidos."
+          },
+          "404": {
+            "description": "Inscrição não encontrada."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Cancela uma inscrição em torneio",
+        "tags": [
+          "Torneios"
         ]
       }
     }
@@ -3322,7 +3779,7 @@
           }
         }
       },
-      "RequestEnrollmentDto": {
+      "RequestEnrollmentInputDto": {
         "type": "object",
         "properties": {
           "dependantId": {
@@ -3499,20 +3956,6 @@
           "rejectionReason"
         ]
       },
-      "RejectEnrollmentDto": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "description": "Motivo detalhado para a rejeição da matrícula. Mínimo de 10 caracteres.",
-            "example": "Infelizmente, todas as vagas para esta faixa etária já foram preenchidas.",
-            "minLength": 10
-          }
-        },
-        "required": [
-          "reason"
-        ]
-      },
       "ClubMemberDto": {
         "type": "object",
         "properties": {
@@ -3584,9 +4027,19 @@
           "sex"
         ]
       },
-      "ClubRequestApprovedEvent": {
+      "RejectEnrollmentDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Motivo detalhado para a rejeição da matrícula. Mínimo de 10 caracteres.",
+            "example": "Infelizmente, todas as vagas para esta faixa etária já foram preenchidas.",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "reason"
+        ]
       },
       "CreateClubRequestDto": {
         "type": "object",
@@ -3701,6 +4154,489 @@
           }
         },
         "required": [
+          "reason"
+        ]
+      },
+      "CreateTournamentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional de Debate Individual",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada do torneio",
+            "example": "Torneio nacional de debate para estudantes do ensino médio com foco em argumentação e oratória"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ],
+            "example": "INDIVIDUAL"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Data de início das inscrições",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Data de fim das inscrições",
+            "format": "date-time",
+            "example": "2024-01-15T23:59:59Z"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time",
+            "example": "2024-02-01T09:00:00Z"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "type",
+          "registrationStartDate",
+          "registrationEndDate",
+          "startDate"
+        ]
+      },
+      "TournamentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do torneio",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional de Debate Individual"
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada do torneio",
+            "example": "Torneio nacional de debate para estudantes do ensino médio com foco em argumentação e oratória"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ],
+            "example": "INDIVIDUAL"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Data de início das inscrições",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Data de fim das inscrições",
+            "format": "date-time",
+            "example": "2024-01-15T23:59:59Z"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time",
+            "example": "2024-02-01T09:00:00Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação do torneio",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última atualização do torneio",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "deletedAt": {
+            "type": "string",
+            "description": "Data de deleção do torneio (soft delete)",
+            "format": "date-time",
+            "example": null,
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "type",
+          "registrationStartDate",
+          "registrationEndDate",
+          "startDate",
+          "createdAt",
+          "updatedAt",
+          "deletedAt"
+        ]
+      },
+      "UpdateTournamentDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional de Debate Individual",
+            "minLength": 3
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada do torneio",
+            "example": "Torneio nacional de debate para estudantes do ensino médio com foco em argumentação e oratória"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ],
+            "example": "INDIVIDUAL"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Data de início das inscrições",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Data de fim das inscrições",
+            "format": "date-time",
+            "example": "2024-01-15T23:59:59Z"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time",
+            "example": "2024-02-01T09:00:00Z"
+          }
+        }
+      },
+      "TournamentListItemView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do torneio",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional de Debate Individual"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "example": "INDIVIDUAL",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time",
+            "example": "2024-02-01T09:00:00Z"
+          },
+          "registrationCount": {
+            "type": "number",
+            "description": "Número de inscrições no torneio",
+            "example": 25
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Data de fim das inscrições",
+            "format": "date-time",
+            "example": "2024-01-15T23:59:59Z"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Data de início das inscrições",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "startDate",
+          "registrationCount",
+          "registrationEndDate",
+          "registrationStartDate"
+        ]
+      },
+      "GetMyPendingRegistrationsListItemView": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID único da inscrição",
+            "format": "uuid"
+          },
+          "tournamentName": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional 2024"
+          },
+          "competitorName": {
+            "type": "string",
+            "description": "Nome do dependente solicitante",
+            "example": "João Silva"
+          },
+          "competitorId": {
+            "type": "string",
+            "description": "ID do dependente solicitante",
+            "format": "uuid"
+          },
+          "requestedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data da solicitação",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "tournamentType": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "example": "DUO"
+          }
+        },
+        "required": [
+          "registrationId",
+          "tournamentName",
+          "competitorName",
+          "competitorId",
+          "requestedAt",
+          "tournamentType"
+        ]
+      },
+      "TournamentDetailsView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do torneio",
+            "format": "uuid",
+            "example": "123e4567-e89b-12d3-a456-426614174000"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional de Debate Individual"
+          },
+          "type": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "example": "INDIVIDUAL",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação do torneio",
+            "format": "date-time",
+            "example": "2023-12-15T10:30:00Z"
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time",
+            "example": "2024-02-01T09:00:00Z"
+          },
+          "deletedAt": {
+            "type": "string",
+            "description": "Data de exclusão do torneio (soft delete)",
+            "format": "date-time",
+            "example": "2024-01-30T12:00:00Z",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Descrição detalhada do torneio",
+            "example": "Torneio nacional de debate para estudantes do ensino médio com foco em argumentação e oratória"
+          },
+          "registrationCount": {
+            "type": "number",
+            "description": "Número de inscrições no torneio",
+            "example": 25
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Data de fim das inscrições",
+            "format": "date-time",
+            "example": "2024-01-15T23:59:59Z"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Data de início das inscrições",
+            "format": "date-time",
+            "example": "2024-01-01T00:00:00Z"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "createdAt",
+          "startDate",
+          "description",
+          "registrationCount",
+          "registrationEndDate",
+          "registrationStartDate"
+        ]
+      },
+      "RequestIndividualRegistrationInputDto": {
+        "type": "object",
+        "properties": {
+          "tournamentId": {
+            "type": "string",
+            "description": "ID do torneio para o qual deseja se registrar",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "competitorId": {
+            "type": "string",
+            "description": "ID do competidor (dependente) que será registrado",
+            "example": "550e8400-e29b-41d4-a716-446655440001"
+          }
+        },
+        "required": [
+          "tournamentId",
+          "competitorId"
+        ]
+      },
+      "RequestIndividualRegistrationOutputDto": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID único da inscrição individual criada",
+            "example": "550e8400-e29b-41d4-a716-446655440002"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status atual da inscrição individual",
+            "example": "CONFIRMED",
+            "enum": [
+              "CONFIRMED"
+            ]
+          }
+        },
+        "required": [
+          "registrationId",
+          "status"
+        ]
+      },
+      "RequestDuoRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "tournamentId": {
+            "type": "string",
+            "description": "ID do torneio para o qual deseja se registrar a dupla",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          },
+          "competitorId": {
+            "type": "string",
+            "description": "ID do competidor (dependente) que será registrado",
+            "example": "550e8400-e29b-41d4-a716-446655440001"
+          },
+          "partnerId": {
+            "type": "string",
+            "description": "ID do parceiro (dependente) que será convidado para formar a dupla",
+            "example": "550e8400-e29b-41d4-a716-446655440002"
+          }
+        },
+        "required": [
+          "tournamentId",
+          "competitorId",
+          "partnerId"
+        ]
+      },
+      "RequestDuoRegistrationOutputDto": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID único da inscrição de dupla criada",
+            "example": "550e8400-e29b-41d4-a716-446655440003"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status atual da inscrição da dupla",
+            "example": "PENDING_APPROVAL",
+            "enum": [
+              "PENDING_APPROVAL"
+            ]
+          }
+        },
+        "required": [
+          "registrationId",
+          "status"
+        ]
+      },
+      "AcceptDuoRegistrationResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Mensagem de confirmação da aceitação da inscrição",
+            "example": "Inscrição de dupla aceita com sucesso"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "RejectDuoRegistrationResponseDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Mensagem de confirmação da rejeição da inscrição",
+            "example": "Inscrição de dupla rejeitada com sucesso"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "CancelRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID da inscrição a ser cancelada",
+            "example": "550e8400-e29b-41d4-a716-446655440002"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Motivo do cancelamento da inscrição",
+            "example": "Conflito de agenda"
+          }
+        },
+        "required": [
+          "registrationId",
           "reason"
         ]
       }

@@ -1,6 +1,6 @@
 ---
 name: prd-creator
-description: Creates detailed Product Requirements Documents (PRDs) using the standardized template and STRICTLY follows the mandated process (Clarify → Plan with zen → Validate with consensus → Draft PRD → Create folder → Save _prd.md). Use PROACTIVELY for any new feature request or product idea requiring definition.
+description: Creates detailed Product Requirements Documents (PRDs) using the standardized template and STRICTLY follows the mandated process (Clarify → Plan with zen → Validate with consensus → Draft PRD → Create folder → Save _prd.md.md). Use PROACTIVELY for any new feature request or product idea requiring definition.
 model: opus
 color: green
 ---

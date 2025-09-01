@@ -6,15 +6,15 @@ import { revokeMembershipAction } from '@/infraestructure/actions/revoke-members
 
 interface RevokeMembershipParams {
   clubId: string;
-  memberId: string;
+  membershipId: string;
 }
 
 export function useRevokeMembershipMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ clubId, memberId }: RevokeMembershipParams) => 
-      revokeMembershipAction(clubId, memberId),
+    mutationFn: ({ membershipId }: RevokeMembershipParams) => 
+      revokeMembershipAction(membershipId),
     onSuccess: (_, { clubId }) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.club.members(clubId) });
     },

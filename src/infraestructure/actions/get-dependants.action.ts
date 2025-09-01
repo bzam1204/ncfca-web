@@ -1,11 +1,12 @@
 'use server';
 
-import {Dependant} from "@/domain/entities/dependant.entity";
+import {DependantDto} from "@/contracts/api/dependant.dto";
 
 import {Inject} from "@/infraestructure/containers/container";
 import {auth} from "@/infraestructure/auth";
 
-export async function GetDependantsAction(): Promise<Dependant[]> {
+
+export async function GetDependantsAction(): Promise<DependantDto[]> {
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
   const gateway = Inject.FamilyGateway(session.accessToken);

@@ -3,8 +3,9 @@ import { Club } from "@/domain/entities/entities";
 import { ClubGateway } from "@/application/gateways/club.gateway";
 
 import { PaginatedClubDto, SearchClubsQuery } from "@/contracts/api/club.dto";
-import { UpdateClubDto } from "@/contracts/api/club-management.dto";
+import { UpdateClubDto, RejectEnrollmentDto } from "@/contracts/api/club-management.dto";
 import { ClubMemberDto } from "@/contracts/api/club-member.dto";
+import { PendingEnrollmentDto } from "@/contracts/api/enrollment.dto";
 
 export class ClubGatewayApi implements ClubGateway {
   constructor(
@@ -14,7 +15,7 @@ export class ClubGatewayApi implements ClubGateway {
   }
 
   async myClub(): Promise<Club> {
-    const res = await fetch(`${this.baseUrl}/club-management/my-club`, {
+    const res = await fetch(`${this.baseUrl}/my-club`, {
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });
@@ -61,8 +62,8 @@ export class ClubGatewayApi implements ClubGateway {
   }
 
   async updateMyClub(payload: UpdateClubDto): Promise<Club> {
-    const res = await fetch(`${this.baseUrl}/club-management`, {
-      method: 'PATCH',
+    const res = await fetch(`${this.baseUrl}/my-club`, {
+      method: 'POST',
       headers: {
         'Authorization': `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
@@ -85,7 +86,7 @@ export class ClubGatewayApi implements ClubGateway {
   }
 
   async getMembers(clubId: string): Promise<ClubMemberDto[]> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/members`, {
+    const res = await fetch(`${this.baseUrl}/my-club/members`, {
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });
@@ -97,7 +98,7 @@ export class ClubGatewayApi implements ClubGateway {
   }
 
   async getEnrollmentHistory(clubId: string): Promise<any[]> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollment-history`, {
+    const res = await fetch(`${this.baseUrl}/my-club/enrollments`, {
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });
@@ -108,9 +109,21 @@ export class ClubGatewayApi implements ClubGateway {
     return res.json();
   }
 
-  async revokeMembership(clubId: string, memberId: string): Promise<void> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/members/${memberId}`, {
-      method: 'DELETE',
+  async getMyClubMembers(): Promise<ClubMemberDto[]> {
+    const res = await fetch(`${this.baseUrl}/my-club/members`, {
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar membros do meu clube');
+    }
+    return res.json();
+  }
+
+  async revokeMembership(membershipId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/membership/${membershipId}/revoke`, {
+      method: 'POST',
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
     });
     if (!res.ok) {
@@ -119,8 +132,8 @@ export class ClubGatewayApi implements ClubGateway {
     }
   }
 
-  async approveEnrollment(clubId: string, enrollmentId: string): Promise<void> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/${enrollmentId}/approve`, {
+  async approveEnrollment(enrollmentId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/enrollments/${enrollmentId}/approve`, {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
     });
@@ -130,8 +143,8 @@ export class ClubGatewayApi implements ClubGateway {
     }
   }
 
-  async rejectEnrollment(clubId: string, enrollmentId: string, payload: { rejectionReason: string }): Promise<void> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/${enrollmentId}/reject`, {
+  async rejectEnrollment(enrollmentId: string, payload: RejectEnrollmentDto): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/enrollments/${enrollmentId}/reject`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${this.accessToken}`,
@@ -146,13 +159,25 @@ export class ClubGatewayApi implements ClubGateway {
   }
 
   async getPendingEnrollments(clubId: string): Promise<any[]> {
-    const res = await fetch(`${this.baseUrl}/clubs/${clubId}/enrollments/pending`, {
+    const res = await fetch(`${this.baseUrl}/my-club/enrollments/pending`, {
       headers: { 'Authorization': `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao buscar matrículas pendentes');
+    }
+    return res.json();
+  }
+
+  async getMyClubPendingEnrollments(): Promise<PendingEnrollmentDto[]> {
+    const res = await fetch(`${this.baseUrl}/my-club/enrollments/pending`, {
+      headers: { 'Authorization': `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar matrículas pendentes do meu clube');
     }
     return res.json();
   }

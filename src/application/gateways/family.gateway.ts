@@ -1,6 +1,6 @@
 import {Dependant} from "@/domain/entities/dependant.entity";
 import {Family} from "@/domain/entities/entities";
-import {AddDependantRequestDto, UpdateDependantRequestDto} from "@/contracts/api/dependant.dto";
+import {AddDependantRequestDto, DependantDto, UpdateDependantRequestDto} from "@/contracts/api/dependant.dto";
 
 export interface FamilyGateway {
   /**
@@ -9,7 +9,7 @@ export interface FamilyGateway {
    */
   getMyFamily(): Promise<Family>
 
-  getMyDependants(): Promise<Dependant[]>
+  getMyDependants(): Promise<DependantDto[]>
   
   /**
    * Busca detalhes de um dependente específico

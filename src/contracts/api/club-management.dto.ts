@@ -34,7 +34,7 @@ export interface UpdateClubDto {
 }
 
 export interface RejectEnrollmentDto {
-  reason: string;
+  rejectionReason: string;
 }
 
 export interface CreateClubResponseDto {

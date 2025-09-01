@@ -46,7 +46,7 @@ export default function DependantsPage() {
   const isMutating = isAdding || isUpdating || isDeleting;
 
   const {data, isLoading, error} = useGetDependants();
-  const dependants = data ?? [] as Dependant[];
+  const dependants = data ?? [];
   const handleFormSubmit = (data: DependantFormInput) => {
     const onSuccess = () => {
       notify.success(`Dependente ${selectedDependant ? 'atualizado' : 'adicionado'} com sucesso!`);
