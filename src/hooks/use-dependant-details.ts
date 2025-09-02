@@ -1,12 +1,19 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { getDependantByIdAction } from '@/infrastructure/actions/get-dependant-by-id.action';
+import {useQuery} from '@tanstack/react-query';
 
-export function useDependantDetails(dependantId: string | null) {
+import {Dependant} from "@/domain/entities/dependant.entity";
+
+import {getDependantByIdAction} from '@/infrastructure/actions/get-dependant-by-id.action';
+import {QueryKeys} from "@/infrastructure/cache/query-keys";
+
+export function useDependantDetails(dependantId: string) {
   return useQuery({
-    queryKey: ['dependant', dependantId],
-    queryFn: () => getDependantByIdAction(dependantId!),
-    enabled: !!dependantId,
+    queryKey : QueryKeys.dependants.details(dependantId),
+    queryFn : async () => {
+      const dependantDto = await getDependantByIdAction(dependantId);
+      const dependant = dependantDto ? new Dependant(dependantDto) : null;
+      return dependant;
+    },
   });
 }

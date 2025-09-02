@@ -1,22 +1,21 @@
-import { Sex } from '@/domain/enums/sex.enum';
+import {Sex} from '@/domain/enums/sex.enum';
 
 export interface HolderDto {
   id: string;
-  firstName: string;
-  lastName: string;
   email: string;
   phone: string;
-  cpf: string;
+  lastName: string;
+  firstName: string;
 }
 
 export interface ClubMemberDto {
   id: string;
-  lastName: string;
-  firstName: string;
+  sex: Sex;
   email: string;
   phone: string;
   holder: HolderDto;
-  memberSince: string;
+  lastName: string;
+  firstName: string;
   birthDate: string;
-  sex: Sex;
+  memberSince: string;
 }

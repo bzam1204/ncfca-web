@@ -1,15 +1,14 @@
 'use server';
 
-import { auth } from '@/infrastructure/auth';
-import { Dependant } from '@/domain/entities/dependant.entity';
-import { Inject } from '@/infrastructure/containers/container';
+import {DependantDto} from "@/contracts/api/dependant.dto";
 
-export async function getDependantByIdAction(dependantId: string): Promise<Dependant> {
+import {Inject} from '@/infrastructure/containers/container';
+import {auth} from '@/infrastructure/auth';
+
+export async function getDependantByIdAction(dependantId: string): Promise<DependantDto | null> {
   const session = await auth();
-  if (!session?.accessToken) {
-    throw new Error('Acesso negado.');
-  }
-
+  if (!session?.accessToken) throw new Error('Acesso negado.');
   const familyGateway = Inject.FamilyGateway(session.accessToken);
-  return familyGateway.getDependantById(dependantId);
+  const dependant = await familyGateway.getDependantById(dependantId);
+  return dependant;
 }

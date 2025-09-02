@@ -1,10 +1,10 @@
 'use server';
 
-import { SearchClubMembersQueryDto } from '@/contracts/api/admin.dto';
-import { UserRoles } from '@/domain/enums/user.roles';
+import {SearchClubMembersQueryDto} from '@/contracts/api/admin.dto';
+import {UserRoles} from '@/domain/enums/user.roles';
 
-import { auth } from '@/infrastructure/auth';
-import { Inject } from '@/infrastructure/containers/container';
+import {auth} from '@/infrastructure/auth';
+import {Inject} from '@/infrastructure/containers/container';
 
 export async function getClubMembersAction(query: SearchClubMembersQueryDto) {
   const session = await auth();
@@ -13,6 +13,6 @@ export async function getClubMembersAction(query: SearchClubMembersQueryDto) {
   }
   const adminGateway = Inject.AdminGateway(session.accessToken);
   const members = await adminGateway.getClubMembers(query);
-  console.log('Membros do clube:', {members});
+  console.log('Membros do clube:', {members : JSON.stringify(members)});
   return members;
 }

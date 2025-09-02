@@ -9,7 +9,6 @@ export function useAdminClubMembers(query: SearchClubMembersQueryDto) {
   return useQuery({
     queryKey: QueryKeys.admin.clubMembers(query.clubId, query.filter, query.pagination),
     queryFn: () => getClubMembersAction(query),
-    enabled: !!query.clubId,
   });
 }
 
