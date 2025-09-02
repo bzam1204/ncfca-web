@@ -1,4 +1,4 @@
-import {TrainingDto, CreateTrainingDto, UpdateTrainingDto} from "@/contracts/api/training.dto";
+import { TrainingDto, CreateTrainingDto, UpdateTrainingDto } from '@/contracts/api/training.dto';
 
 export interface TrainingGateway {
   getTrainings(token: string): Promise<TrainingDto[]>;

@@ -8,24 +8,23 @@ import { rejectEnrollmentAction } from '@/infrastructure/actions/admin/reject-en
 export const useAdminApproveEnrollmentMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ enrollmentId, clubId }: { enrollmentId: string; clubId: string }) => 
-      approveEnrollmentAction(clubId, enrollmentId),
+    mutationFn: ({ enrollmentId, clubId }: { enrollmentId: string; clubId: string }) => approveEnrollmentAction(clubId, enrollmentId),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubEnrollmentsPending(variables.clubId) });
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubMembers(variables.clubId) });
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubCharts(variables.clubId) });
-    }
+    },
   });
 };
 
 export const useAdminRejectEnrollmentMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ enrollmentId, clubId, rejectionReason }: { enrollmentId: string; clubId: string; rejectionReason?: string }) => 
+    mutationFn: ({ enrollmentId, clubId, rejectionReason }: { enrollmentId: string; clubId: string; rejectionReason?: string }) =>
       rejectEnrollmentAction(clubId, enrollmentId, rejectionReason ? { rejectionReason } : undefined),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubEnrollmentsPending(variables.clubId) });
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubCharts(variables.clubId) });
-    }
+    },
   });
 };

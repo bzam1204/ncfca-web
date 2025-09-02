@@ -13,12 +13,14 @@ Breve descrição das mudanças implementadas.
 ## Checklist de Revisão
 
 ### Geral
+
 - [ ] Código segue os padrões do projeto (`.cursor/rules/code.standards.yml`)
 - [ ] Build passa (`npm run build`)
 - [ ] Lint passa (`npm run lint`)
 - [ ] Testes passam (se aplicável)
 
 ### Camada de API (se aplicável)
+
 - [ ] **Mapeamento OpenAPI**: Novos métodos de Gateway documentados com rota do `openapi.json`
 - [ ] **Hooks limpos**: Ausência de `fetch()` e `useSession()` em `src/hooks/**`
 - [ ] **Actions padronizadas**: Server Actions com `auth()` e `Inject.{Gateway}(token)`
@@ -26,6 +28,7 @@ Breve descrição das mudanças implementadas.
 - [ ] **Invalidações corretas**: Mutações invalidam chaves relacionadas (`QueryKeys`)
 
 ### Segurança
+
 - [ ] Tokens de acesso nunca expostos no cliente
 - [ ] Autorização adequada em Actions (verificação de roles)
 - [ ] Nenhum dado sensível commitado

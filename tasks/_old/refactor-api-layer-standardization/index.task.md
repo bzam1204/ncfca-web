@@ -1,17 +1,21 @@
 # Plano de Execução — "refactor-api-layer-standardization"
 
 ## Objetivo
+
 Este plano visa refatorar a camada de acesso à API, eliminando o padrão de `use-cases` e adotando uma abordagem padronizada com `React Hooks (useQuery/useMutation) -> Gateway Interface -> Gateway Implementation`. O objetivo é aumentar a consistência, testabilidade e manutenibilidade do código.
 
 ## Escopo
+
 - **Incluído:** Refatoração completa dos `use-cases` listados abaixo, substituindo-os por hooks e gateways.
 - **Excluído:** Nenhuma nova funcionalidade será adicionada. A lógica de negócio existente nos `use-cases` será migrada, não alterada.
 
 ## Referências
+
 - **Doc do Arquiteto:** @/tasks/analysys/013-refactor-api-layer-standardization.analisys.md
 - **Framework:** TanStack Query (React Query) para `useQuery` e `useMutation`.
 
 ## Tasks
+
 1. **01** — Refatorar `use-admin-management.use-case.ts` para Hooks e Gateway
 2. **02** — Refatorar `use-checkout.use-case.ts` para Hooks e Gateway
 3. **03** — Refatorar `use-club-management.use-case.ts` para Hooks e Gateway

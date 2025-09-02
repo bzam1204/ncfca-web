@@ -29,7 +29,7 @@ Once you've confirmed both documents exist, follow these steps:
 3. Produce a tasks summary
 4. Conduct a parallel agent analysis
 5. Generate individual task files
-</task_list_steps>
+   </task_list_steps>
 
 <task_list_analysis>
 For each step, use <task_planning> tags inside your thinking block to show your thought process. Be thorough in your analysis but concise in your final output. In your thinking block:
@@ -38,7 +38,7 @@ For each step, use <task_planning> tags inside your thinking block to show your 
 - List out all potential tasks before organizing them.
 - Explicitly consider dependencies between tasks.
 - Brainstorm potential risks and challenges for each task.
-</task_list_analysis>
+  </task_list_analysis>
 
 <output_specifications>
 Output Specifications:
@@ -48,7 +48,7 @@ Output Specifications:
   - Feature folder: `/tasks/$ARGUMENTS/`
   - Tasks summary: `/tasks/$ARGUMENTS/_tasks.md`
   - Individual tasks: `/tasks/$ARGUMENTS/<num>_task.md`
-</output_specifications>
+    </output_specifications>
 
 <task_creation_guidelines>
 Task Creation Guidelines:
@@ -58,7 +58,7 @@ Task Creation Guidelines:
 - Make each parent task independently completable when dependencies are met
 - Define clear scope and deliverables for each task
 - Include testing as subtasks within each parent task
-</task_creation_guidelines>
+  </task_creation_guidelines>
 
 <parallel_agent_analysis>
 For the parallel agent analysis, consider:
@@ -68,7 +68,7 @@ For the parallel agent analysis, consider:
 - Integration point validation
 - Dependency analysis
 - Standards compliance
-</parallel_agent_analysis>
+  </parallel_agent_analysis>
 
 <output_formats>
 Output Formats:
@@ -98,9 +98,11 @@ Output Formats:
 - [ ] 2.0 Parent Task Title
 - [ ] 3.0 Parent Task Title
 ```
+
 </output_formats>
 
 <individual_task_file> 2. Individual Task File (<num>\_task.md):
+
 ```markdown
 ---
 status: pending # Options: pending, in-progress, completed, excluded
@@ -148,6 +150,7 @@ status: pending # Options: pending, in-progress, completed, excluded
 - [Measurable outcomes]
 - [Quality requirements]
 ```
+
 </individual_task_file>
 
 <task_list_completion>

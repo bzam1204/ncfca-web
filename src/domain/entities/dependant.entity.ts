@@ -1,12 +1,12 @@
-import {Sex} from "@/domain/enums/sex.enum";
-import {DependantType} from "@/domain/enums/dependant-type.enum";
-import {DependantRelationship} from "@/domain/enums/dependant-relationship.enum";
+import { Sex } from '@/domain/enums/sex.enum';
+import { DependantType } from '@/domain/enums/dependant-type.enum';
+import { DependantRelationship } from '@/domain/enums/dependant-relationship.enum';
 
 export class Dependant {
   readonly id: string;
   readonly sex: Sex;
   readonly type: DependantType;
-  readonly email: string
+  readonly email: string;
   readonly phone: string | null;
   readonly familyId: string;
   readonly lastName: string;
@@ -36,7 +36,7 @@ export class Dependant {
       age--;
     }
     return age;
-  };
+  }
 }
 
 interface CreateDependantProps {

@@ -1,20 +1,19 @@
-import {FamilyGateway} from "@/application/gateways/family.gateway";
-import {Dependant} from "@/domain/entities/dependant.entity";
-import {Family} from "@/domain/entities/entities";
-import {NextKeys} from "@/infrastructure/cache/next-keys";
-import {AddDependantRequestDto, UpdateDependantRequestDto} from "@/contracts/api/dependant.dto";
+import { FamilyGateway } from '@/application/gateways/family.gateway';
+import { Dependant } from '@/domain/entities/dependant.entity';
+import { Family } from '@/domain/entities/entities';
+import { NextKeys } from '@/infrastructure/cache/next-keys';
+import { AddDependantRequestDto, UpdateDependantRequestDto } from '@/contracts/api/dependant.dto';
 
 export class FamilyGatewayApi implements FamilyGateway {
   constructor(
-      private readonly baseUrl: string,
-      private readonly accessToken: string
-  ) {
-  }
+    private readonly baseUrl: string,
+    private readonly accessToken: string,
+  ) {}
 
   async getMyFamily(): Promise<Family> {
     const res = await fetch(`${this.baseUrl}/dependants/my-family`, {
-      headers: {'Authorization': `Bearer ${this.accessToken}`},
-      next: {tags: [NextKeys.family.mine]}
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      next: { tags: [NextKeys.family.mine] },
     });
     if (!res.ok) throw new Error('Falha ao buscar informações da família.');
     return res.json();
@@ -22,8 +21,8 @@ export class FamilyGatewayApi implements FamilyGateway {
 
   async getMyDependants(): Promise<Dependant[]> {
     const res = await fetch(`${this.baseUrl}/dependants`, {
-      headers : {'Authorization' : `Bearer ${this.accessToken}`},
-      next: {tags: [NextKeys.family.myDependants]}
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      next: { tags: [NextKeys.family.myDependants] },
     });
     if (!res.ok) throw new Error('Falha ao buscar dependentes.');
     return res.json();
@@ -31,7 +30,7 @@ export class FamilyGatewayApi implements FamilyGateway {
 
   async getDependantById(dependantId: string): Promise<Dependant> {
     const res = await fetch(`${this.baseUrl}/dependants/${dependantId}`, {
-      headers: {'Authorization': `Bearer ${this.accessToken}`},
+      headers: { Authorization: `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });
     if (!res.ok) throw new Error('Falha ao buscar detalhes do dependente.');
@@ -43,7 +42,7 @@ export class FamilyGatewayApi implements FamilyGateway {
     const res = await fetch(`${this.baseUrl}/dependants`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
@@ -60,7 +59,7 @@ export class FamilyGatewayApi implements FamilyGateway {
     const res = await fetch(`${this.baseUrl}/dependants/${dependantId}`, {
       method: 'PUT',
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
@@ -77,7 +76,7 @@ export class FamilyGatewayApi implements FamilyGateway {
     const res = await fetch(`${this.baseUrl}/dependants/${dependantId}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
       },
     });
     if (!res.ok) {
@@ -90,7 +89,7 @@ export class FamilyGatewayApi implements FamilyGateway {
     const res = await fetch(`${this.baseUrl}/checkout`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${this.accessToken}`,
+        Authorization: `Bearer ${this.accessToken}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(params),
@@ -100,5 +99,4 @@ export class FamilyGatewayApi implements FamilyGateway {
       throw new Error(error.message || 'Falha ao processar pagamento');
     }
   }
-
 }

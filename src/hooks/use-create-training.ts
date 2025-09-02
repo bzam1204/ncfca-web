@@ -1,14 +1,13 @@
-import {useMutation, useQueryClient} from "@tanstack/react-query";
-import {CreateTrainingDto, TrainingDto} from "@/contracts/api/training.dto";
-import {createTrainingAction} from "@/infrastructure/actions/create-training.action";
-import {QueryKeys} from "@/infrastructure/cache/query-keys";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateTrainingDto, TrainingDto } from '@/contracts/api/training.dto';
+import { createTrainingAction } from '@/infrastructure/actions/create-training.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 export function useCreateTraining() {
   const queryClient = useQueryClient();
 
   return useMutation<TrainingDto, Error, CreateTrainingDto>({
-    mutationFn : (dto) => createTrainingAction(dto),
-    onSuccess : () => queryClient.invalidateQueries({queryKey : QueryKeys.trainings.all}),
-  })
-      ;
+    mutationFn: (dto) => createTrainingAction(dto),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: QueryKeys.trainings.all }),
+  });
 }

@@ -20,8 +20,7 @@ export function useApproveEnrollmentMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ enrollmentId }: ApproveEnrollmentParams) => 
-      approveEnrollmentAction(enrollmentId),
+    mutationFn: ({ enrollmentId }: ApproveEnrollmentParams) => approveEnrollmentAction(enrollmentId),
     onSuccess: (_, { clubId }) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.club.enrollmentHistory(clubId) });
     },
@@ -32,8 +31,7 @@ export function useRejectEnrollmentMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ enrollmentId, rejectionReason }: RejectEnrollmentParams) => 
-      rejectEnrollmentAction(enrollmentId, rejectionReason),
+    mutationFn: ({ enrollmentId, rejectionReason }: RejectEnrollmentParams) => rejectEnrollmentAction(enrollmentId, rejectionReason),
     onSuccess: (_, { clubId }) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.club.enrollmentHistory(clubId) });
     },

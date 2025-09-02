@@ -14,8 +14,7 @@ export function useAdminManageUserRoleMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ userId, data }: ManageUserRoleParams) => 
-      manageUserRoleAction(userId, data),
+    mutationFn: ({ userId, data }: ManageUserRoleParams) => manageUserRoleAction(userId, data),
     onSuccess: (_, { userId }) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.userById(userId) });
       // TODO: Adicionar QueryKeys.admin.users() quando necessário

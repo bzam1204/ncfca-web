@@ -1,6 +1,5 @@
-import {navigation} from './navigation';
+import { navigation } from './navigation';
 
 export const AppConfig = {
-  navigation
+  navigation,
 };
-

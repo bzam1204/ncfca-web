@@ -37,8 +37,7 @@ export function useUpdateDependantMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ dependantId, data }: { dependantId: string; data: UpdateDependantRequestDto }) => 
-      updateDependantAction(dependantId, data),
+    mutationFn: ({ dependantId, data }: { dependantId: string; data: UpdateDependantRequestDto }) => updateDependantAction(dependantId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.dependants.all });
     },

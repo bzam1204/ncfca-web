@@ -1,11 +1,11 @@
-import {useState} from "react";
-import {UseFormSetValue} from "react-hook-form";
-import {CepService} from "@/domain/services/cep.service";
+import { useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
+import { CepService } from '@/domain/services/cep.service';
 
 export function useCepAutocompleteGeneric<T extends Record<string, any>>(
   setValue: UseFormSetValue<T>,
   cepService: CepService,
-  addressPrefix: string = 'address'
+  addressPrefix: string = 'address',
 ) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +21,7 @@ export function useCepAutocompleteGeneric<T extends Record<string, any>>(
     try {
       const cepAddress = await cepService.fetchAddress(sanitizedCep);
       if (!cepAddress) throw new Error('Erro ao buscar endereço do CEP');
-      
+
       setValue(`${addressPrefix}.district` as any, cepAddress.district as any);
       setValue(`${addressPrefix}.street` as any, cepAddress.street as any);
       setValue(`${addressPrefix}.state` as any, cepAddress.state as any);
@@ -34,5 +34,5 @@ export function useCepAutocompleteGeneric<T extends Record<string, any>>(
     return void 0;
   }
 
-  return {handleCepChange, isLoadingCep: isLoading, errorCep: error};
+  return { handleCepChange, isLoadingCep: isLoading, errorCep: error };
 }

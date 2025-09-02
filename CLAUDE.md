@@ -1,4 +1,5 @@
 # CLAUDE.md
+
 sempre me responda em portugues do brasil
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -72,6 +73,7 @@ The application follows Clean Architecture with these layers:
 ## Backend Integration
 
 The application connects to a backend API via:
+
 - Environment variable: `NEXT_PUBLIC_BACKEND_URL`
 - Gateway implementations handle HTTP requests with JWT tokens
 - OpenAPI specification available in `openapi.json`

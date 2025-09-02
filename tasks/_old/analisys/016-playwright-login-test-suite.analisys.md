@@ -4,12 +4,12 @@ Implementar uma suíte de testes End-to-End (E2E) com Playwright para a página 
 
 <reference>
 
-  <concepts_and_patterns>
-    <projectCodeStandards>@.cursor/rules/test.standards.yml</projectCodeStandards>
-    <conceptApiContract>openapi.json</conceptApiContract>
-    <patternNew>Playwright E2E Testing com Page Object Model (POM)</patternNew>
-    <officialDocs ref="CONTEXT7:/microsoft/playwright" topic="getting started" />
-  </concepts_and_patterns>
+<concepts_and_patterns>
+<projectCodeStandards>@.cursor/rules/test.standards.yml</projectCodeStandards>
+<conceptApiContract>openapi.json</conceptApiContract>
+<patternNew>Playwright E2E Testing com Page Object Model (POM)</patternNew>
+<officialDocs ref="CONTEXT7:/microsoft/playwright" topic="getting started" />
+</concepts_and_patterns>
 
   <filesToCreate>
     <playwrightConfig path="playwright.config.ts" role="config" />
@@ -56,7 +56,7 @@ Implementar uma suíte de testes End-to-End (E2E) com Playwright para a página 
   </consequencias>
 </as-is>
 
-__________________________________________________________________________________________
+---
 
 <to-be>
 ### **DECLARAÇÃO DO ESTADO FUTURO DO CÓDIGO**
@@ -144,7 +144,7 @@ ________________________________________________________________________________
 
 </to-be>
 
-__________________________________________________________________________________________
+---
 
 ### **VERIFICAÇÃO FINAL DO ESTADO E CRITÉRIOS DE ACEITAÇÃO**
 

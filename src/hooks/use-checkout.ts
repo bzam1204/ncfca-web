@@ -10,7 +10,6 @@ interface CheckoutParams {
 
 export function useCheckout() {
   return useMutation({
-    mutationFn: ({ paymentMethod, paymentToken }: CheckoutParams) => 
-      checkoutAction({ paymentMethod, paymentToken }),
+    mutationFn: ({ paymentMethod, paymentToken }: CheckoutParams) => checkoutAction({ paymentMethod, paymentToken }),
   });
 }

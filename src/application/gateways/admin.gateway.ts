@@ -1,12 +1,17 @@
-import { Club, User } from "@/domain/entities/entities";
-import { EnrollmentRequest } from "@/domain/entities/enrollment-request.entity";
-import { ChangePrincipalDto, UpdateClubByAdminDto, ManageUserRoleDto } from "@/contracts/api/admin.dto";
-import { SearchUsersQuery, PaginatedUsersDto, UserDto } from "@/contracts/api/user.dto";
-import { ClubMemberDto } from "@/contracts/api/club-member.dto";
-import { AdminClubChartsDto } from "@/contracts/api/admin-charts.dto";
-import { FamilyResponseDto } from "@/contracts/api/family.dto";
-import { PendingEnrollmentDto } from "@/contracts/api/enrollment.dto";
-import { AffiliationDto } from "@/contracts/api/affiliation.dto";
+import { Club, User } from '@/domain/entities/entities';
+import { EnrollmentRequest } from '@/domain/entities/enrollment-request.entity';
+import {
+  ChangePrincipalDto,
+  UpdateClubByAdminDto,
+  ManageUserRoleDto,
+  SearchClubMembersQueryDto,
+  PaginatedClubMemberDto,
+} from '@/contracts/api/admin.dto';
+import { SearchUsersQuery, PaginatedUsersDto, UserDto } from '@/contracts/api/user.dto';
+import { AdminClubChartsDto } from '@/contracts/api/admin-charts.dto';
+import { FamilyResponseDto } from '@/contracts/api/family.dto';
+import { PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
+import { AffiliationDto } from '@/contracts/api/affiliation.dto';
 
 export interface AdminGateway {
   getAffiliations(): Promise<AffiliationDto[]>;
@@ -25,7 +30,11 @@ export interface AdminGateway {
 
   updateClub(clubId: string, payload: UpdateClubByAdminDto): Promise<Club>;
 
-  getClubMembers(clubId: string): Promise<ClubMemberDto[]>;
+  /**
+   * Retorna uma lista paginada de todos os membros ativos de um clube
+   * OpenAPI: GET /admin/clubs/members
+   */
+  getClubMembers(query: SearchClubMembersQueryDto): Promise<PaginatedClubMemberDto>;
 
   getClubCharts(clubId: string): Promise<AdminClubChartsDto>;
 

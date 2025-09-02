@@ -10,9 +10,7 @@
             "description": ""
           }
         },
-        "tags": [
-          "App"
-        ]
+        "tags": ["App"]
       }
     },
     "/auth/login": {
@@ -46,9 +44,7 @@
           }
         },
         "summary": "Realiza a autenticação do usuário",
-        "tags": [
-          "Autenticação"
-        ]
+        "tags": ["Autenticação"]
       }
     },
     "/auth/refresh-token": {
@@ -82,9 +78,7 @@
           }
         },
         "summary": "Gera um novo par de tokens",
-        "tags": [
-          "Autenticação"
-        ]
+        "tags": ["Autenticação"]
       }
     },
     "/auth/validate-token": {
@@ -118,9 +112,7 @@
           }
         },
         "summary": "Valida um access token",
-        "tags": [
-          "Autenticação"
-        ]
+        "tags": ["Autenticação"]
       }
     },
     "/auth/logout": {
@@ -142,9 +134,7 @@
           }
         ],
         "summary": "Realiza o logout do usuário",
-        "tags": [
-          "Autenticação"
-        ]
+        "tags": ["Autenticação"]
       }
     },
     "/club": {
@@ -188,9 +178,7 @@
           }
         ],
         "summary": "Busca e lista clubes com paginação e filtros",
-        "tags": [
-          "Clubes"
-        ]
+        "tags": ["Clubes"]
       }
     },
     "/club/{id}": {
@@ -227,9 +215,7 @@
           }
         ],
         "summary": "Obtém informações detalhadas de um clube específico",
-        "tags": [
-          "Clubes"
-        ]
+        "tags": ["Clubes"]
       }
     },
     "/my-club": {
@@ -254,9 +240,7 @@
           }
         ],
         "summary": "Obtém as informações do clube do diretor autenticado",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/admin/users": {
@@ -300,9 +284,7 @@
           }
         ],
         "summary": "Busca usuários do sistema com paginação e filtros",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/users/{userId}": {
@@ -339,9 +321,7 @@
           }
         ],
         "summary": "Obtém os detalhes de um usuário específico por ID",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs": {
@@ -369,9 +349,7 @@
           }
         ],
         "summary": "Lista todos os clubes do sistema",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/dependants": {
@@ -399,9 +377,7 @@
           }
         ],
         "summary": "Lista todos os dependentes do sistema",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/users/{userId}/roles": {
@@ -438,9 +414,7 @@
           }
         ],
         "summary": "Gerencia os perfis (roles) de um usuário",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/users/{userId}/family": {
@@ -474,9 +448,7 @@
           }
         ],
         "summary": "Visualiza os detalhes da família de um usuário específico",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/affiliations": {
@@ -504,9 +476,7 @@
           }
         ],
         "summary": "Lista todas as afiliações de famílias e seus status",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}/director": {
@@ -543,9 +513,7 @@
           }
         ],
         "summary": "Altera o diretor (proprietário) de um clube",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/enrollments": {
@@ -573,9 +541,7 @@
           }
         ],
         "summary": "Lista todas as solicitações de matrícula do sistema",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}": {
@@ -615,9 +581,7 @@
           }
         ],
         "summary": "Atualiza os dados de um clube específico",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/members": {
@@ -701,9 +665,7 @@
           }
         ],
         "summary": "Lista membros do clube com paginação e filtros",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}/enrollments/pending": {
@@ -796,9 +758,7 @@
           }
         ],
         "summary": "Lista todas as solicitações de matrícula pendentes de um clube",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}/charts": {
@@ -902,9 +862,7 @@
           }
         ],
         "summary": "Obtém dados de gráficos para o dashboard do clube",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}/enrollments/{enrollmentId}/approve": {
@@ -959,9 +917,7 @@
           }
         ],
         "summary": "Aprova uma solicitação de matrícula",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/admin/clubs/{clubId}/enrollments/{enrollmentId}/reject": {
@@ -1031,9 +987,7 @@
           }
         ],
         "summary": "Rejeita uma solicitação de matrícula",
-        "tags": [
-          "Admin"
-        ]
+        "tags": ["Admin"]
       }
     },
     "/account/user": {
@@ -1066,9 +1020,7 @@
           }
         },
         "summary": "Registra um novo usuário (responsável familiar)",
-        "tags": [
-          "Conta de Usuário"
-        ]
+        "tags": ["Conta de Usuário"]
       }
     },
     "/account/profile": {
@@ -1102,9 +1054,7 @@
           }
         ],
         "summary": "Atualiza o perfil do usuário autenticado",
-        "tags": [
-          "Conta de Usuário"
-        ]
+        "tags": ["Conta de Usuário"]
       }
     },
     "/account/change-password": {
@@ -1138,9 +1088,7 @@
           }
         ],
         "summary": "Altera a senha do usuário autenticado",
-        "tags": [
-          "Conta de Usuário"
-        ]
+        "tags": ["Conta de Usuário"]
       }
     },
     "/trainings": {
@@ -1168,9 +1116,7 @@
           }
         ],
         "summary": "Listar todos os treinamentos",
-        "tags": [
-          "Trainings"
-        ]
+        "tags": ["Trainings"]
       },
       "post": {
         "operationId": "TrainingController_createTraining",
@@ -1203,9 +1149,7 @@
           }
         ],
         "summary": "Criar novo treinamento",
-        "tags": [
-          "Trainings"
-        ]
+        "tags": ["Trainings"]
       }
     },
     "/trainings/{id}": {
@@ -1249,9 +1193,7 @@
           }
         ],
         "summary": "Atualizar treinamento",
-        "tags": [
-          "Trainings"
-        ]
+        "tags": ["Trainings"]
       },
       "delete": {
         "operationId": "TrainingController_deleteTraining",
@@ -1276,9 +1218,7 @@
           }
         ],
         "summary": "Deletar treinamento",
-        "tags": [
-          "Trainings"
-        ]
+        "tags": ["Trainings"]
       }
     },
     "/checkout": {
@@ -1315,9 +1255,7 @@
           }
         ],
         "summary": "Inicia o processo de pagamento da afiliação familiar",
-        "tags": [
-          "Afiliação e Pagamento"
-        ]
+        "tags": ["Afiliação e Pagamento"]
       }
     },
     "/dependants": {
@@ -1352,9 +1290,7 @@
           }
         ],
         "summary": "Adiciona um novo dependente à família do usuário",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       },
       "get": {
         "operationId": "DependantController_list",
@@ -1380,9 +1316,7 @@
           }
         ],
         "summary": "Lista todos os dependentes da família do usuário",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       }
     },
     "/dependants/my-family": {
@@ -1407,9 +1341,7 @@
           }
         ],
         "summary": "Visualiza os dados da família do usuário autenticado",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       }
     },
     "/dependants/{id}": {
@@ -1443,9 +1375,7 @@
           }
         ],
         "summary": "Visualiza os dados de um dependente.",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       },
       "patch": {
         "operationId": "DependantController_update",
@@ -1480,9 +1410,7 @@
           }
         ],
         "summary": "Atualiza os dados de um dependente específico",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       },
       "delete": {
         "operationId": "DependantController_delete",
@@ -1507,9 +1435,7 @@
           }
         ],
         "summary": "Remove um dependente da família",
-        "tags": [
-          "Família e Dependentes"
-        ]
+        "tags": ["Família e Dependentes"]
       }
     },
     "/enrollments": {
@@ -1537,9 +1463,7 @@
           }
         ],
         "summary": "Solicita a matrícula de um dependente em um clube",
-        "tags": [
-          "Matrículas (Responsável)"
-        ]
+        "tags": ["Matrículas (Responsável)"]
       }
     },
     "/enrollments/my-requests": {
@@ -1567,9 +1491,7 @@
           }
         ],
         "summary": "Lista todas as solicitações de matrícula da família do usuário",
-        "tags": [
-          "Matrículas (Responsável)"
-        ]
+        "tags": ["Matrículas (Responsável)"]
       }
     },
     "/club-management": {
@@ -1597,9 +1519,7 @@
           }
         ],
         "summary": "Atualiza as informações de um clube específico que o usuário dirige",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/my-club/enrollments": {
@@ -1627,9 +1547,7 @@
           }
         ],
         "summary": "Lista todas as solicitações de matrícula para o clube do usuário logado.",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/{clubId}/enrollments/pending": {
@@ -1666,9 +1584,7 @@
           }
         ],
         "summary": "Lista as solicitações de matrícula pendentes para um clube específico",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/enrollments/{enrollmentId}/approve": {
@@ -1695,9 +1611,7 @@
           }
         ],
         "summary": "Aprova uma solicitação de matrícula",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/enrollments/{enrollmentId}/reject": {
@@ -1734,9 +1648,7 @@
           }
         ],
         "summary": "Rejeita uma solicitação de matrícula",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/my-club/members": {
@@ -1764,9 +1676,7 @@
           }
         ],
         "summary": "Lista todos os membros ativos do meu clube",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-management/membership/{membershipId}/revoke": {
@@ -1793,9 +1703,7 @@
           }
         ],
         "summary": "Revoga a afiliação de um membro do clube",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
+        "tags": ["Gestão de Clube (Diretor)"]
       }
     },
     "/club-requests": {
@@ -1823,9 +1731,7 @@
           }
         ],
         "summary": "Submete uma nova solicitação para criação de clube (Usuário)",
-        "tags": [
-          "Clubes - Solicitações"
-        ]
+        "tags": ["Clubes - Solicitações"]
       }
     },
     "/club-requests/my-requests": {
@@ -1853,9 +1759,7 @@
           }
         ],
         "summary": "Lista as solicitações de clube do usuário autenticado (Usuário)",
-        "tags": [
-          "Clubes - Solicitações"
-        ]
+        "tags": ["Clubes - Solicitações"]
       }
     },
     "/club-requests/pending": {
@@ -1883,9 +1787,7 @@
           }
         ],
         "summary": "Lista todas as solicitações de clube pendentes (Admin)",
-        "tags": [
-          "Clubes - Solicitações"
-        ]
+        "tags": ["Clubes - Solicitações"]
       }
     },
     "/club-requests/{id}/approve": {
@@ -1912,9 +1814,7 @@
           }
         ],
         "summary": "Aprova uma solicitação de clube (Admin)",
-        "tags": [
-          "Clubes - Solicitações"
-        ]
+        "tags": ["Clubes - Solicitações"]
       }
     },
     "/club-requests/{id}/reject": {
@@ -1951,9 +1851,7 @@
           }
         ],
         "summary": "Rejeita uma solicitação de clube (Admin)",
-        "tags": [
-          "Clubes - Solicitações"
-        ]
+        "tags": ["Clubes - Solicitações"]
       }
     },
     "/tournaments/create": {
@@ -1994,9 +1892,7 @@
           }
         ],
         "summary": "Cria um novo torneio",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/{id}/update": {
@@ -2049,9 +1945,7 @@
           }
         ],
         "summary": "Atualiza um torneio existente",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/{id}/delete": {
@@ -2084,9 +1978,7 @@
           }
         ],
         "summary": "Remove um torneio (soft delete)",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments": {
@@ -2117,9 +2009,7 @@
           }
         ],
         "summary": "Lista torneios com filtros e paginação",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/my-pending-registrations": {
@@ -2150,9 +2040,7 @@
           }
         ],
         "summary": "Lista inscrições de dupla pendentes para meus dependentes",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/{id}": {
@@ -2192,9 +2080,7 @@
           }
         ],
         "summary": "Obtém detalhes de um torneio específico",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/registrations/request-individual": {
@@ -2238,9 +2124,7 @@
           }
         ],
         "summary": "Solicita inscrição individual em um torneio",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/registrations/request-duo": {
@@ -2284,9 +2168,7 @@
           }
         ],
         "summary": "Solicita inscrição de dupla em um torneio",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/registrations/{id}/accept": {
@@ -2329,9 +2211,7 @@
           }
         ],
         "summary": "Aceita uma inscrição de dupla pendente",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/registrations/{id}/reject": {
@@ -2374,9 +2254,7 @@
           }
         ],
         "summary": "Rejeita uma inscrição de dupla pendente",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     },
     "/tournaments/registrations/cancel": {
@@ -2410,9 +2288,7 @@
           }
         ],
         "summary": "Cancela uma inscrição em torneio",
-        "tags": [
-          "Torneios"
-        ]
+        "tags": ["Torneios"]
       }
     }
   },
@@ -2451,10 +2327,7 @@
             "minLength": 8
           }
         },
-        "required": [
-          "email",
-          "password"
-        ]
+        "required": ["email", "password"]
       },
       "LoginOutputDto": {
         "type": "object",
@@ -2468,10 +2341,7 @@
             "description": "Token de atualização para obter um novo token de acesso, válido por 1 dia."
           }
         },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
+        "required": ["accessToken", "refreshToken"]
       },
       "RefreshTokenInputDto": {
         "type": "object",
@@ -2482,9 +2352,7 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
           }
         },
-        "required": [
-          "token"
-        ]
+        "required": ["token"]
       },
       "RefreshTokenOutputDto": {
         "type": "object",
@@ -2498,10 +2366,7 @@
             "description": "Novo token de atualização."
           }
         },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
+        "required": ["accessToken", "refreshToken"]
       },
       "ValidateTokenInputDto": {
         "type": "object",
@@ -2512,9 +2377,7 @@
             "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
           }
         },
-        "required": [
-          "token"
-        ]
+        "required": ["token"]
       },
       "ValidateTokenOutputDto": {
         "type": "object",
@@ -2547,14 +2410,7 @@
             "description": "Timestamp de expiração do token (Expiration Time)."
           }
         },
-        "required": [
-          "familyId",
-          "roles",
-          "email",
-          "sub",
-          "iat",
-          "exp"
-        ]
+        "required": ["familyId", "roles", "email", "sub", "iat", "exp"]
       },
       "SearchClubsFilterDto": {
         "type": "object",
@@ -2632,14 +2488,7 @@
             "example": "Apto 101"
           }
         },
-        "required": [
-          "zipCode",
-          "street",
-          "number",
-          "district",
-          "city",
-          "state"
-        ]
+        "required": ["zipCode", "street", "number", "district", "city", "state"]
       },
       "ClubDto": {
         "type": "object",
@@ -2687,14 +2536,7 @@
             "example": 25
           }
         },
-        "required": [
-          "id",
-          "name",
-          "address",
-          "principalId",
-          "createdAt",
-          "corum"
-        ]
+        "required": ["id", "name", "address", "principalId", "createdAt", "corum"]
       },
       "PaginationMetaDto": {
         "type": "object",
@@ -2716,12 +2558,7 @@
             "example": 1
           }
         },
-        "required": [
-          "totalPages",
-          "total",
-          "limit",
-          "page"
-        ]
+        "required": ["totalPages", "total", "limit", "page"]
       },
       "PaginatedClubDto": {
         "type": "object",
@@ -2736,10 +2573,7 @@
             "$ref": "#/components/schemas/PaginationMetaDto"
           }
         },
-        "required": [
-          "data",
-          "meta"
-        ]
+        "required": ["data", "meta"]
       },
       "SearchUsersFilterDto": {
         "type": "object",
@@ -2767,11 +2601,7 @@
           "role": {
             "type": "string",
             "description": "Filtra usuários pela função/role.",
-            "enum": [
-              "DONO_DE_CLUBE",
-              "SEM_FUNCAO",
-              "ADMIN"
-            ],
+            "enum": ["DONO_DE_CLUBE", "SEM_FUNCAO", "ADMIN"],
             "example": "SEM_FUNCAO"
           }
         }
@@ -2817,16 +2647,10 @@
           "roles": {
             "type": "array",
             "description": "Perfis de acesso do usuário.",
-            "example": [
-              "SEM_FUNCAO"
-            ],
+            "example": ["SEM_FUNCAO"],
             "items": {
               "type": "string",
-              "enum": [
-                "DONO_DE_CLUBE",
-                "SEM_FUNCAO",
-                "ADMIN"
-              ]
+              "enum": ["DONO_DE_CLUBE", "SEM_FUNCAO", "ADMIN"]
             }
           },
           "address": {
@@ -2838,17 +2662,7 @@
             ]
           }
         },
-        "required": [
-          "id",
-          "email",
-          "firstName",
-          "lastName",
-          "phone",
-          "cpf",
-          "rg",
-          "roles",
-          "address"
-        ]
+        "required": ["id", "email", "firstName", "lastName", "phone", "cpf", "rg", "roles", "address"]
       },
       "PaginatedUserDto": {
         "type": "object",
@@ -2863,10 +2677,7 @@
             "$ref": "#/components/schemas/PaginationMetaDto"
           }
         },
-        "required": [
-          "data",
-          "meta"
-        ]
+        "required": ["data", "meta"]
       },
       "DependantsListItemView": {
         "type": "object",
@@ -2887,11 +2698,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "email",
-          "name",
-          "id"
-        ]
+        "required": ["email", "name", "id"]
       },
       "ManageUserRoleDto": {
         "type": "object",
@@ -2899,22 +2706,14 @@
           "roles": {
             "type": "array",
             "description": "Lista de perfis (roles) a serem atribuídos ao usuário. Substitui os perfis existentes.",
-            "example": [
-              "DONO_DE_CLUBE"
-            ],
+            "example": ["DONO_DE_CLUBE"],
             "items": {
               "type": "string",
-              "enum": [
-                "DONO_DE_CLUBE",
-                "SEM_FUNCAO",
-                "ADMIN"
-              ]
+              "enum": ["DONO_DE_CLUBE", "SEM_FUNCAO", "ADMIN"]
             }
           }
         },
-        "required": [
-          "roles"
-        ]
+        "required": ["roles"]
       },
       "DependantDto": {
         "type": "object",
@@ -2944,33 +2743,19 @@
           "relationship": {
             "type": "string",
             "description": "Relação de parentesco com o responsável.",
-            "enum": [
-              "DAUGHTER",
-              "HUSBAND",
-              "CHILD",
-              "WIFE",
-              "SON",
-              "OTHER"
-            ],
+            "enum": ["DAUGHTER", "HUSBAND", "CHILD", "WIFE", "SON", "OTHER"],
             "example": "SON"
           },
           "sex": {
             "type": "string",
             "description": "Sexo do dependente.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
+            "enum": ["FEMALE", "MALE"],
             "example": "MALE"
           },
           "type": {
             "type": "string",
             "description": "Tipo do dependente.",
-            "enum": [
-              "STUDENT",
-              "PARENT",
-              "ALUMNI"
-            ],
+            "enum": ["STUDENT", "PARENT", "ALUMNI"],
             "example": "STUDENT"
           },
           "email": {
@@ -2990,16 +2775,7 @@
             "example": "f1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
           }
         },
-        "required": [
-          "id",
-          "firstName",
-          "lastName",
-          "birthdate",
-          "relationship",
-          "sex",
-          "type",
-          "familyId"
-        ]
+        "required": ["id", "firstName", "lastName", "birthdate", "relationship", "sex", "type", "familyId"]
       },
       "FamilyDto": {
         "type": "object",
@@ -3019,12 +2795,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da afiliação da família.",
-            "enum": [
-              "PENDING_PAYMENT",
-              "NOT_AFFILIATED",
-              "AFFILIATED",
-              "EXPIRED"
-            ],
+            "enum": ["PENDING_PAYMENT", "NOT_AFFILIATED", "AFFILIATED", "EXPIRED"],
             "example": "AFFILIATED"
           },
           "affiliatedAt": {
@@ -3049,14 +2820,7 @@
             }
           }
         },
-        "required": [
-          "id",
-          "holderId",
-          "status",
-          "affiliatedAt",
-          "affiliationExpiresAt",
-          "dependants"
-        ]
+        "required": ["id", "holderId", "status", "affiliatedAt", "affiliationExpiresAt", "dependants"]
       },
       "AffiliationDto": {
         "type": "object",
@@ -3078,12 +2842,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da afiliação da família.",
-            "enum": [
-              "PENDING_PAYMENT",
-              "NOT_AFFILIATED",
-              "AFFILIATED",
-              "EXPIRED"
-            ],
+            "enum": ["PENDING_PAYMENT", "NOT_AFFILIATED", "AFFILIATED", "EXPIRED"],
             "example": "AFFILIATED"
           },
           "affiliatedAt": {
@@ -3108,14 +2867,7 @@
             }
           }
         },
-        "required": [
-          "id",
-          "holder",
-          "status",
-          "affiliatedAt",
-          "affiliationExpiresAt",
-          "dependants"
-        ]
+        "required": ["id", "holder", "status", "affiliatedAt", "affiliationExpiresAt", "dependants"]
       },
       "ChangePrincipalDto": {
         "type": "object",
@@ -3127,9 +2879,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "newPrincipalId"
-        ]
+        "required": ["newPrincipalId"]
       },
       "EnrollmentRequestDto": {
         "type": "object",
@@ -3143,11 +2893,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da solicitação.",
-            "enum": [
-              "REJECTED",
-              "APPROVED",
-              "PENDING"
-            ],
+            "enum": ["REJECTED", "APPROVED", "PENDING"],
             "example": "PENDING"
           },
           "clubId": {
@@ -3188,16 +2934,7 @@
             "example": "Vagas esgotadas para a faixa etária."
           }
         },
-        "required": [
-          "id",
-          "status",
-          "clubId",
-          "familyId",
-          "dependantId",
-          "requestedAt",
-          "resolvedAt",
-          "rejectionReason"
-        ]
+        "required": ["id", "status", "clubId", "familyId", "dependantId", "requestedAt", "resolvedAt", "rejectionReason"]
       },
       "UpdateClubByAdminDto": {
         "type": "object",
@@ -3262,13 +2999,7 @@
             "example": "(11) 98888-8888"
           }
         },
-        "required": [
-          "id",
-          "firstName",
-          "lastName",
-          "email",
-          "phone"
-        ]
+        "required": ["id", "firstName", "lastName", "email", "phone"]
       },
       "ClubMemberDto": {
         "type": "object",
@@ -3322,24 +3053,11 @@
           "sex": {
             "type": "string",
             "description": "Sexo do membro.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
+            "enum": ["FEMALE", "MALE"],
             "example": "MALE"
           }
         },
-        "required": [
-          "id",
-          "lastName",
-          "firstName",
-          "email",
-          "phone",
-          "holder",
-          "memberSince",
-          "birthDate",
-          "sex"
-        ]
+        "required": ["id", "lastName", "firstName", "email", "phone", "holder", "memberSince", "birthDate", "sex"]
       },
       "PaginatedClubMemberDto": {
         "type": "object",
@@ -3354,10 +3072,7 @@
             "$ref": "#/components/schemas/PaginationMetaDto"
           }
         },
-        "required": [
-          "data",
-          "meta"
-        ]
+        "required": ["data", "meta"]
       },
       "RegisterUserInputDto": {
         "type": "object",
@@ -3410,16 +3125,7 @@
             ]
           }
         },
-        "required": [
-          "firstName",
-          "lastName",
-          "email",
-          "phone",
-          "cpf",
-          "password",
-          "confirmPassword",
-          "address"
-        ]
+        "required": ["firstName", "lastName", "email", "phone", "cpf", "password", "confirmPassword", "address"]
       },
       "RegisterUserOutputDto": {
         "type": "object",
@@ -3433,10 +3139,7 @@
             "description": "Token de atualização para obter um novo token de acesso, válido por 1 dia."
           }
         },
-        "required": [
-          "accessToken",
-          "refreshToken"
-        ]
+        "required": ["accessToken", "refreshToken"]
       },
       "UpdateProfileDto": {
         "type": "object",
@@ -3480,10 +3183,7 @@
             "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"
           }
         },
-        "required": [
-          "oldPassword",
-          "newPassword"
-        ]
+        "required": ["oldPassword", "newPassword"]
       },
       "TrainingListItemView": {
         "type": "object",
@@ -3509,12 +3209,7 @@
             "example": "https://youtube.com/watch?v=abc123"
           }
         },
-        "required": [
-          "id",
-          "title",
-          "description",
-          "youtubeUrl"
-        ]
+        "required": ["id", "title", "description", "youtubeUrl"]
       },
       "CreateTrainingDto": {
         "type": "object",
@@ -3535,11 +3230,7 @@
             "example": "https://youtube.com/watch?v=abc123"
           }
         },
-        "required": [
-          "title",
-          "description",
-          "youtubeUrl"
-        ]
+        "required": ["title", "description", "youtubeUrl"]
       },
       "TrainingResponseDto": {
         "type": "object",
@@ -3572,14 +3263,7 @@
             "description": "Data de atualização"
           }
         },
-        "required": [
-          "id",
-          "title",
-          "description",
-          "youtubeUrl",
-          "createdAt",
-          "updatedAt"
-        ]
+        "required": ["id", "title", "description", "youtubeUrl", "createdAt", "updatedAt"]
       },
       "UpdateTrainingDto": {
         "type": "object",
@@ -3600,11 +3284,7 @@
             "example": "https://youtube.com/watch?v=abc123"
           }
         },
-        "required": [
-          "title",
-          "description",
-          "youtubeUrl"
-        ]
+        "required": ["title", "description", "youtubeUrl"]
       },
       "CheckoutInputDto": {
         "type": "object",
@@ -3612,10 +3292,7 @@
           "paymentMethod": {
             "type": "string",
             "description": "Método de pagamento escolhido para a afiliação.",
-            "enum": [
-              "CREDIT_CARD",
-              "PIX"
-            ],
+            "enum": ["CREDIT_CARD", "PIX"],
             "example": "PIX"
           },
           "paymentToken": {
@@ -3631,9 +3308,7 @@
             "maximum": 12
           }
         },
-        "required": [
-          "paymentMethod"
-        ]
+        "required": ["paymentMethod"]
       },
       "AddDependantDto": {
         "type": "object",
@@ -3658,23 +3333,13 @@
           "relationship": {
             "type": "string",
             "description": "Relação de parentesco com o responsável familiar.",
-            "enum": [
-              "DAUGHTER",
-              "HUSBAND",
-              "CHILD",
-              "WIFE",
-              "SON",
-              "OTHER"
-            ],
+            "enum": ["DAUGHTER", "HUSBAND", "CHILD", "WIFE", "SON", "OTHER"],
             "example": "SON"
           },
           "sex": {
             "type": "string",
             "description": "Sexo do dependente.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
+            "enum": ["FEMALE", "MALE"],
             "example": "MALE"
           },
           "email": {
@@ -3688,14 +3353,7 @@
             "example": "11987654321"
           }
         },
-        "required": [
-          "firstName",
-          "lastName",
-          "birthdate",
-          "relationship",
-          "sex",
-          "email"
-        ]
+        "required": ["firstName", "lastName", "birthdate", "relationship", "sex", "email"]
       },
       "ViewDependantOutputDto": {
         "type": "object",
@@ -3725,23 +3383,13 @@
           "relationship": {
             "type": "string",
             "description": "Relação de parentesco com o responsável.",
-            "enum": [
-              "DAUGHTER",
-              "HUSBAND",
-              "CHILD",
-              "WIFE",
-              "SON",
-              "OTHER"
-            ],
+            "enum": ["DAUGHTER", "HUSBAND", "CHILD", "WIFE", "SON", "OTHER"],
             "example": "SON"
           },
           "sex": {
             "type": "string",
             "description": "Sexo do dependente.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
+            "enum": ["FEMALE", "MALE"],
             "example": "MALE"
           },
           "email": {
@@ -3769,16 +3417,7 @@
             ]
           }
         },
-        "required": [
-          "id",
-          "firstName",
-          "lastName",
-          "birthdate",
-          "relationship",
-          "sex",
-          "familyId",
-          "holder"
-        ]
+        "required": ["id", "firstName", "lastName", "birthdate", "relationship", "sex", "familyId", "holder"]
       },
       "UpdateDependantDto": {
         "type": "object",
@@ -3803,23 +3442,13 @@
           "relationship": {
             "type": "string",
             "description": "Nova relação de parentesco.",
-            "enum": [
-              "DAUGHTER",
-              "HUSBAND",
-              "CHILD",
-              "WIFE",
-              "SON",
-              "OTHER"
-            ],
+            "enum": ["DAUGHTER", "HUSBAND", "CHILD", "WIFE", "SON", "OTHER"],
             "example": "DAUGHTER"
           },
           "sex": {
             "type": "string",
             "description": "Novo sexo do dependente.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
+            "enum": ["FEMALE", "MALE"],
             "example": "FEMALE"
           },
           "email": {
@@ -3850,10 +3479,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "dependantId",
-          "clubId"
-        ]
+        "required": ["dependantId", "clubId"]
       },
       "MyEnrollmentRequestItemView": {
         "type": "object",
@@ -3890,11 +3516,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da solicitação.",
-            "enum": [
-              "REJECTED",
-              "APPROVED",
-              "PENDING"
-            ],
+            "enum": ["REJECTED", "APPROVED", "PENDING"],
             "example": "PENDING"
           },
           "id": {
@@ -3903,15 +3525,7 @@
             "format": "uuid"
           }
         },
-        "required": [
-          "rejectionReason",
-          "resolvedAt",
-          "requestedAt",
-          "dependantName",
-          "clubName",
-          "status",
-          "id"
-        ]
+        "required": ["rejectionReason", "resolvedAt", "requestedAt", "dependantName", "clubName", "status", "id"]
       },
       "UpdateClubDto": {
         "type": "object",
@@ -3949,11 +3563,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da solicitação.",
-            "enum": [
-              "REJECTED",
-              "APPROVED",
-              "PENDING"
-            ],
+            "enum": ["REJECTED", "APPROVED", "PENDING"],
             "example": "PENDING"
           },
           "clubId": {
@@ -3999,17 +3609,7 @@
             "example": "Vagas esgotadas para a faixa etária."
           }
         },
-        "required": [
-          "id",
-          "status",
-          "clubId",
-          "familyId",
-          "dependantId",
-          "dependantName",
-          "requestedAt",
-          "resolvedAt",
-          "rejectionReason"
-        ]
+        "required": ["id", "status", "clubId", "familyId", "dependantId", "dependantName", "requestedAt", "resolvedAt", "rejectionReason"]
       },
       "RejectEnrollmentDto": {
         "type": "object",
@@ -4021,9 +3621,7 @@
             "minLength": 10
           }
         },
-        "required": [
-          "reason"
-        ]
+        "required": ["reason"]
       },
       "CreateClubRequestDto": {
         "type": "object",
@@ -4049,11 +3647,7 @@
             ]
           }
         },
-        "required": [
-          "clubName",
-          "maxMembers",
-          "address"
-        ]
+        "required": ["clubName", "maxMembers", "address"]
       },
       "ClubRequestStatusDto": {
         "type": "object",
@@ -4078,11 +3672,7 @@
           "status": {
             "type": "string",
             "description": "Status atual da solicitação de criação do clube.",
-            "enum": [
-              "PENDING",
-              "APPROVED",
-              "REJECTED"
-            ],
+            "enum": ["PENDING", "APPROVED", "REJECTED"],
             "example": "PENDING"
           },
           "maxMembers": {
@@ -4117,15 +3707,7 @@
             "example": "Documentação incompleta"
           }
         },
-        "required": [
-          "id",
-          "requesterId",
-          "clubName",
-          "status",
-          "maxMembers",
-          "address",
-          "requestedAt"
-        ]
+        "required": ["id", "requesterId", "clubName", "status", "maxMembers", "address", "requestedAt"]
       },
       "RejectRequestDto": {
         "type": "object",
@@ -4137,9 +3719,7 @@
             "minLength": 10
           }
         },
-        "required": [
-          "reason"
-        ]
+        "required": ["reason"]
       },
       "CreateTournamentDto": {
         "type": "object",
@@ -4158,10 +3738,7 @@
           "type": {
             "type": "string",
             "description": "Tipo do torneio",
-            "enum": [
-              "INDIVIDUAL",
-              "DUO"
-            ],
+            "enum": ["INDIVIDUAL", "DUO"],
             "example": "INDIVIDUAL"
           },
           "registrationStartDate": {
@@ -4183,14 +3760,7 @@
             "example": "2024-02-01T09:00:00Z"
           }
         },
-        "required": [
-          "name",
-          "description",
-          "type",
-          "registrationStartDate",
-          "registrationEndDate",
-          "startDate"
-        ]
+        "required": ["name", "description", "type", "registrationStartDate", "registrationEndDate", "startDate"]
       },
       "TournamentResponseDto": {
         "type": "object",
@@ -4213,10 +3783,7 @@
           "type": {
             "type": "string",
             "description": "Tipo do torneio",
-            "enum": [
-              "INDIVIDUAL",
-              "DUO"
-            ],
+            "enum": ["INDIVIDUAL", "DUO"],
             "example": "INDIVIDUAL"
           },
           "registrationStartDate": {
@@ -4287,10 +3854,7 @@
           "type": {
             "type": "string",
             "description": "Tipo do torneio",
-            "enum": [
-              "INDIVIDUAL",
-              "DUO"
-            ],
+            "enum": ["INDIVIDUAL", "DUO"],
             "example": "INDIVIDUAL"
           },
           "registrationStartDate": {
@@ -4331,10 +3895,7 @@
             "type": "string",
             "description": "Tipo do torneio",
             "example": "INDIVIDUAL",
-            "enum": [
-              "INDIVIDUAL",
-              "DUO"
-            ]
+            "enum": ["INDIVIDUAL", "DUO"]
           },
           "startDate": {
             "type": "string",
@@ -4360,15 +3921,7 @@
             "example": "2024-01-01T00:00:00Z"
           }
         },
-        "required": [
-          "id",
-          "name",
-          "type",
-          "startDate",
-          "registrationCount",
-          "registrationEndDate",
-          "registrationStartDate"
-        ]
+        "required": ["id", "name", "type", "startDate", "registrationCount", "registrationEndDate", "registrationStartDate"]
       },
       "GetMyPendingRegistrationsListItemView": {
         "type": "object",
@@ -4405,14 +3958,7 @@
             "example": "DUO"
           }
         },
-        "required": [
-          "registrationId",
-          "tournamentName",
-          "competitorName",
-          "competitorId",
-          "requestedAt",
-          "tournamentType"
-        ]
+        "required": ["registrationId", "tournamentName", "competitorName", "competitorId", "requestedAt", "tournamentType"]
       },
       "TournamentDetailsView": {
         "type": "object",
@@ -4432,10 +3978,7 @@
             "type": "string",
             "description": "Tipo do torneio",
             "example": "INDIVIDUAL",
-            "enum": [
-              "INDIVIDUAL",
-              "DUO"
-            ]
+            "enum": ["INDIVIDUAL", "DUO"]
           },
           "createdAt": {
             "type": "string",
@@ -4505,10 +4048,7 @@
             "example": "550e8400-e29b-41d4-a716-446655440001"
           }
         },
-        "required": [
-          "tournamentId",
-          "competitorId"
-        ]
+        "required": ["tournamentId", "competitorId"]
       },
       "RequestIndividualRegistrationOutputDto": {
         "type": "object",
@@ -4522,15 +4062,10 @@
             "type": "string",
             "description": "Status atual da inscrição individual",
             "example": "CONFIRMED",
-            "enum": [
-              "CONFIRMED"
-            ]
+            "enum": ["CONFIRMED"]
           }
         },
-        "required": [
-          "registrationId",
-          "status"
-        ]
+        "required": ["registrationId", "status"]
       },
       "RequestDuoRegistrationDto": {
         "type": "object",
@@ -4551,11 +4086,7 @@
             "example": "550e8400-e29b-41d4-a716-446655440002"
           }
         },
-        "required": [
-          "tournamentId",
-          "competitorId",
-          "partnerId"
-        ]
+        "required": ["tournamentId", "competitorId", "partnerId"]
       },
       "RequestDuoRegistrationOutputDto": {
         "type": "object",
@@ -4569,15 +4100,10 @@
             "type": "string",
             "description": "Status atual da inscrição da dupla",
             "example": "PENDING_APPROVAL",
-            "enum": [
-              "PENDING_APPROVAL"
-            ]
+            "enum": ["PENDING_APPROVAL"]
           }
         },
-        "required": [
-          "registrationId",
-          "status"
-        ]
+        "required": ["registrationId", "status"]
       },
       "AcceptDuoRegistrationResponseDto": {
         "type": "object",
@@ -4588,9 +4114,7 @@
             "example": "Inscrição de dupla aceita com sucesso"
           }
         },
-        "required": [
-          "message"
-        ]
+        "required": ["message"]
       },
       "RejectDuoRegistrationResponseDto": {
         "type": "object",
@@ -4601,9 +4125,7 @@
             "example": "Inscrição de dupla rejeitada com sucesso"
           }
         },
-        "required": [
-          "message"
-        ]
+        "required": ["message"]
       },
       "CancelRegistrationDto": {
         "type": "object",
@@ -4619,10 +4141,7 @@
             "example": "Conflito de agenda"
           }
         },
-        "required": [
-          "registrationId",
-          "reason"
-        ]
+        "required": ["registrationId", "reason"]
       }
     }
   }

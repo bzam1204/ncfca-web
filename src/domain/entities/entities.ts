@@ -1,11 +1,11 @@
-import {UserRoles} from "@/domain/enums/user.roles";
-import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {PaymentStatus} from "@/domain/enums/payment-status.enum";
-import {PaymentMethod} from "@/domain/enums/payment-method.enum";
-import {MembershipStatus} from "@/domain/enums/membership-status.enum";
-import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
-import {TransactionContextType} from "@/domain/enums/transaction-context-type.enum";
-import {Dependant} from "@/domain/entities/dependant.entity";
+import { UserRoles } from '@/domain/enums/user.roles';
+import { FamilyStatus } from '@/domain/enums/family-status.enum';
+import { PaymentStatus } from '@/domain/enums/payment-status.enum';
+import { PaymentMethod } from '@/domain/enums/payment-method.enum';
+import { MembershipStatus } from '@/domain/enums/membership-status.enum';
+import { EnrollmentStatus } from '@/domain/enums/enrollment-status.enum';
+import { TransactionContextType } from '@/domain/enums/transaction-context-type.enum';
+import { Dependant } from '@/domain/entities/dependant.entity';
 
 export interface Address {
   city: string;

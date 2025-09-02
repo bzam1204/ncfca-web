@@ -1,10 +1,10 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { UserRoles } from "@/domain/enums/user.roles";
-import { revalidateTag } from "next/cache";
-import { NextKeys } from "@/infrastructure/cache/next-keys";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { UserRoles } from '@/domain/enums/user.roles';
+import { revalidateTag } from 'next/cache';
+import { NextKeys } from '@/infrastructure/cache/next-keys';
 
 export async function approveEnrollmentAction(clubId: string, enrollmentId: string) {
   const session = await auth();

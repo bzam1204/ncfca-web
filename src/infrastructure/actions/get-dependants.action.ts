@@ -1,10 +1,9 @@
 'use server';
 
-import {DependantDto} from "@/contracts/api/dependant.dto";
+import { DependantDto } from '@/contracts/api/dependant.dto';
 
-import {Inject} from "@/infrastructure/containers/container";
-import {auth} from "@/infrastructure/auth";
-
+import { Inject } from '@/infrastructure/containers/container';
+import { auth } from '@/infrastructure/auth';
 
 export async function GetDependantsAction(): Promise<DependantDto[]> {
   const session = await auth();

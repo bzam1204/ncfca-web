@@ -1,17 +1,11 @@
-"use client"
+'use client';
 
-import * as React from "react"
+import * as React from 'react';
 
-import { NavMain } from "@/components/nav-main"
-import { NavUser } from "@/components/nav-user"
-import {
-  SidebarMenuButton,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  Sidebar,
-} from "@/components/ui/sidebar"
-import { AppConfig } from "@/infrastructure/config";
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
+import { SidebarMenuButton, SidebarContent, SidebarFooter, SidebarHeader, Sidebar } from '@/components/ui/sidebar';
+import { AppConfig } from '@/infrastructure/config';
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -20,8 +14,15 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
         <SidebarMenuButton size="lg" asChild>
           <a href="/dashboard">
             <div className="bg-transparent text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-              <svg width="20" height="125" viewBox="0 0 100 125" fill="none" xmlns="http://www.w3.org/2000/svg" role="img"
-                aria-labelledby="svg-icon-title">
+              <svg
+                width="20"
+                height="125"
+                viewBox="0 0 100 125"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                role="img"
+                aria-labelledby="svg-icon-title"
+              >
                 <title id="svg-icon-title">Company Logo Icon</title>
                 <g>
                   <rect x="0" y="0" width="49" height="49" fill="#009639" />
@@ -45,5 +46,5 @@ export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sideb
         <NavUser />
       </SidebarFooter>
     </Sidebar>
-  )
-} 
+  );
+}

@@ -1,54 +1,85 @@
 # TEMPLATE DE ESPECIFICAÇÃO DE REFATORAÇÃO DECLARATIVA
+
 # VERSÃO: FRAMEWORK v3.0 (modo TAG-PRIMEIRO)
+
 # DATA: 20 de agosto de 2025
+
 #
+
 # FILOSOFIA (TAG > name):
+
 # Preferimos <TagEspecífica> em vez de <tipo name="tag-específica">.
-#   - DTOs e contratos podem manter <property name=".." type=".."> (faz sentido técnico).
-#   - Para o restante, a PRÓPRIA TAG É O ID. Referencie a tag pelo nome.
+
+# - DTOs e contratos podem manter <property name=".." type=".."> (faz sentido técnico).
+
+# - Para o restante, a PRÓPRIA TAG É O ID. Referencie a tag pelo nome.
+
 # Benefício: semântica forte, rastreabilidade e refactors simples (busca por tag).
 
-### COMO USAR ESTE FRAMEWORK ###
+### COMO USAR ESTE FRAMEWORK
+
 #
+
 # 1) LINGUAGEM UBÍQUA EM <reference> (TAG POR ARQUIVO):
-#    - Sempre crie uma tag específica por arquivo/componente. Ex.: <authUseCaseLegacy>, <loginScreenConsumer>.
-#    - Evite atributos "name" para identificar entidades; use o nome da TAG como identidade.
+
+# - Sempre crie uma tag específica por arquivo/componente. Ex.: <authUseCaseLegacy>, <loginScreenConsumer>.
+
+# - Evite atributos "name" para identificar entidades; use o nome da TAG como identidade.
+
 #
+
 # 2) AGRUPAMENTO & REFERENCIAÇÃO:
-#    - Agrupe arquivos em contêineres semânticos usando tags específicas (ex.: <authLegacyGroup>).
-#    - Referencie SEMPRE por tag. Ex.: desiredContractRef="<AutenticacaoGateway>".
+
+# - Agrupe arquivos em contêineres semânticos usando tags específicas (ex.: <authLegacyGroup>).
+
+# - Referencie SEMPRE por tag. Ex.: desiredContractRef="<AutenticacaoGateway>".
+
 #
+
 # 3) DIAGNÓSTICO (<as-is>) COM FATOS:
-#    - Descreva acoplamentos, duplicações, inconsistências de contrato e métricas, citando tags.
+
+# - Descreva acoplamentos, duplicações, inconsistências de contrato e métricas, citando tags.
+
 #
+
 # 4) ESTADO FUTURO (<to-be>):
-#    - Declare portas/adapters, DTOs e fluxos. Transforme por TAG com state="NOVO|MODIFICADO|DELETADO".
+
+# - Declare portas/adapters, DTOs e fluxos. Transforme por TAG com state="NOVO|MODIFICADO|DELETADO".
+
 #
+
 # 5) PRONTO (<finalState>):
-#    - Critérios automatizáveis (testes, revisão, performance). Tudo verificável por script.
+
+# - Critérios automatizáveis (testes, revisão, performance). Tudo verificável por script.
+
 #
+
 # NOTA PÉTREA:
-#    - <projectCodeStandards> é imutável. Demais tags podem variar conforme a spec.
+
+# - <projectCodeStandards> é imutável. Demais tags podem variar conforme a spec.
+
 #
 
 <task>
 [Descreva aqui o objetivo principal da refatoração em uma frase.]
 </task>
 
-__________________________________________________________________________________________
+---
 
 <reference>
 
   <!-- Conceitos e Padrões do Documento -->
-  <concepts_and_patterns>
-    <!-- PÉTREA -->
-    <projectCodeStandards>[caminho/para/documento_de_regras_de_projeto.md]</projectCodeStandards>
+
+<concepts_and_patterns>
+<!-- PÉTREA -->
+<projectCodeStandards>[caminho/para/documento_de_regras_de_projeto.md]</projectCodeStandards>
 
     <conceptApiContract>[caminho/para/swagger.json ou openapi.json]</conceptApiContract>
     <patternOld>[Nome do Padrão Antigo, ex: Active Record, Service Legado]</patternOld>
     <patternNew>[Nome do Padrão Novo, ex: Gateway, Repository, Ports&Adapters]</patternNew>
     <folderToDelete>[caminho/para/pasta_obsoleta/]</folderToDelete>
-  </concepts_and_patterns>
+
+</concepts_and_patterns>
 
   <!-- AGRUPAMENTO: use tags como IDs -->
   <filesToDelete>
@@ -78,7 +109,7 @@ ________________________________________________________________________________
 
 </reference>
 
-__________________________________________________________________________________________
+---
 
 <as-is>
   <!-- Enriquecido com fatos e métricas; cite SEMPRE tags específicas -->
@@ -110,6 +141,7 @@ ________________________________________________________________________________
       - Cobertura módulo auth: 41% (alvo ≥ 90%).
       - Login staging: 320ms p50 / 780ms p95.
     </metricas>
+
   </evidencias>
 
   <consequencias>
@@ -119,7 +151,7 @@ ________________________________________________________________________________
   </consequencias>
 </as-is>
 
-__________________________________________________________________________________________
+---
 
 <to-be>
 ### **DECLARAÇÃO DO ESTADO FUTURO DO CÓDIGO**
@@ -150,6 +182,7 @@ ________________________________________________________________________________
     <AutenticacaoGateway>
       <login signature="(credentials: CredenciaisDTO) => Promise<SessaoUsuarioDTO>" />
     </AutenticacaoGateway>
+
   </dataContracts>
 
   <!-- Transformações por TAG -->
@@ -226,6 +259,7 @@ ________________________________________________________________________________
 </exemploDeModulo>
 
 ### EXPRESSE-SE (DECLARATIVIDADE)
+
 <!-- Crie novas tags conforme a necessidade: <security>, <observabilidade>, <i18n>, <a11y>, <nonGoals>, etc.
      O importante é que cada tag seja objetiva, verificável e referenciável por nome. -->
 

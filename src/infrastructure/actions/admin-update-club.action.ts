@@ -1,8 +1,8 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { UpdateClubByAdminDto } from "@/contracts/api/admin.dto";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { UpdateClubByAdminDto } from '@/contracts/api/admin.dto';
 
 export async function adminUpdateClubAction(clubId: string, payload: UpdateClubByAdminDto) {
   const session = await auth();

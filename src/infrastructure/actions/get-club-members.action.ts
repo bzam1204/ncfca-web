@@ -1,7 +1,7 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
 
 export async function getClubMembersAction(clubId: string) {
   const session = await auth();

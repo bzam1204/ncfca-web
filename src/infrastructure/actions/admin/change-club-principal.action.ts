@@ -11,7 +11,7 @@ export async function changeClubPrincipalAction(clubId: string, newPrincipalId: 
   if (!session?.accessToken || !session.user.roles.includes(UserRoles.ADMIN)) {
     throw new Error('Acesso negado.');
   }
-  
+
   const adminGateway = Inject.AdminGateway(session.accessToken);
   await adminGateway.changeClubPrincipal(clubId, { newPrincipalId });
 

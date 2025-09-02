@@ -1,6 +1,6 @@
-import {DefaultSession} from 'next-auth';
-import {DefaultJWT} from 'next-auth/jwt';
-import {UserRoles} from "@/domain/enums/user.roles";
+import { DefaultSession } from 'next-auth';
+import { DefaultJWT } from 'next-auth/jwt';
+import { UserRoles } from '@/domain/enums/user.roles';
 
 declare module 'next-auth' {
   interface User {
@@ -14,7 +14,7 @@ declare module 'next-auth' {
     user: {
       id: string;
       email: string;
-      roles: UserRoles[]
+      roles: UserRoles[];
       familyId: string;
       lastName: string;
       firstName: string;

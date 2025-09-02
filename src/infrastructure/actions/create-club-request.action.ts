@@ -1,8 +1,8 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { CreateClubRequestDto } from "@/contracts/api/club-management.dto";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { CreateClubRequestDto } from '@/contracts/api/club-management.dto';
 
 export async function createClubRequestAction(dto: CreateClubRequestDto) {
   const session = await auth();

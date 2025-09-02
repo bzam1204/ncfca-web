@@ -1,9 +1,8 @@
-import {CepAddress, CepService} from "@/domain/services/cep.service";
+import { CepAddress, CepService } from '@/domain/services/cep.service';
 
-import {ViaCepResponse} from "@/types/via-cep.types";
+import { ViaCepResponse } from '@/types/via-cep.types';
 
 export class ViaCepService implements CepService {
-
   public async fetchAddress(cep: string): Promise<CepAddress | null> {
     const formattedCep = cep.replace(/\D/g, '');
     if (formattedCep.length !== 8) return null;
@@ -13,16 +12,16 @@ export class ViaCepService implements CepService {
       const data: ViaCepResponse = await response.json();
       if (data.erro) return null;
       return {
-        district : data.bairro,
-        zipCode : data.cep,
-        street : data.logradouro,
-        state : data.uf,
-        city : data.localidade,
+        district: data.bairro,
+        zipCode: data.cep,
+        street: data.logradouro,
+        state: data.uf,
+        city: data.localidade,
       };
     } catch {
       return null;
     }
-  };
+  }
 }
 
 export const viaCepService = new ViaCepService();

@@ -47,9 +47,9 @@ export function useAdminClubMembers(clubId: string) {
 ```typescript
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { UserRoles } from "@/domain/enums/user.roles";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { UserRoles } from '@/domain/enums/user.roles';
 
 export async function getClubMembersAction(clubId: string) {
   const session = await auth();
@@ -77,24 +77,26 @@ export interface AdminGateway {
 ## Cache e Invalidação
 
 ### QueryKeys
+
 Use `QueryKeys` centralizadas para consistência:
 
 ```typescript
 import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 // Query
-queryKey: QueryKeys.admin.clubMembers(clubId)
+queryKey: QueryKeys.admin.clubMembers(clubId);
 
 // Invalidação em mutação
 queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubMembers(clubId) });
 ```
 
 ### NextKeys
+
 Para revalidação de cache do Next.js:
 
 ```typescript
-import { revalidateTag } from "next/cache";
-import { NextKeys } from "@/infrastructure/cache/next-keys";
+import { revalidateTag } from 'next/cache';
+import { NextKeys } from '@/infrastructure/cache/next-keys';
 
 // Em Actions de mutação
 revalidateTag(NextKeys.admin.clubMembers(clubId));
@@ -103,11 +105,13 @@ revalidateTag(NextKeys.admin.clubMembers(clubId));
 ## Regras de Segurança
 
 ### ❌ Proibido em Hooks
+
 - `useSession()` - tokens devem ficar no servidor
 - `fetch()` direto - use Actions
 - `process.env.NEXT_PUBLIC_BACKEND_URL` - deixe para Gateways
 
 ### ✅ Permitido em Hooks
+
 - `useQuery`/`useMutation` chamando Actions
 - `QueryKeys` para cache
 - Lógica de transformação de dados para UI
@@ -134,23 +138,27 @@ src/
 ## Checklist de Desenvolvimento
 
 ### Novos Hooks
+
 - [ ] Usa apenas Actions, nunca `fetch()` direto
-- [ ] Não usa `useSession()` 
+- [ ] Não usa `useSession()`
 - [ ] Usa `QueryKeys` oficiais
 - [ ] Mutações invalidam chaves relacionadas
 
 ### Novas Actions
+
 - [ ] Marca `'use server'`
 - [ ] Faz `auth()` e verifica roles quando necessário
 - [ ] Usa `Inject.{Gateway}(token)`
 - [ ] Revalida cache com `NextKeys` apropriadas
 
 ### Novos Gateways
+
 - [ ] Interface documentada com rota OpenAPI
 - [ ] Implementação usa DTOs tipados
 - [ ] Tratamento de erro propaga mensagens do body
 
 ### Pull Requests
+
 - [ ] Mapeamento de contratos do `openapi.json` documentado
 - [ ] Verificado ausência de `fetch`/`useSession` em hooks
 - [ ] Invalidações `QueryKeys`/`NextKeys` testadas

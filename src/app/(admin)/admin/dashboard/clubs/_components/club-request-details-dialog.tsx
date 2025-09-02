@@ -2,17 +2,17 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { User, Phone, Mail, MapPin, Calendar, MessageSquare, Building2, Users, FileText, ExternalLink } from "lucide-react";
-import { useAdminUserById } from "@/hooks/use-admin-user-by-id";
-import { useApproveClubRequest } from "@/hooks/use-approve-club-request";
-import { useRejectClubRequest } from "@/hooks/use-reject-club-request";
-import { RejectClubRequestDialog } from "./reject-club-request-dialog";
-import { RejectRequestDto } from "@/contracts/api/club-request.dto";
-import { 
+import { ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { User, Phone, Mail, MapPin, Calendar, MessageSquare, Building2, Users, FileText, ExternalLink } from 'lucide-react';
+import { useAdminUserById } from '@/hooks/use-admin-user-by-id';
+import { useApproveClubRequest } from '@/hooks/use-approve-club-request';
+import { useRejectClubRequest } from '@/hooks/use-reject-club-request';
+import { RejectClubRequestDialog } from './reject-club-request-dialog';
+import { RejectRequestDto } from '@/contracts/api/club-request.dto';
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -21,20 +21,16 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger 
-} from "@/components/ui/alert-dialog";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 
 interface ClubRequestDetailsDialogProps {
   request: ClubRequestStatusDto | null;
   onOpenChange: (isOpen: boolean) => void;
 }
 
-const InfoField = ({ icon: Icon, label, value }: {
-  icon: React.ElementType,
-  label: string,
-  value: React.ReactNode
-}) => (
+const InfoField = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: React.ReactNode }) => (
   <div className="flex items-center gap-3 text-sm">
     <Icon className="h-4 w-4 text-muted-foreground" />
     <span className="font-semibold">{label}:</span>
@@ -44,13 +40,10 @@ const InfoField = ({ icon: Icon, label, value }: {
 
 export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestDetailsDialogProps) {
   const [isRejectDialogOpen, setRejectDialogOpen] = useState(false);
-  
+
   // Only fetch user data when dialog is open and we have a requesterId
   const shouldFetchUser = Boolean(request && request.requesterId);
-  const { data: requesterData, isLoading: isLoadingRequester } = useAdminUserById(
-    request?.requesterId || '', 
-    shouldFetchUser
-  );
+  const { data: requesterData, isLoading: isLoadingRequester } = useAdminUserById(request?.requesterId || '', shouldFetchUser);
 
   // Hooks for approve/reject actions
   const { mutate: approve, isPending: isApproving } = useApproveClubRequest();
@@ -61,19 +54,22 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
   if (!request) return null;
 
   const handleRejectSubmit = (dto: RejectRequestDto) => {
-    reject({ requestId: request.id, dto }, {
-      onSuccess: () => {
-        setRejectDialogOpen(false);
-        onOpenChange(false);
-      }
-    });
+    reject(
+      { requestId: request.id, dto },
+      {
+        onSuccess: () => {
+          setRejectDialogOpen(false);
+          onOpenChange(false);
+        },
+      },
+    );
   };
 
   const handleApprove = () => {
     approve(request.id, {
       onSuccess: () => {
         onOpenChange(false);
-      }
+      },
     });
   };
 
@@ -88,16 +84,12 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
     const statusConfig = {
       PENDING: { label: 'Pendente', className: 'bg-yellow-100 text-yellow-800' },
       APPROVED: { label: 'Aprovado', className: 'bg-green-100 text-green-800' },
-      REJECTED: { label: 'Rejeitado', className: 'bg-red-100 text-red-800' }
+      REJECTED: { label: 'Rejeitado', className: 'bg-red-100 text-red-800' },
     };
-    
+
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.PENDING;
-    
-    return (
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.className}`}>
-        {config.label}
-      </span>
-    );
+
+    return <span className={`px-2 py-1 rounded-full text-xs font-medium ${config.className}`}>{config.label}</span>;
   };
 
   return (
@@ -119,21 +111,13 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
             </h3>
             <div className="space-y-2 pl-6 border-l">
               <InfoField icon={Building2} label="Nome do Clube" value={request.clubName} />
-              {request.maxMembers && (
-                <InfoField icon={Users} label="Máximo de Membros" value={request.maxMembers.toString()} />
-              )}
-              <InfoField icon={FileText} label="Status" value={
-                <span>{getStatusBadge(request.status)}</span>
-              } />
-              <InfoField icon={Calendar} label="Data da Solicitação" 
-                value={new Date(request.requestedAt).toLocaleDateString('pt-BR')} />
+              {request.maxMembers && <InfoField icon={Users} label="Máximo de Membros" value={request.maxMembers.toString()} />}
+              <InfoField icon={FileText} label="Status" value={<span>{getStatusBadge(request.status)}</span>} />
+              <InfoField icon={Calendar} label="Data da Solicitação" value={new Date(request.requestedAt).toLocaleDateString('pt-BR')} />
               {request.resolvedAt && (
-                <InfoField icon={Calendar} label="Data de Resolução" 
-                  value={new Date(request.resolvedAt).toLocaleDateString('pt-BR')} />
+                <InfoField icon={Calendar} label="Data de Resolução" value={new Date(request.resolvedAt).toLocaleDateString('pt-BR')} />
               )}
-              {request.rejectionReason && (
-                <InfoField icon={FileText} label="Motivo da Rejeição" value={request.rejectionReason} />
-              )}
+              {request.rejectionReason && <InfoField icon={FileText} label="Motivo da Rejeição" value={request.rejectionReason} />}
             </div>
           </div>
 
@@ -161,15 +145,12 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
                 </>
               ) : requesterData ? (
                 <>
-                  <InfoField icon={User} label="Nome" 
-                    value={`${requesterData.firstName} ${requesterData.lastName}`} />
+                  <InfoField icon={User} label="Nome" value={`${requesterData.firstName} ${requesterData.lastName}`} />
                   <InfoField icon={Mail} label="Email" value={requesterData.email} />
                   <InfoField icon={Phone} label="Telefone" value={requesterData.phone} />
                 </>
               ) : (
-                <div className="text-sm text-muted-foreground">
-                  Informações do solicitante não disponíveis
-                </div>
+                <div className="text-sm text-muted-foreground">Informações do solicitante não disponíveis</div>
               )}
             </div>
           </div>
@@ -180,11 +161,13 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
               <MapPin className="mr-2 h-4 w-4" /> Endereço do Clube
             </h3>
             <div className="space-y-2 pl-6 border-l">
-              <InfoField icon={MapPin} label="Logradouro" 
-                value={`${request.address.street || 'Não informado'}, ${request.address.number || 'S/N'}`} />
+              <InfoField
+                icon={MapPin}
+                label="Logradouro"
+                value={`${request.address.street || 'Não informado'}, ${request.address.number || 'S/N'}`}
+              />
               <InfoField icon={MapPin} label="Bairro" value={request.address.district} />
-              <InfoField icon={MapPin} label="Cidade / UF" 
-                value={`${request.address.city} / ${request.address.state}`} />
+              <InfoField icon={MapPin} label="Cidade / UF" value={`${request.address.city} / ${request.address.state}`} />
               <InfoField icon={MapPin} label="CEP" value={request.address.zipCode} />
             </div>
           </div>
@@ -197,8 +180,8 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
             <div className="space-y-2 pl-6 border-l">
               <InfoField icon={FileText} label="ID da Solicitação" value={request.id} />
               <div className="text-sm text-muted-foreground">
-                Esta é uma solicitação para criar um novo clube na plataforma.
-                O solicitante deseja estabelecer o clube &quot;{request.clubName}&quot;.
+                Esta é uma solicitação para criar um novo clube na plataforma. O solicitante deseja estabelecer o clube &quot;{request.clubName}
+                &quot;.
               </div>
             </div>
           </div>
@@ -207,12 +190,7 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
         {/* Action Buttons */}
         <div className="space-y-3">
           {/* WhatsApp Contact button - full width */}
-          <Button 
-            onClick={handleWhatsAppClick} 
-            disabled={!requesterData?.phone} 
-            className="w-full"
-            variant="outline"
-          >
+          <Button onClick={handleWhatsAppClick} disabled={!requesterData?.phone} className="w-full" variant="outline">
             <MessageSquare className="mr-2 h-4 w-4" />
             Contatar via WhatsApp
           </Button>
@@ -220,12 +198,7 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
           {/* Approve/Reject buttons - only show if status is PENDING */}
           {request.status === 'PENDING' && (
             <div className="flex gap-2">
-              <Button
-                variant="destructive"
-                onClick={() => setRejectDialogOpen(true)}
-                disabled={isProcessing}
-                className="flex-1"
-              >
+              <Button variant="destructive" onClick={() => setRejectDialogOpen(true)} disabled={isProcessing} className="flex-1">
                 {isRejecting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 <XCircle className="mr-2 h-4 w-4" />
                 Rejeitar
@@ -233,10 +206,7 @@ export function ClubRequestDetailsDialog({ request, onOpenChange }: ClubRequestD
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white"
-                    disabled={isProcessing}
-                  >
+                  <Button className="flex-1 bg-green-600 hover:bg-green-700 text-white" disabled={isProcessing}>
                     {isApproving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                     <CheckCircle className="mr-2 h-4 w-4" />
                     Aprovar

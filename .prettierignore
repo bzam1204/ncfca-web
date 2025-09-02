@@ -1,0 +1,15 @@
+# Build artifacts
+.next/
+dist/
+build/
+coverage/
+
+# Dependency directories
+node_modules/
+
+# Generated files
+*.log
+*.tsbuildinfo
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

@@ -1,6 +1,6 @@
 code_standards:
   - id: variables_methods_camelCase
-    rule: "Variables and methods must use camelCase."
+    rule: 'Variables and methods must use camelCase.'
     bad_example: |
       const user_name = "Ana";
       function Get_User() {
@@ -13,7 +13,7 @@ code_standards:
       }
 
   - id: classes_interfaces_PascalCase
-    rule: "Classes and interfaces must use PascalCase."
+    rule: 'Classes and interfaces must use PascalCase.'
     bad_example: |
       class userService {}
       interface club {}
@@ -22,7 +22,7 @@ code_standards:
       interface Club {}
 
   - id: files_kebab_case
-    rule: "File names must use kebab-case."
+    rule: 'File names must use kebab-case.'
     bad_filenames:
       - userService.ts
       - ClubRepositoryPrisma.ts
@@ -44,7 +44,7 @@ code_standards:
       class ClubRepositoryPrisma implements ClubRepository {}
 
   - id: no_blank_lines_inside_methods
-    rule: "Do not leave blank lines inside methods/algorithms."
+    rule: 'Do not leave blank lines inside methods/algorithms.'
     bad_example: |
       function total(items: number[]) {
 
@@ -69,7 +69,7 @@ code_standards:
       }
 
   - id: avoid_magic_numbers
-    rule: "Avoid magic numbers; extract them into constants."
+    rule: 'Avoid magic numbers; extract them into constants.'
     bad_example: |
       if (status === 7) {
         retry(3);
@@ -126,7 +126,7 @@ code_standards:
       import { toTitle } from "./utils";
 
   - id: touch_only_assigned_scope
-    rule: "Only change what you were assigned. If extra work is needed, stop and ask."
+    rule: 'Only change what you were assigned. If extra work is needed, stop and ask.'
     bad_example: |
       # Task: Fix login bug.
       # Changes:

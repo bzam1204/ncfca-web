@@ -1,7 +1,7 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
 
 export async function rejectEnrollmentAction(enrollmentId: string, rejectionReason: string): Promise<void> {
   const session = await auth();

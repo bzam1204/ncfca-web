@@ -1,8 +1,8 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Dependant } from "@/domain/entities/dependant.entity";
-import { Inject } from "@/infrastructure/containers/container";
+import { auth } from '@/infrastructure/auth';
+import { Dependant } from '@/domain/entities/dependant.entity';
+import { Inject } from '@/infrastructure/containers/container';
 
 export async function getDependantByIdAction(dependantId: string): Promise<Dependant> {
   const session = await auth();

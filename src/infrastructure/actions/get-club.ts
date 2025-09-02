@@ -1,8 +1,8 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { UserRoles } from "@/domain/enums/user.roles";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { UserRoles } from '@/domain/enums/user.roles';
 
 export async function getClubAction(clubId: string) {
   const session = await auth();

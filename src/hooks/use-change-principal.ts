@@ -10,8 +10,7 @@ export function useChangePrincipal() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ clubId, newPrincipalId }: { clubId: string, newPrincipalId: string }) => 
-      changeClubPrincipalAction(clubId, newPrincipalId),
+    mutationFn: ({ clubId, newPrincipalId }: { clubId: string; newPrincipalId: string }) => changeClubPrincipalAction(clubId, newPrincipalId),
     onSuccess: () => {
       notify.success('Principal alterado com sucesso.');
       queryClient.invalidateQueries({ queryKey: QueryKeys.admin.clubs() });

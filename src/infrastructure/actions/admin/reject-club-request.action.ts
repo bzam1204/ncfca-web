@@ -1,11 +1,11 @@
 'use server';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
-import { UserRoles } from "@/domain/enums/user.roles";
-import { revalidateTag } from "next/cache";
-import { NextKeys } from "@/infrastructure/cache/next-keys";
-import {RejectRequestDto} from "@/contracts/api/club-request.dto";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
+import { UserRoles } from '@/domain/enums/user.roles';
+import { revalidateTag } from 'next/cache';
+import { NextKeys } from '@/infrastructure/cache/next-keys';
+import { RejectRequestDto } from '@/contracts/api/club-request.dto';
 
 export async function rejectClubRequestAction(requestId: string, dto: RejectRequestDto) {
   const session = await auth();

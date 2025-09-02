@@ -4,7 +4,7 @@
  * @description Schema para os dados de um clube.
  * @source openapi.json - components.schemas.ClubDto
  */
-import {Club} from "@/domain/entities/entities";
+import { Club } from '@/domain/entities/entities';
 
 /**
  * @description Schema para a resposta paginada do endpoint GET /club.

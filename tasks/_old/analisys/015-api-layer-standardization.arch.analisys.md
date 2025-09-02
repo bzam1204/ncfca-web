@@ -1,29 +1,38 @@
 # TEMPLATE DE ESPECIFICAÇÃO DE REFATORAÇÃO DECLARATIVA
+
 # VERSÃO: FRAMEWORK v3.0 (modo TAG-PRIMEIRO)
+
 # DATA: 20 de agosto de 2025
+
 #
+
 # FILOSOFIA (TAG > name):
+
 # Preferimos <TagEspecífica> em vez de <tipo name="tag-específica">.
-#   - DTOs e contratos podem manter <property name=".." type=".."> (faz sentido técnico).
-#   - Para o restante, a PRÓPRIA TAG É O ID. Referencie a tag pelo nome.
+
+# - DTOs e contratos podem manter <property name=".." type=".."> (faz sentido técnico).
+
+# - Para o restante, a PRÓPRIA TAG É O ID. Referencie a tag pelo nome.
+
 # Benefício: semântica forte, rastreabilidade e refactors simples (busca por tag).
 
 <task>
 Padronizar o acesso à API em um único fluxo hook → action (server) → gateway (interface) → container (Inject) → real gateway (API), eliminando fetch direto e divergências com o contrato OpenAPI.
 </task>
 
-__________________________________________________________________________________________
+---
 
 <reference>
 
-  <concepts_and_patterns>
-    <projectCodeStandards>code.standards.yml</projectCodeStandards>
+<concepts_and_patterns>
+<projectCodeStandards>code.standards.yml</projectCodeStandards>
 
     <conceptApiContract>openapi.json</conceptApiContract>
     <patternOld>Hooks com fetch direto, Use-Cases legados e Queries paralelas</patternOld>
     <patternNew>Gateways + Actions + Hooks (Ports & Adapters)</patternNew>
     <folderToDelete>src/infrastructure/queries/</folderToDelete>
-  </concepts_and_patterns>
+
+</concepts_and_patterns>
 
   <filesToDelete>
     <clientFetchHooksGroup purpose="remover fetch direto do cliente">
@@ -39,6 +48,7 @@ ________________________________________________________________________________
       <queryService path="src/infrastructure/services/query.service.api.ts" role="service" />
     </queriesLegacyGroup>
     <!-- Observação: use-cases permanecem deprecados, mas NÃO serão removidos nesta análise -->
+
   </filesToDelete>
 
   <interfacesToModify>
@@ -67,11 +77,12 @@ ________________________________________________________________________________
     <willDependOf src="<adminClubEnrollmentsHook>" on="<adminGatewayInterface>" when="pós-refatoração" />
 
     <dependsOf src="<searchClubsHook>" on="<clubGatewayInterface>" reason="padrão correto já aplicado (via action)" />
+
   </refs>
 
 </reference>
 
-__________________________________________________________________________________________
+---
 
 <as-is>
   <contextoArquitetural>
@@ -105,6 +116,7 @@ ________________________________________________________________________________
       - Páginas server com fetch direto Admin: 2.
       - Módulos legacy (use-cases) presentes: ≥ 10 arquivos.
     </metricas>
+
   </evidencias>
 
   <consequencias>
@@ -114,7 +126,7 @@ ________________________________________________________________________________
   </consequencias>
 </as-is>
 
-__________________________________________________________________________________________
+---
 
 <to-be>
 ### **DECLARAÇÃO DO ESTADO FUTURO DO CÓDIGO**
@@ -163,6 +175,7 @@ ________________________________________________________________________________
       <getMyDependants signature="() => Promise<Dependant[]>" />
       <getMyFamily signature="() => Promise<FamilyResponseDto | null>" />
     </FamilyGateway>
+
   </dataContracts>
 
   <clientFetchHooksGroup state="DELETADO">
@@ -256,4 +269,3 @@ ________________________________________________________________________________
 <finalState type="CodeReview">
   ≥ 2 revisões confirmando aderência ao padrão Hook→Action→Gateway e eliminação de fetch direto.
 </finalState>
-

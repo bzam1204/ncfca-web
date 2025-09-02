@@ -12,7 +12,7 @@ You are an AI assistant responsible for managing a software development project.
 | --task   | Task identifier     | --task=45       |
 </arguments_table>
 <task_info>
-Task: ./tasks/prd-[$prd]/[$task]_task.md
+Task: ./tasks/prd-[$prd]/[$task]\_task.md
 </task_info>
 <prd_info>
 PRD: ./tasks/prd-[$prd]/\_prd.md
@@ -60,10 +60,11 @@ Potential Risks/Challenges: [List any identified risks or challenges]
 6. Next, provide a plan for approaching the task:
 
 <task_approach>
+
 1. [First step in approaching the task]
 2. [Second step in approaching the task]
 3. [Continue with additional steps as needed]
-</task_approach>
+   </task_approach>
 
 Important Notes:
 
@@ -79,6 +80,7 @@ Now I will begin implementing this task following the approach outlined above.
 </task_implementation>
 
 Then proceed to actually implement the task by:
+
 - Running necessary commands
 - Making code changes
 - Following the established project patterns
@@ -101,10 +103,11 @@ Potential Risks/Challenges: [Risks/Challenges list]
 </task_summary>
 
 <task_approach>
+
 1. [Step 1]
 2. [Step 2]
 3. [Step 3]
-</task_approach>
+   </task_approach>
 
 <task_implementation>
 Now I will begin implementing this task following the approach outlined above.

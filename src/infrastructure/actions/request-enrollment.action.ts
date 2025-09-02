@@ -1,9 +1,9 @@
-'use server'
+'use server';
 
-import {RequestEnrollmentDto} from "@/application/gateways/enrollment/enrollment.gateway.dto";
+import { RequestEnrollmentDto } from '@/application/gateways/enrollment/enrollment.gateway.dto';
 
-import {Inject} from "@/infrastructure/containers/container";
-import {auth} from "@/infrastructure/auth";
+import { Inject } from '@/infrastructure/containers/container';
+import { auth } from '@/infrastructure/auth';
 
 export async function requestEnrollmentAction(input: RequestEnrollmentDto): Promise<void> {
   const session = await auth();

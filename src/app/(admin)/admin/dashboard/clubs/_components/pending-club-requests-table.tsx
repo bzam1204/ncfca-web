@@ -1,16 +1,16 @@
 'use client';
 
-import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, RotateCcw } from "lucide-react";
-import { ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
-import { usePendingClubRequests } from "@/hooks/use-pending-club-requests";
+import { useState } from 'react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle, RotateCcw } from 'lucide-react';
+import { ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
+import { usePendingClubRequests } from '@/hooks/use-pending-club-requests';
 // import { ClubRequestActions } from "./club-request-actions";
-import { ClubRequestDetailsDialog } from "./club-request-details-dialog";
+import { ClubRequestDetailsDialog } from './club-request-details-dialog';
 
 interface PendingClubRequestsTableProps {
   initialRequests: ClubRequestStatusDto[];
@@ -35,14 +35,16 @@ export function PendingClubRequestsTable({ initialRequests }: PendingClubRequest
 
   if (isError) {
     return (
-        <Alert variant="destructive">
-          <AlertTriangle className="h-4 w-4" />
-          <AlertTitle>Erro ao Carregar Solicitações</AlertTitle>
-          <AlertDescription>
-            {error.message}
-            <Button variant="link" onClick={() => refetch()}>Tentar Novamente</Button>
-          </AlertDescription>
-        </Alert>
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Erro ao Carregar Solicitações</AlertTitle>
+        <AlertDescription>
+          {error.message}
+          <Button variant="link" onClick={() => refetch()}>
+            Tentar Novamente
+          </Button>
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -74,44 +76,41 @@ export function PendingClubRequestsTable({ initialRequests }: PendingClubRequest
               </TableHeader>
               <TableBody>
                 {requests.length > 0 ? (
-                    requests.map(req => (
-                        <TableRow 
-                          key={req.id}
-                          className="cursor-pointer hover:bg-muted/50"
-                          onClick={(e) => handleRowClick(req, e)}
+                  requests.map((req) => (
+                    <TableRow key={req.id} className="cursor-pointer hover:bg-muted/50" onClick={(e) => handleRowClick(req, e)}>
+                      <TableCell className="font-medium">{req.clubName}</TableCell>
+                      <TableCell>
+                        {req.address.city || 'N/A'}, {req.address.state || 'N/A'}
+                      </TableCell>
+                      <TableCell>{new Date(req.requestedAt).toLocaleDateString('pt-BR')}</TableCell>
+                      <TableCell>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedRequest(req);
+                          }}
                         >
-                          <TableCell className="font-medium">{req.clubName}</TableCell>
-                          <TableCell>{req.address.city|| 'N/A'}, {req.address.state || 'N/A'}</TableCell>
-                          <TableCell>{new Date(req.requestedAt).toLocaleDateString('pt-BR')}</TableCell>
-                          <TableCell>
-                            <Button 
-                              variant="outline" 
-                              size="sm"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedRequest(req);
-                              }}
-                            >
-                              Ver Detalhes
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                    ))
-                ) : (
-                    <TableRow>
-                      <TableCell colSpan={4} className="h-24 text-center">Nenhuma solicitação pendente no momento.</TableCell>
+                          Ver Detalhes
+                        </Button>
+                      </TableCell>
                     </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center">
+                      Nenhuma solicitação pendente no momento.
+                    </TableCell>
+                  </TableRow>
                 )}
               </TableBody>
             </Table>
           </div>
         </CardContent>
       </Card>
-      
-      <ClubRequestDetailsDialog
-        request={selectedRequest}
-        onOpenChange={(isOpen) => !isOpen && setSelectedRequest(null)}
-      />
+
+      <ClubRequestDetailsDialog request={selectedRequest} onOpenChange={(isOpen) => !isOpen && setSelectedRequest(null)} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
+import { EnrollmentStatus } from '@/domain/enums/enrollment-status.enum';
 
 export interface RequestEnrollmentDto {
   dependantId: string;

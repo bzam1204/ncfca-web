@@ -1,23 +1,26 @@
 # ESPECIFICAÇÃO DE REFATORAÇÃO DECLARATIVA
+
 # VERSÃO: FRAMEWORK v3.0 (modo TAG-PRIMEIRO)
+
 # DATA: 20 de agosto de 2025
 
 <task>
 Refatorar a camada de acesso à API para padronizar o uso de Gateways, eliminando o padrão legado de Use Cases, garantindo consistência, testabilidade e manutenibilidade em todo o projeto.
 </task>
 
-__________________________________________________________________________________________
+---
 
 <reference>
 
   <!-- Conceitos e Padrões do Documento -->
-  <concepts_and_patterns>
-    <projectCodeStandards>@.cursor/rules/code.standards.yml</projectCodeStandards>
-    <conceptApiContract>openapi.json</conceptApiContract>
-    <patternOld>Use Cases monolíticos com chamadas `fetch` diretas e lógica de negócio acoplada.</patternOld>
-    <patternNew>Padrão Gateway: Hooks (React Query) -> Ações -> Gateway (Interface) -> Gateway (Implementação HTTP).</patternNew>
-    <folderToDelete>src/application/use-cases/</folderToDelete>
-  </concepts_and_patterns>
+
+<concepts_and_patterns>
+<projectCodeStandards>@.cursor/rules/code.standards.yml</projectCodeStandards>
+<conceptApiContract>openapi.json</conceptApiContract>
+<patternOld>Use Cases monolíticos com chamadas `fetch` diretas e lógica de negócio acoplada.</patternOld>
+<patternNew>Padrão Gateway: Hooks (React Query) -> Ações -> Gateway (Interface) -> Gateway (Implementação HTTP).</patternNew>
+<folderToDelete>src/application/use-cases/</folderToDelete>
+</concepts_and_patterns>
 
   <!-- AGRUPAMENTO: use tags como IDs -->
   <filesToDelete>
@@ -56,7 +59,7 @@ ________________________________________________________________________________
 
 </reference>
 
-__________________________________________________________________________________________
+---
 
 <as-is>
   <contextoArquitetural>
@@ -82,6 +85,7 @@ ________________________________________________________________________________
       - Complexidade Ciclomática de arquivos como <useAdminManagementUseCaseLegacy> é alta devido aos múltiplos hooks e funções.
       - Cobertura de testes para a camada de acesso a dados é baixa e complexa de implementar, pois exige mocks do `fetch` global.
     </metricas>
+
   </evidencias>
 
   <consequencias>
@@ -91,7 +95,7 @@ ________________________________________________________________________________
   </consequencias>
 </as-is>
 
-__________________________________________________________________________________________
+---
 
 <to-be>
 ### **DECLARAÇÃO DO ESTADO FUTURO DO CÓDIGO**

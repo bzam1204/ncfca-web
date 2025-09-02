@@ -1,14 +1,11 @@
-import {useState} from "react";
-import {UseFormSetValue} from "react-hook-form";
+import { useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 
-import {CepService} from "@/domain/services/cep.service";
+import { CepService } from '@/domain/services/cep.service';
 
-import {RegisterInput} from "@/infrastructure/validators/register.schema";
+import { RegisterInput } from '@/infrastructure/validators/register.schema';
 
-export function useCepAutocomplete(
-    setValue: UseFormSetValue<RegisterInput>,
-    cepService: CepService
-) {
+export function useCepAutocomplete(setValue: UseFormSetValue<RegisterInput>, cepService: CepService) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +30,6 @@ export function useCepAutocomplete(
       setIsLoading(false);
     }
     return void 0;
-  };
-  return {handleCepChange, isLoadingCep : isLoading, errorCep : error};
-};
+  }
+  return { handleCepChange, isLoadingCep: isLoading, errorCep: error };
+}

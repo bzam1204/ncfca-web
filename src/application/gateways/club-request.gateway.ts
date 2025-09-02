@@ -1,5 +1,5 @@
-import { CreateClubRequestDto, ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
-import {RejectRequestDto} from "@/contracts/api/club-request.dto";
+import { CreateClubRequestDto, ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
+import { RejectRequestDto } from '@/contracts/api/club-request.dto';
 
 export interface ClubRequestGateway {
   getMyRequests(): Promise<ClubRequestStatusDto[]>;

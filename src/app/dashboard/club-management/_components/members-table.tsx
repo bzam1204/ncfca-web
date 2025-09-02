@@ -4,11 +4,11 @@ import { useState } from 'react';
 import { useClubMembersQuery } from '@/hooks/use-club-members';
 import { useRevokeMembershipMutation } from '@/hooks/use-revoke-membership';
 import { useNotify } from '@/hooks/use-notify';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { AlertTriangle, MoreHorizontal, Trash2, Eye, RotateCcw } from "lucide-react";
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { AlertTriangle, MoreHorizontal, Trash2, Eye, RotateCcw } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,15 +19,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator
-} from "@/components/ui/dropdown-menu";
-import { ClubMemberDto } from "@/contracts/api/club-member.dto";
+} from '@/components/ui/alert-dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { ClubMemberDto } from '@/contracts/api/club-member.dto';
 import { MemberDetailsDialog } from './member-details';
 
 interface MembersTableProps {
@@ -47,7 +41,9 @@ export function MembersTable({ clubId }: MembersTableProps) {
   function TheTable() {
     return (
       <div className="flex flex-col gap-4">
-        <Button className="w-fit" variant="outline" size="sm" onClick={() => refetch()}><RotateCcw /> Atualizar </Button>
+        <Button className="w-fit" variant="outline" size="sm" onClick={() => refetch()}>
+          <RotateCcw /> Atualizar{' '}
+        </Button>
         <div className="border rounded-md">
           <Table>
             <TableHeader>
@@ -59,7 +55,7 @@ export function MembersTable({ clubId }: MembersTableProps) {
             </TableHeader>
             <TableBody>
               {members.length > 0 ? (
-                members.map(member => (
+                members.map((member) => (
                   <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
                     <TableCell className="font-medium flex items-center gap-3">
                       {member.firstName} {member.lastName}
@@ -69,11 +65,11 @@ export function MembersTable({ clubId }: MembersTableProps) {
                       <AlertDialog>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button onClick={e => e.stopPropagation()} variant="ghost" size="icon">
+                            <Button onClick={(e) => e.stopPropagation()} variant="ghost" size="icon">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" onClick={e => e.stopPropagation()}>
+                          <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
                             <DropdownMenuItem onSelect={() => setSelectedMember(member)}>
                               <Eye className="mr-2 h-4 w-4" />
                               Ver Detalhes
@@ -87,7 +83,7 @@ export function MembersTable({ clubId }: MembersTableProps) {
                             </AlertDialogTrigger>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                        <AlertDialogContent onClick={e => e.stopPropagation()}>
+                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
                           <AlertDialogHeader>
                             <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
                             <AlertDialogDescription>
@@ -107,18 +103,27 @@ export function MembersTable({ clubId }: MembersTableProps) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="h-24 text-center">Nenhum membro ativo no clube.</TableCell>
+                  <TableCell colSpan={3} className="h-24 text-center">
+                    Nenhum membro ativo no clube.
+                  </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
         <MemberDetailsDialog member={selectedMember} onOpenChange={(isOpen) => !isOpen && setSelectedMember(null)} />
-      </div>)
+      </div>
+    );
   }
 
   function ErrorView() {
-    return <Alert variant="destructive"><AlertTriangle className="h-4 w-4" /><AlertTitle>Erro</AlertTitle><AlertDescription>{error?.message || 'Erro desconhecido'}</AlertDescription></Alert>;
+    return (
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Erro</AlertTitle>
+        <AlertDescription>{error?.message || 'Erro desconhecido'}</AlertDescription>
+      </Alert>
+    );
   }
 
   function LoadingView() {
@@ -130,10 +135,12 @@ export function MembersTable({ clubId }: MembersTableProps) {
   }
 
   function handleRevoke(membershipId: string) {
-    revoke({ clubId, membershipId }, {
-      onSuccess: () => notify.success("Membro removido do clube."),
-      onError: (e) => notify.error(e.message),
-    });
-  };
+    revoke(
+      { clubId, membershipId },
+      {
+        onSuccess: () => notify.success('Membro removido do clube.'),
+        onError: (e) => notify.error(e.message),
+      },
+    );
+  }
 }
-

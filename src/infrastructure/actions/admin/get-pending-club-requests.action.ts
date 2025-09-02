@@ -1,9 +1,9 @@
 'use server';
 
-import { UserRoles } from "@/domain/enums/user.roles";
+import { UserRoles } from '@/domain/enums/user.roles';
 
-import { auth } from "@/infrastructure/auth";
-import { Inject } from "@/infrastructure/containers/container";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
 
 export async function getPendingClubRequestsAction() {
   const session = await auth();

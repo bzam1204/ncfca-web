@@ -1,7 +1,7 @@
 // src/hooks/use-debounce.ts
 'use client';
 
-import {useState, useEffect, useRef} from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 /**
  * Hook customizado para "debounce" de um valor.

@@ -24,23 +24,17 @@ A abordagem mais adequada é refatorar o componente `users-table.tsx` para segui
 ### 5.1. Refatorar `src/app/(admin)/admin/dashboard/users/_components/users-table.tsx`
 
 1.  **Estrutura Principal:** Substituir a estrutura de `div`s por componentes semânticos:
-    -   Remover os `div`s que simulam a tabela.
-    -   Utilizar `<Table>`, `<TableHeader>`, `<TableBody>`, `<TableRow>`, `<TableHead>`, e `<TableCell>` do ShadCN.
+    - Remover os `div`s que simulam a tabela.
+    - Utilizar `<Table>`, `<TableHeader>`, `<TableBody>`, `<TableRow>`, `<TableHead>`, e `<TableCell>` do ShadCN.
 
 2.  **Wrapper Responsivo:** Envolver o componente `<Table>` em um `div` que permita o overflow horizontal, como recomendado pela documentação do ShadCN.
 
     **Exemplo de Estrutura Proposta:**
+
     ```tsx
     // src/app/(admin)/admin/dashboard/users/_components/users-table.tsx
 
-    import {
-      Table,
-      TableBody,
-      TableCell,
-      TableHead,
-      TableHeader,
-      TableRow,
-    } from "@/components/ui/table";
+    import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
     export function UsersTable({ users }: UsersTableProps) {
       // ...lógica existente...
@@ -59,19 +53,21 @@ A abordagem mais adequada é refatorar o componente `users-table.tsx` para segui
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {users.map(user => (
+                {users.map((user) => (
                   <TableRow key={user.id} onClick={() => navigateToUserDetails(user.id)} className="cursor-pointer">
                     <TableCell className="font-medium">{`${user.firstName} ${user.lastName}`}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.cpf}</TableCell>
                     <TableCell>
                       <div className="flex gap-1 flex-wrap">
-                        {user.roles.map(role => <Badge key={role} variant="secondary">{role}</Badge>)}
+                        {user.roles.map((role) => (
+                          <Badge key={role} variant="secondary">
+                            {role}
+                          </Badge>
+                        ))}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right">
-                      {/* DropdownMenu de ações aqui */}
-                    </TableCell>
+                    <TableCell className="text-right">{/* DropdownMenu de ações aqui */}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -85,7 +81,7 @@ A abordagem mais adequada é refatorar o componente `users-table.tsx` para segui
 
 ### 5.2. Verificação de Componentes Pai
 
--   **`src/app/(admin)/admin/dashboard/users/page.tsx`:** Nenhuma alteração é necessária. O `CardContent` que envolve a `UsersTable` se adaptará corretamente após a refatoração.
--   **`src/app/(admin)/admin/dashboard/layout.tsx`:** Nenhuma alteração é necessária. O layout principal com `overflow-auto` já está preparado para conter um conteúdo que gerencia seu próprio scroll interno.
+- **`src/app/(admin)/admin/dashboard/users/page.tsx`:** Nenhuma alteração é necessária. O `CardContent` que envolve a `UsersTable` se adaptará corretamente após a refatoração.
+- **`src/app/(admin)/admin/dashboard/layout.tsx`:** Nenhuma alteração é necessária. O layout principal com `overflow-auto` já está preparado para conter um conteúdo que gerencia seu próprio scroll interno.
 
 A correção no componente `users-table.tsx` é suficiente para resolver o problema de responsividade em toda a cadeia de componentes.

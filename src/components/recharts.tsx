@@ -1,3 +1,3 @@
-'use client'
+'use client';
 
-export {Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis} from "recharts";
+export { Area, AreaChart, CartesianGrid, Legend, Tooltip, XAxis, YAxis } from 'recharts';

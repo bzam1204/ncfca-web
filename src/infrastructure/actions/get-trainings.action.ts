@@ -1,9 +1,9 @@
 'use server';
 
-import {TrainingDto} from "@/contracts/api/training.dto";
+import { TrainingDto } from '@/contracts/api/training.dto';
 
-import {auth} from "@/infrastructure/auth";
-import {Inject} from "@/infrastructure/containers/container";
+import { auth } from '@/infrastructure/auth';
+import { Inject } from '@/infrastructure/containers/container';
 
 export async function getTrainingsAction(): Promise<TrainingDto[]> {
   const session = await auth();

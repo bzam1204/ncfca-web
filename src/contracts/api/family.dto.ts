@@ -1,8 +1,7 @@
 // src/contracts/api/family.dto.ts
 
-import {FamilyStatus} from "@/domain/enums/family-status.enum";
-import {Dependant} from "@/domain/entities/dependant.entity";
-
+import { FamilyStatus } from '@/domain/enums/family-status.enum';
+import { Dependant } from '@/domain/entities/dependant.entity';
 
 export interface FamilyResponseDto {
   id: string;

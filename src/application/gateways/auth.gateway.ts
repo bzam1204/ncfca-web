@@ -1,4 +1,4 @@
-import { RegisterUserRequestDto, RegisterUserResponseDto } from "@/contracts/api/auth.dto";
+import { RegisterUserRequestDto, RegisterUserResponseDto } from '@/contracts/api/auth.dto';
 
 export interface AuthGateway {
   /**

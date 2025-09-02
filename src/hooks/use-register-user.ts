@@ -10,7 +10,6 @@ interface RegisterUserParams {
 
 export function useRegisterUserMutation() {
   return useMutation({
-    mutationFn: ({ userData }: RegisterUserParams) => 
-      registerUserAction(userData),
+    mutationFn: ({ userData }: RegisterUserParams) => registerUserAction(userData),
   });
 }

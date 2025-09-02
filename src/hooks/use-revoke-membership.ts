@@ -13,8 +13,7 @@ export function useRevokeMembershipMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ membershipId }: RevokeMembershipParams) => 
-      revokeMembershipAction(membershipId),
+    mutationFn: ({ membershipId }: RevokeMembershipParams) => revokeMembershipAction(membershipId),
     onSuccess: (_, { clubId }) => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.club.members(clubId) });
     },
