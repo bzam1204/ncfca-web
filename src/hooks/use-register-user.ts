@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { registerUserAction } from '@/infraestructure/actions/register-user.action';
+import { registerUserAction } from '@/infrastructure/actions/register-user.action';
 
 interface RegisterUserParams {
   // Placeholder - definir quando necessário

@@ -35,7 +35,7 @@ Breve descrição das mudanças implementadas.
 ```bash
 # Verificar padrões de API
 rg -n "fetch\(|useSession" src/hooks/
-rg -n "src/infraestructure/queries/|src/infraestructure/services/query.service.api"
+rg -n "src/infrastructure/queries/|src/infrastructure/services/query.service.api"
 
 # Build e lint
 npm run build

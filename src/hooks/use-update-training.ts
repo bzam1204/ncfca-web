@@ -1,7 +1,7 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {UpdateTrainingDto, TrainingDto} from "@/contracts/api/training.dto";
-import {updateTrainingAction} from "@/infraestructure/actions/update-training.action";
-import {QueryKeys} from "@/infraestructure/cache/query-keys";
+import {updateTrainingAction} from "@/infrastructure/actions/update-training.action";
+import {QueryKeys} from "@/infrastructure/cache/query-keys";
 
 export function useUpdateTraining() {
   const queryClient = useQueryClient();

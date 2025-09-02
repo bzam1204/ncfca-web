@@ -137,7 +137,7 @@ O estado futuro adere estritamente ao <patternNew>. Toda a comunicação com a A
   </adminGatewayInterface>
 
   <adminGatewayHttpAdapter state="NOVO">
-    <path>src/infraestructure/gateways/admin.gateway.http.ts</path>
+    <path>src/infrastructure/gateways/admin.gateway.http.ts</path>
     <implements ref="<adminGatewayInterface>" />
     <mapeamentos>
       - Mapear os DTOs da aplicação para os payloads esperados pela API e vice-versa, conforme <conceptApiContract>.

@@ -6,7 +6,7 @@ import {Inter} from "next/font/google";
 import {SessionManager} from "@/components/session-manager";
 import {Toaster} from "@/components/ui/sonner";
 
-import {QueryProvider} from "@/infraestructure/providers/query-provider";
+import {QueryProvider} from "@/infrastructure/providers/query-provider";
 
 import "./globals.css";
 

@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/dialog';
 import {useAdminUpdateClub} from '@/hooks/use-admin-update-club';
 import {useCepAutocompleteGeneric} from '@/hooks/use-cep-autocomplete-generic';
-import {viaCepService} from '@/infraestructure/services/via-cep.service';
+import {viaCepService} from '@/infrastructure/services/via-cep.service';
 import {StateCombobox} from '@/app/_components/state-combobox';
 
 const editClubSchema = z.object({

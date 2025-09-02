@@ -7,7 +7,7 @@ import {Button} from '@/components/ui/button';
 
 import {UserRoles} from "@/domain/enums/user.roles";
 
-import {auth} from "@/infraestructure/auth";
+import {auth} from "@/infrastructure/auth";
 
 import {MyEnrollmentRequestsTable} from "@/app/dashboard/clubs/_components/my-enrollment-requests-table";
 import {ExploreClubs} from "@/app/dashboard/clubs/_components/explore-clubs";

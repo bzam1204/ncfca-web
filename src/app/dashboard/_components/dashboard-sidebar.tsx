@@ -11,7 +11,7 @@ import {
   SidebarHeader,
   Sidebar,
 } from "@/components/ui/sidebar"
-import { AppConfig } from "@/infraestructure/config";
+import { AppConfig } from "@/infrastructure/config";
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (

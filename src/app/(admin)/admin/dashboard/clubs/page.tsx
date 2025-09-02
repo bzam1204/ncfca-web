@@ -1,11 +1,11 @@
-import {auth} from "@/infraestructure/auth";
+import {auth} from "@/infrastructure/auth";
 import {redirect} from "next/navigation";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {Suspense} from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import {ClubsPageClient} from "./_components/clubs-page-client";
 
-import {getPendingClubRequestsAction} from "@/infraestructure/actions/admin/get-pending-club-requests.action";
+import {getPendingClubRequestsAction} from "@/infrastructure/actions/admin/get-pending-club-requests.action";
 
 export default async function AdminClubsPage() {
   const session = await auth();

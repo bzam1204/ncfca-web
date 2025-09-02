@@ -1,4 +1,4 @@
-import {auth} from "@/infraestructure/auth";
+import {auth} from "@/infrastructure/auth";
 import {redirect} from "next/navigation";
 import {UserRoles} from "@/domain/enums/user.roles";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
@@ -10,7 +10,7 @@ import {BackButton} from "@/components/ui/back-button";
 import {UserActions} from "./_components/user-actions";
 import {Badge} from "@/components/ui/badge";
 import {Dependant} from "@/domain/entities/dependant.entity";
-import {getUserFamilyAction} from "@/infraestructure/actions/admin/get-user-family.action";
+import {getUserFamilyAction} from "@/infrastructure/actions/admin/get-user-family.action";
 
 const InfoField = ({label, value}: {label: string; value: React.ReactNode}) => (
     <div>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { manageUserRoleAction } from '@/infraestructure/actions/admin/manage-user-role.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { manageUserRoleAction } from '@/infrastructure/actions/admin/manage-user-role.action';
 import { ManageUserRoleDto } from '@/contracts/api/admin.dto';
 
 interface ManageUserRoleParams {

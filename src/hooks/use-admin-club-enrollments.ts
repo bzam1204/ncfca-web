@@ -1,9 +1,9 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { approveEnrollmentAction } from '@/infraestructure/actions/admin/approve-enrollment.action';
-import { rejectEnrollmentAction } from '@/infraestructure/actions/admin/reject-enrollment.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { approveEnrollmentAction } from '@/infrastructure/actions/admin/approve-enrollment.action';
+import { rejectEnrollmentAction } from '@/infrastructure/actions/admin/reject-enrollment.action';
 
 export const useAdminApproveEnrollmentMutation = () => {
   const queryClient = useQueryClient();

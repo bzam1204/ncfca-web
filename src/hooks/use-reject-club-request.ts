@@ -1,10 +1,10 @@
 'use client';
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { rejectClubRequestAction } from "@/infraestructure/actions/admin/reject-club-request.action";
+import { rejectClubRequestAction } from "@/infrastructure/actions/admin/reject-club-request.action";
 import { useNotify } from "@/hooks/use-notify";
 import { RejectRequestDto } from "@/contracts/api/club-request.dto";
-import { QueryKeys } from "@/infraestructure/cache/query-keys";
+import { QueryKeys } from "@/infrastructure/cache/query-keys";
 
 export function useRejectClubRequest() {
   const notify = useNotify();

@@ -232,6 +232,33 @@
         ]
       }
     },
+    "/my-club": {
+      "get": {
+        "operationId": "MyClubController_getMyClubInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Dados do clube retornados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClubDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Obtém as informações do clube do diretor autenticado",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
     "/admin/users": {
       "get": {
         "operationId": "AdminController_searchUsers",
@@ -593,125 +620,79 @@
         ]
       }
     },
-    "/admin/clubs/{clubId}/members": {
+    "/admin/clubs/members": {
       "get": {
-        "description": "Retorna uma lista paginada de todos os membros ativos de um clube, incluindo informações do dependente como nome, idade, tipo e dados de contato.",
+        "description": "Retorna uma lista paginada de membros ativos de um clube. Os parâmetros são enviados via querystring conforme o DTO SearchClubMembersQueryDto.",
         "operationId": "AdminController_getClubMembers",
         "parameters": [
           {
             "name": "clubId",
             "required": true,
-            "in": "path",
+            "in": "query",
             "description": "ID único do clube",
             "schema": {
-              "example": "b5e4e8a1-8f1b-4c9d-9e3f-1a2b3c4d5e6f",
+              "format": "uuid",
               "type": "string"
             }
           },
           {
-            "name": "page",
+            "name": "filter",
             "required": false,
             "in": "query",
-            "description": "Número da página para paginação",
+            "description": "Container for members search filters.",
             "schema": {
-              "example": 1,
+              "$ref": "#/components/schemas/SearchClubMembersFilterDto"
+            }
+          },
+          {
+            "name": "pagination",
+            "required": false,
+            "in": "query",
+            "description": "Container for pagination parameters.",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationDto"
+            }
+          },
+          {
+            "name": "filter.name",
+            "required": false,
+            "in": "query",
+            "description": "Filtro por nome do dependente (parcial, case-insensitive)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagination.limit",
+            "required": false,
+            "in": "query",
+            "description": "Itens por página",
+            "schema": {
+              "example": 10,
               "type": "number"
             }
           },
           {
-            "name": "limit",
+            "name": "pagination.page",
             "required": false,
             "in": "query",
-            "description": "Quantidade de itens por página",
+            "description": "Número da página",
             "schema": {
-              "example": 10,
+              "example": 1,
               "type": "number"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Lista de membros retornada com sucesso.",
+            "description": "Lista paginada de membros.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "members": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string",
-                            "example": "b5e4e8a1-8f1b-4c9d-9e3f-1a2b3c4d5e6f"
-                          },
-                          "dependantId": {
-                            "type": "string",
-                            "example": "a1b2c3d4-e5f6-7890-1234-567890abcdef"
-                          },
-                          "dependantName": {
-                            "type": "string",
-                            "example": "João Silva"
-                          },
-                          "dependantAge": {
-                            "type": "number",
-                            "example": 15
-                          },
-                          "dependantType": {
-                            "type": "string",
-                            "example": "STUDENT"
-                          },
-                          "dependantSex": {
-                            "type": "string",
-                            "example": "MALE"
-                          },
-                          "dependantEmail": {
-                            "type": "string",
-                            "example": "joao@email.com",
-                            "nullable": true
-                          },
-                          "dependantPhone": {
-                            "type": "string",
-                            "example": "(11) 99999-9999",
-                            "nullable": true
-                          },
-                          "joinedAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "status": {
-                            "type": "string",
-                            "example": "ACTIVE"
-                          }
-                        }
-                      }
-                    },
-                    "total": {
-                      "type": "number",
-                      "example": 25
-                    },
-                    "page": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "limit": {
-                      "type": "number",
-                      "example": 10
-                    }
-                  }
+                  "$ref": "#/components/schemas/PaginatedClubMemberDto"
                 }
               }
             }
-          },
-          "401": {
-            "description": "Token de autenticação não fornecido ou inválido."
-          },
-          "403": {
-            "description": "Usuário não possui permissão de administrador."
-          },
-          "404": {
-            "description": "Clube não encontrado."
           }
         },
         "security": [
@@ -719,7 +700,7 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Lista todos os membros de um clube específico",
+        "summary": "Lista membros do clube com paginação e filtros",
         "tags": [
           "Admin"
         ]
@@ -1591,33 +1572,8 @@
         ]
       }
     },
-    "/my-club": {
-      "get": {
-        "operationId": "ClubManagementController_getMyClubInfo",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Dados do clube retornados com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ClubDto"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Obtém as informações do clube do diretor autenticado",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      },
-      "post": {
+    "/club-management": {
+      "patch": {
         "operationId": "ClubManagementController_updateClub",
         "parameters": [],
         "requestBody": {
@@ -1646,7 +1602,7 @@
         ]
       }
     },
-    "/my-club/enrollments": {
+    "/club-management/my-club/enrollments": {
       "get": {
         "operationId": "ClubManagementController_listEnrollments",
         "parameters": [],
@@ -1676,7 +1632,7 @@
         ]
       }
     },
-    "/my-club/enrollments/pending": {
+    "/club-management/{clubId}/enrollments/pending": {
       "get": {
         "operationId": "ClubManagementController_listPending",
         "parameters": [
@@ -1715,37 +1671,7 @@
         ]
       }
     },
-    "/my-club/members": {
-      "get": {
-        "operationId": "ClubManagementController_listMembersOfMyClub",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Lista de membros ativos.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ClubMemberDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Lista todos os membros ativos do meu clube",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
-    "/enrollments/{enrollmentId}/approve": {
+    "/club-management/enrollments/{enrollmentId}/approve": {
       "post": {
         "operationId": "ClubManagementController_approve",
         "parameters": [
@@ -1774,7 +1700,7 @@
         ]
       }
     },
-    "/enrollments/{enrollmentId}/reject": {
+    "/club-management/enrollments/{enrollmentId}/reject": {
       "post": {
         "operationId": "ClubManagementController_reject",
         "parameters": [
@@ -1813,7 +1739,37 @@
         ]
       }
     },
-    "/membership/{membershipId}/revoke": {
+    "/club-management/my-club/members": {
+      "get": {
+        "operationId": "ClubManagementController_listMembersOfMyClub",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de membros ativos.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ClubMemberDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista todos os membros ativos do meu clube",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/club-management/membership/{membershipId}/revoke": {
       "post": {
         "operationId": "ClubManagementController_removeMember",
         "parameters": [
@@ -3266,6 +3222,143 @@
           }
         }
       },
+      "SearchClubMembersFilterDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Filters members by dependant full name (partial, case-insensitive).",
+            "example": "João Silva"
+          }
+        }
+      },
+      "HolderDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do titular.",
+            "format": "uuid",
+            "example": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Nome do titular.",
+            "example": "Maria Silva"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Nome do titular.",
+            "example": "Maria Silva"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do titular.",
+            "example": "maria.silva@email.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do titular.",
+            "example": "(11) 98888-8888"
+          }
+        },
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "phone"
+        ]
+      },
+      "ClubMemberDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único do membro.",
+            "format": "uuid",
+            "example": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Sobrenome do membro.",
+            "example": "Silva"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "Nome do membro.",
+            "example": "João"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email do membro.",
+            "example": "joao.silva@email.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Telefone do membro.",
+            "example": "(11) 99999-9999"
+          },
+          "holder": {
+            "description": "Dados do titular.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HolderDto"
+              }
+            ]
+          },
+          "memberSince": {
+            "type": "string",
+            "description": "Data de início da associação.",
+            "format": "date-time",
+            "example": "2023-01-15T10:00:00Z"
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "Data de nascimento do membro.",
+            "format": "date-time",
+            "example": "1990-01-15T00:00:00Z"
+          },
+          "sex": {
+            "type": "string",
+            "description": "Sexo do membro.",
+            "enum": [
+              "FEMALE",
+              "MALE"
+            ],
+            "example": "MALE"
+          }
+        },
+        "required": [
+          "id",
+          "lastName",
+          "firstName",
+          "email",
+          "phone",
+          "holder",
+          "memberSince",
+          "birthDate",
+          "sex"
+        ]
+      },
+      "PaginatedClubMemberDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClubMemberDto"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
       "RegisterUserInputDto": {
         "type": "object",
         "properties": {
@@ -3604,44 +3697,6 @@
           "email"
         ]
       },
-      "HolderDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID único do titular.",
-            "format": "uuid",
-            "example": "b1eebc99-9c0b-4ef8-bb6d-6bb9bd380a22"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "Nome do titular.",
-            "example": "Maria Silva"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Nome do titular.",
-            "example": "Maria Silva"
-          },
-          "email": {
-            "type": "string",
-            "description": "Email do titular.",
-            "example": "maria.silva@email.com"
-          },
-          "phone": {
-            "type": "string",
-            "description": "Telefone do titular.",
-            "example": "(11) 98888-8888"
-          }
-        },
-        "required": [
-          "id",
-          "firstName",
-          "lastName",
-          "email",
-          "phone"
-        ]
-      },
       "ViewDependantOutputDto": {
         "type": "object",
         "properties": {
@@ -3954,77 +4009,6 @@
           "requestedAt",
           "resolvedAt",
           "rejectionReason"
-        ]
-      },
-      "ClubMemberDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID único do membro.",
-            "format": "uuid",
-            "example": "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-          },
-          "lastName": {
-            "type": "string",
-            "description": "Sobrenome do membro.",
-            "example": "Silva"
-          },
-          "firstName": {
-            "type": "string",
-            "description": "Nome do membro.",
-            "example": "João"
-          },
-          "email": {
-            "type": "string",
-            "description": "Email do membro.",
-            "example": "joao.silva@email.com"
-          },
-          "phone": {
-            "type": "string",
-            "description": "Telefone do membro.",
-            "example": "(11) 99999-9999"
-          },
-          "holder": {
-            "description": "Dados do titular.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/HolderDto"
-              }
-            ]
-          },
-          "memberSince": {
-            "type": "string",
-            "description": "Data de início da associação.",
-            "format": "date-time",
-            "example": "2023-01-15T10:00:00Z"
-          },
-          "birthDate": {
-            "type": "string",
-            "description": "Data de nascimento do membro.",
-            "format": "date-time",
-            "example": "1990-01-15T00:00:00Z"
-          },
-          "sex": {
-            "type": "string",
-            "description": "Sexo do membro.",
-            "enum": [
-              "FEMALE",
-              "MALE"
-            ],
-            "example": "MALE"
-          }
-        },
-        "required": [
-          "id",
-          "lastName",
-          "firstName",
-          "email",
-          "phone",
-          "holder",
-          "memberSince",
-          "birthDate",
-          "sex"
         ]
       },
       "RejectEnrollmentDto": {

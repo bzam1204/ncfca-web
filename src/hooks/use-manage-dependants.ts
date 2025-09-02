@@ -1,13 +1,13 @@
 'use client';
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { GetDependantsAction } from '@/infraestructure/actions/get-dependants.action';
-import { addDependantAction } from '@/infraestructure/actions/add-dependant.action';
-import { updateDependantAction } from '@/infraestructure/actions/update-dependant.action';
-import { deleteDependantAction } from '@/infraestructure/actions/delete-dependant.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { GetDependantsAction } from '@/infrastructure/actions/get-dependants.action';
+import { addDependantAction } from '@/infrastructure/actions/add-dependant.action';
+import { updateDependantAction } from '@/infrastructure/actions/update-dependant.action';
+import { deleteDependantAction } from '@/infrastructure/actions/delete-dependant.action';
 import { AddDependantRequestDto, UpdateDependantRequestDto } from '@/contracts/api/dependant.dto';
-import { DependantMapper } from '@/infraestructure/mappers/dependant.mapper';
+import { DependantMapper } from '@/infrastructure/mappers/dependant.mapper';
 
 //todo: move to a its own file
 export function useGetDependants() {

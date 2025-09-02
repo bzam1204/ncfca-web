@@ -7,9 +7,9 @@ import {EnrollmentRequest} from "@/domain/entities/enrollment-request.entity";
 import {Club} from "@/domain/entities/entities";
 import {AffiliationDto} from "@/contracts/api/affiliation.dto";
 
-import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
-import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollments.action";
-import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
+import {getAffiliationsAction} from "@/infrastructure/actions/admin/get-affiliations.action";
+import {getEnrollmentsAction} from "@/infrastructure/actions/admin/get-enrollments.action";
+import {getClubsAction} from "@/infrastructure/actions/admin/get-clubs.action";
 
 export async function GrowthCharts() {
   const [affiliations, enrollments, clubs] = await Promise.all([

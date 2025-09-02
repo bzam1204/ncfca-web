@@ -4,8 +4,8 @@ import {useQuery} from '@tanstack/react-query';
 
 import {Club} from "@/domain/entities/entities";
 
-import {getMyClubAction} from '@/infraestructure/actions/get-my-club.action';
-import {QueryKeys} from '@/infraestructure/cache/query-keys';
+import {getMyClubAction} from '@/infrastructure/actions/get-my-club.action';
+import {QueryKeys} from '@/infrastructure/cache/query-keys';
 
 export function useMyClub(initialData: Club | null) {
   return useQuery({

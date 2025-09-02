@@ -1,4 +1,4 @@
-import { auth } from "@/infraestructure/auth";
+import { auth } from "@/infrastructure/auth";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/domain/enums/user.roles";
 import { Suspense } from "react";

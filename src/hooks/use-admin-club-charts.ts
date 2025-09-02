@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { AdminClubChartsDto } from '@/contracts/api/admin-charts.dto';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { getClubChartsAction } from '@/infraestructure/actions/admin/get-club-charts.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { getClubChartsAction } from '@/infrastructure/actions/admin/get-club-charts.action';
 
 // Interface para os dados que o frontend espera
 interface ClubChartsData {

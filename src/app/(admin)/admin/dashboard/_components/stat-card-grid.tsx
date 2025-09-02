@@ -5,9 +5,9 @@ import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 import {EnrollmentStatus} from "@/domain/enums/enrollment-status.enum";
 
-import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
-import {getEnrollmentsAction} from "@/infraestructure/actions/admin/get-enrollments.action";
-import {getClubsAction} from "@/infraestructure/actions/admin/get-clubs.action";
+import {getAffiliationsAction} from "@/infrastructure/actions/admin/get-affiliations.action";
+import {getEnrollmentsAction} from "@/infrastructure/actions/admin/get-enrollments.action";
+import {getClubsAction} from "@/infrastructure/actions/admin/get-clubs.action";
 
 export async function StatCardGrid() {
   const [allAffiliations, allEnrollments, allClubs] = await Promise.all([getAffiliationsAction(), getEnrollmentsAction(), getClubsAction(),]);

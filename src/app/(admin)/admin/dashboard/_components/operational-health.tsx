@@ -1,10 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import Link from "next/link";
-import { getEnrollmentsAction } from "@/infraestructure/actions/admin/get-enrollments.action";
-import { getClubsAction } from "@/infraestructure/actions/admin/get-clubs.action";
+import { getEnrollmentsAction } from "@/infrastructure/actions/admin/get-enrollments.action";
+import { getClubsAction } from "@/infrastructure/actions/admin/get-clubs.action";
 import { EnrollmentStatus } from "@/domain/enums/enrollment-status.enum";
-import {searchUsersAction} from "@/infraestructure/actions/admin/search-users.action";
+import {searchUsersAction} from "@/infrastructure/actions/admin/search-users.action";
 
 export async function OperationalHealth() {
   const [enrollments, clubs, users] = await Promise.all([

@@ -45,9 +45,9 @@ The project uses `pnpm` as the package manager.
     -   `src/contracts`: Contains the DTOs for the API.
     -   `src/application`: Contains the application logic and use cases.
     -   `src/domain`: Contains the domain entities and enums.
-    -   `src/infraestructure`: Contains the infrastructure services, such as authentication, gateways, and providers.
+    -   `src/infrastructure`: Contains the infrastructure services, such as authentication, gateways, and providers.
 -   **TypeScript:** The project uses TypeScript with strict mode enabled. Type safety is a priority.
 -   **Styling:** The project uses Tailwind CSS for styling. Utility classes are preferred over custom CSS.
 -   **State Management:** For server state, the project uses `@tanstack/react-query`. For client state, it uses `zustand`.
--   **Authentication:** Authentication is handled by NextAuth, with a custom credentials provider. The authentication logic is located in `src/infraestructure/auth.ts`.
+-   **Authentication:** Authentication is handled by NextAuth, with a custom credentials provider. The authentication logic is located in `src/infrastructure/auth.ts`.
 -   **API Interaction:** All interactions with the backend API are done through gateways, which are defined in the `src/application/gateways` directory. The API contract is defined in `openapi.json`.

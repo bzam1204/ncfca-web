@@ -9,7 +9,7 @@ Padronizar o acesso à API em um único fluxo Hook → Action (server) → Gatew
   - Criação/ajuste de Actions server-side por operação exposta.
   - Refatoração de hooks clientes para consumir Actions + `QueryKeys`.
   - Refatoração de páginas server que fazem fetch direto para usar gateways/actions.
-  - Remoção da camada legacy de `infraestructure/queries` e do `query.service.api`.
+  - Remoção da camada legacy de `infrastructure/queries` e do `query.service.api`.
   - Documentação de padrão e guardas de revisão/lint.
 - Itens excluídos
   - Remoção total dos use-cases legados (apenas manter deprecados nesta fase).
@@ -17,7 +17,7 @@ Padronizar o acesso à API em um único fluxo Hook → Action (server) → Gatew
 ## Referências
 - Doc do Arquiteto: `@/tasks/analisys/015-api-layer-standardization.arch.analisys.md`
 - Contrato API: `openapi.json`
-- Padrões internos: `src/infraestructure/cache/query-keys.ts`, `src/infraestructure/cache/next-keys.ts`
+- Padrões internos: `src/infrastructure/cache/query-keys.ts`, `src/infrastructure/cache/next-keys.ts`
 
 ## Tasks
 1. 01 — Estender Gateways conforme OpenAPI

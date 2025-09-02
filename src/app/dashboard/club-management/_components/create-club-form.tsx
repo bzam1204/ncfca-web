@@ -11,7 +11,7 @@ import {Loader2} from 'lucide-react';
 import {StateCombobox} from '@/app/_components/state-combobox';
 import {useCreateClubRequest} from "@/hooks/use-create-club-request";
 import { useCepAutocompleteGeneric } from '@/hooks/use-cep-autocomplete-generic';
-import { viaCepService } from '@/infraestructure/services/via-cep.service';
+import { viaCepService } from '@/infrastructure/services/via-cep.service';
 
 const addressSchema = z.object({
   street : z.string().min(3, 'A rua é obrigatória.'),

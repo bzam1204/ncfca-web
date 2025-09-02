@@ -16,7 +16,7 @@ import {DependantType} from "@/domain/enums/dependant-type.enum";
 import {Dependant} from "@/domain/entities/dependant.entity";
 import {Sex} from "@/domain/enums/sex.enum";
 
-import {dependantRelationshipTranslation, dependantTypeTranslation, sexTranslation} from "@/infraestructure/translations";
+import {dependantRelationshipTranslation, dependantTypeTranslation, sexTranslation} from "@/infrastructure/translations";
 
 export function DependantForm({dependant, onSubmit, isPending, onClose}: DependantFormProps) {
   const isEditing = !!dependant;

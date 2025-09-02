@@ -2,8 +2,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { ClubRequestStatusDto } from "@/contracts/api/club-management.dto";
-import { getMyClubRequestsAction } from "@/infraestructure/actions/get-my-club-requests.action";
-import { QueryKeys } from "@/infraestructure/cache/query-keys";
+import { getMyClubRequestsAction } from "@/infrastructure/actions/get-my-club-requests.action";
+import { QueryKeys } from "@/infrastructure/cache/query-keys";
 
 export function useMyClubRequests(initialData: ClubRequestStatusDto[]) {
   return useQuery({

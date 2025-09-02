@@ -1,8 +1,8 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { revokeMembershipAction } from '@/infraestructure/actions/revoke-membership.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { revokeMembershipAction } from '@/infrastructure/actions/revoke-membership.action';
 
 interface RevokeMembershipParams {
   clubId: string;

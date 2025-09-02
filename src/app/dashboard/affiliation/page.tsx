@@ -3,7 +3,7 @@
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from '@/components/ui/card';
 import {Badge} from '@/components/ui/badge';
 import {CheckCircle, AlertTriangle, XCircle, Clock} from 'lucide-react';
-import {familyStatusTranslation, getFamilyStatusVariant} from '@/infraestructure/translations';
+import {familyStatusTranslation, getFamilyStatusVariant} from '@/infrastructure/translations';
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {FamilyStatus} from "@/domain/enums/family-status.enum";
 import {useMyFamily} from "@/hooks/use-my-family";

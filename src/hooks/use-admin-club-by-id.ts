@@ -2,8 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { Club } from '@/domain/entities/entities';
-import {getClubAction} from "@/infraestructure/actions/get-club";
-import {QueryKeys} from "@/infraestructure/cache/query-keys";
+import {getClubAction} from "@/infrastructure/actions/get-club";
+import {QueryKeys} from "@/infrastructure/cache/query-keys";
 
 export function useAdminClubById(clubId: string, initialData: Club) {
   return useQuery({

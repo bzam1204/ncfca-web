@@ -22,12 +22,12 @@ The application follows Clean Architecture with these layers:
 
 - **Domain** (`src/domain/`): Core business entities, enums, and services
 - **Application** (`src/application/`): Use cases and gateway interfaces
-- **Infrastructure** (`src/infraestructure/`): External adapters, API implementations, and configurations
+- **Infrastructure** (`src/infrastructure/`): External adapters, API implementations, and configurations
 - **Presentation** (`src/app/`): Next.js App Router pages and components
 
 ### Key Architecture Patterns
 
-- **Dependency Injection**: Container system in `src/infraestructure/containers/container.ts`
+- **Dependency Injection**: Container system in `src/infrastructure/containers/container.ts`
 - **Gateway Pattern**: API abstractions with implementations for external service calls
 - **Use Cases**: Business logic encapsulation in `src/application/use-cases/`
 - **DTO Contracts**: API interface definitions in `src/contracts/api/`
@@ -58,7 +58,7 @@ The application follows Clean Architecture with these layers:
 - **Pages**: App Router structure in `src/app/` with route groups for admin vs user areas
 - **Components**: Reusable UI in `src/components/ui/`, feature-specific in page directories
 - **Hooks**: Custom React hooks in `src/hooks/` for business logic integration
-- **Actions**: Server actions in `src/infraestructure/actions/` for form handling
+- **Actions**: Server actions in `src/infrastructure/actions/` for form handling
 
 ## Technology Stack
 
@@ -80,4 +80,4 @@ The application connects to a backend API via:
 
 - TypeScript strict mode enabled with path mapping (`@/*` → `src/*`)
 - ESLint configured for Next.js with TypeScript rules
-- Spelling note: Infrastructure folder uses "infraestructure" (Portuguese spelling)
+- Spelling note: Infrastructure folder uses "infrastructure" (Portuguese spelling)

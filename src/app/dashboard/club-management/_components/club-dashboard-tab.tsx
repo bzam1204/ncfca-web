@@ -57,27 +57,38 @@ export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
   }, [allRequests, period]);
 
   const demographics = useMemo(() => {
-    if (isLoading) return {gender : [], age : []};
-    const gender = {MALE : 0, FEMALE : 0};
-    const age = {'15-17' : 0, '12-14' : 0, '9-11' : 0};
-console.log(members);
-    members.forEach(member => {
-      if (member.sex === 'MALE' || member.sex === 'FEMALE') gender[member.sex]++;
+    if (isLoading) return {gender: [], age: []};
+
+    const initialData = {
+      gender: {MALE: 0, FEMALE: 0},
+      age: {'15-17': 0, '12-14': 0, '9-11': 0}
+    };
+
+    const aggregated = members.reduce((acc, member) => {
+      if (member.sex === 'MALE' || member.sex === 'FEMALE') {
+        acc.gender[member.sex]++;
+      }
+
       const memberAge = calculateAge(member.birthDate);
-      console.log({memberAge});
-      if (memberAge >= 15 && memberAge <= 17) age['15-17']++;
-      else if (memberAge >= 12 && memberAge <= 14) age['12-14']++;
-      else if (memberAge >= 9 && memberAge <= 11) age['9-11']++;
-    });
+      if (memberAge >= 15 && memberAge <= 17) {
+        acc.age['15-17']++;
+      } else if (memberAge >= 12 && memberAge <= 14) {
+        acc.age['12-14']++;
+      } else if (memberAge >= 9 && memberAge <= 11) {
+        acc.age['9-11']++;
+      }
+      return acc;
+    }, initialData);
+
     return {
-      gender : [
-        {name : 'masculino', value : gender.MALE, fill : 'var(--chart-3)'},
-        {name : 'feminino', value : gender.FEMALE, fill : 'red'},
+      gender: [
+        {name: 'masculino', value: aggregated.gender.MALE, fill: 'var(--chart-3)'},
+        {name: 'feminino', value: aggregated.gender.FEMALE, fill: 'red'},
       ],
-      age : [
-        {name : '15-17 anos', value : age['15-17'], fill : 'var(--chart-1)'},
-        {name : '12-14 anos', value : age['12-14'], fill : 'var(--chart-2)'},
-        {name : '9-11 anos', value : age['9-11'], fill : 'var(--chart-3)'},
+      age: [
+        {name: '15-17 anos', value: aggregated.age['15-17'], fill: 'var(--chart-1)'},
+        {name: '12-14 anos', value: aggregated.age['12-14'], fill: 'var(--chart-2)'},
+        {name: '9-11 anos', value: aggregated.age['9-11'], fill: 'var(--chart-3)'},
       ]
     };
   }, [members, isLoading]);

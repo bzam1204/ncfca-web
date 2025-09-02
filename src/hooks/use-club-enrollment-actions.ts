@@ -1,9 +1,9 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
-import { approveEnrollmentAction } from '@/infraestructure/actions/approve-enrollment.action';
-import { rejectEnrollmentAction } from '@/infraestructure/actions/reject-enrollment.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
+import { approveEnrollmentAction } from '@/infrastructure/actions/approve-enrollment.action';
+import { rejectEnrollmentAction } from '@/infrastructure/actions/reject-enrollment.action';
 
 interface ApproveEnrollmentParams {
   clubId: string;

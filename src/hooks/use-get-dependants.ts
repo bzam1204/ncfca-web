@@ -2,8 +2,8 @@ import {useQuery} from "@tanstack/react-query";
 
 import {Dependant} from "@/domain/entities/dependant.entity";
 
-import {GetDependantsAction} from "@/infraestructure/actions/get-dependants.action";
-import {QueryKeys} from "@/infraestructure/cache/query-keys";
+import {GetDependantsAction} from "@/infrastructure/actions/get-dependants.action";
+import {QueryKeys} from "@/infrastructure/cache/query-keys";
 
 export function useGetDependants() {
   return useQuery<Dependant[]>({

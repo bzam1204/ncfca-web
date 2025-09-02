@@ -3,7 +3,7 @@ import {UseFormSetValue} from "react-hook-form";
 
 import {CepService} from "@/domain/services/cep.service";
 
-import {RegisterInput} from "@/infraestructure/validators/register.schema";
+import {RegisterInput} from "@/infrastructure/validators/register.schema";
 
 export function useCepAutocomplete(
     setValue: UseFormSetValue<RegisterInput>,

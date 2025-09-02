@@ -2,8 +2,8 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNotify } from './use-notify';
-import { changeClubPrincipalAction } from '@/infraestructure/actions/admin/change-club-principal.action';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
+import { changeClubPrincipalAction } from '@/infrastructure/actions/admin/change-club-principal.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 export function useChangePrincipal() {
   const notify = useNotify();

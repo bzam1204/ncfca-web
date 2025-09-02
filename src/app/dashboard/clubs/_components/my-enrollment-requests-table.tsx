@@ -12,7 +12,7 @@ import {Badge} from "@/components/ui/badge";
 import {MyEnrollmentRequestsDto} from "@/application/gateways/enrollment/enrollment.gateway.dto";
 import {useGetMyEnrollmentRequests} from "@/hooks/use-get-my-enrollment-requests";
 
-import {enrollmentStatusTranslation, getEnrollmentStatusVariant} from "@/infraestructure/translations";
+import {enrollmentStatusTranslation, getEnrollmentStatusVariant} from "@/infrastructure/translations";
 
 import {RequestDetailsDialog} from "@/app/_components/request-details-dialog";
 

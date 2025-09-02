@@ -2,7 +2,7 @@
 
 import {useEffect, useRef, useState} from 'react';
 import {Play} from 'lucide-react';
-import {cn} from '@/infraestructure/utils';
+import {cn} from '@/infrastructure/utils';
 
 interface YouTubePlayerProps {
   videoId: string;

@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { getUserByIdAction } from '@/infraestructure/actions/admin/get-user-by-id.action';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
+import { getUserByIdAction } from '@/infrastructure/actions/admin/get-user-by-id.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 export function useAdminUserById(userId: string, enabled: boolean = true) {
   return useQuery({

@@ -1,9 +1,9 @@
 'use client';
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { approveClubRequestAction } from "@/infraestructure/actions/admin/approve-club-request.action";
+import { approveClubRequestAction } from "@/infrastructure/actions/admin/approve-club-request.action";
 import { useNotify } from "@/hooks/use-notify";
-import { QueryKeys } from "@/infraestructure/cache/query-keys";
+import { QueryKeys } from "@/infrastructure/cache/query-keys";
 
 export function useApproveClubRequest() {
   const notify = useNotify();

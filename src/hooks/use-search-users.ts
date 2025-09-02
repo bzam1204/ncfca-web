@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { searchUsersAction } from '@/infraestructure/actions/admin/search-users.action';
+import { searchUsersAction } from '@/infrastructure/actions/admin/search-users.action';
 import { SearchUsersQuery } from '@/contracts/api/user.dto';
-import { QueryKeys } from '@/infraestructure/cache/query-keys';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 export function useSearchUsers(query: SearchUsersQuery, enabled: boolean = true) {
   return useQuery({

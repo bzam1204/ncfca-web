@@ -8,8 +8,8 @@ Eliminar o padrão de `use-cases` e padronizar todas as interações com a API a
 
 *   **Hook (`/src/hooks`):** Expõe os dados da API para os componentes React usando `useQuery` ou `useMutation` do TanStack Query. Ele invoca uma função do gateway.
 *   **Gateway Interface (`/src/application/gateways`):** Define o contrato para as operações de um domínio (e.g., `AdminGateway`). É o que os hooks consomem.
-*   **Gateway Implementation (`/src/infraestructure/gateways`):** Implementação concreta da interface, responsável pela lógica de `fetch`, headers, e tratamento de erros da comunicação HTTP.
-*   **Container DI (`/src/infraestructure/containers`):** Mapeia as interfaces aos seus gateways concretos, permitindo a injeção de dependência.
+*   **Gateway Implementation (`/src/infrastructure/gateways`):** Implementação concreta da interface, responsável pela lógica de `fetch`, headers, e tratamento de erros da comunicação HTTP.
+*   **Container DI (`/src/infrastructure/containers`):** Mapeia as interfaces aos seus gateways concretos, permitindo a injeção de dependência.
 
 **3. Estratégia de Refatoração**
 

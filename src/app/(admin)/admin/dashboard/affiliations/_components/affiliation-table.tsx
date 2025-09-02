@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAdminAffiliations } from "@/hooks/use-admin-affiliations";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { familyStatusTranslation, getFamilyStatusVariant } from "@/infraestructure/translations";
+import { familyStatusTranslation, getFamilyStatusVariant } from "@/infrastructure/translations";
 import { AffiliationDto } from "@/contracts/api/affiliation.dto";
 import {
   AffiliationDetailsDialog

@@ -7,9 +7,9 @@ import {ClubRequestView} from './_components/club-request-view';
 
 import {UserRoles} from "@/domain/enums/user.roles";
 
-import {getMyClubRequestsAction} from '@/infraestructure/actions/get-my-club-requests.action';
-import {getMyClubAction} from '@/infraestructure/actions/get-my-club.action';
-import {auth} from '@/infraestructure/auth';
+import {getMyClubRequestsAction} from '@/infrastructure/actions/get-my-club-requests.action';
+import {getMyClubAction} from '@/infrastructure/actions/get-my-club.action';
+import {auth} from '@/infrastructure/auth';
 
 export default async function ClubManagementPage() {
   const session = await auth();

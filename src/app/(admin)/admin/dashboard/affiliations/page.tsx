@@ -1,12 +1,12 @@
 // src/app/(admin)/admin/dashboard/affiliations/page.tsx
-import { auth } from "@/infraestructure/auth";
+import { auth } from "@/infrastructure/auth";
 import { redirect } from "next/navigation";
 import { UserRoles } from "@/domain/enums/user.roles";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {AffiliationsTable} from "@/app/(admin)/admin/dashboard/affiliations/_components/affiliation-table";
-import {getAffiliationsAction} from "@/infraestructure/actions/admin/get-affiliations.action";
+import {getAffiliationsAction} from "@/infrastructure/actions/admin/get-affiliations.action";
 
 export default async function AdminAffiliationsPage() {
   const session = await auth();

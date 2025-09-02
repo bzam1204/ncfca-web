@@ -46,9 +46,9 @@ export function MembersTable({clubId}: MembersTableProps) {
                   members.map(member => (
                       <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
                         <TableCell className="font-medium flex items-center gap-3">
-                          {member.dependantName}
+                          {member.firstName} {member.lastName}
                         </TableCell>
-                        <TableCell>{member.joinedAt ? new Date(member.joinedAt).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
+                        <TableCell>{member.memberSince ? new Date(member.memberSince).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
                         <TableCell className="text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

@@ -2,8 +2,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateClubRequestDto } from "@/contracts/api/club-management.dto";
-import { createClubRequestAction } from "@/infraestructure/actions/create-club-request.action";
-import { QueryKeys } from "@/infraestructure/cache/query-keys";
+import { createClubRequestAction } from "@/infrastructure/actions/create-club-request.action";
+import { QueryKeys } from "@/infrastructure/cache/query-keys";
 import { useNotify } from "@/hooks/use-notify";
 
 export function useCreateClubRequest() {

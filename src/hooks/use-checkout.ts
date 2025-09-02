@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation } from '@tanstack/react-query';
-import { checkoutAction } from '@/infraestructure/actions/checkout.action';
+import { checkoutAction } from '@/infrastructure/actions/checkout.action';
 
 interface CheckoutParams {
   paymentMethod: string;

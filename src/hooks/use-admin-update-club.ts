@@ -1,7 +1,7 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
-import {adminUpdateClubAction} from '@/infraestructure/actions/admin-update-club.action';
+import {adminUpdateClubAction} from '@/infrastructure/actions/admin-update-club.action';
 import {UpdateClubByAdminDto} from '@/contracts/api/admin.dto';
-import {QueryKeys} from '@/infraestructure/cache/query-keys';
+import {QueryKeys} from '@/infrastructure/cache/query-keys';
 
 export function useAdminUpdateClub(clubId: string) {
   const queryClient = useQueryClient();

@@ -22,7 +22,7 @@ ________________________________________________________________________________
     <conceptApiContract>openapi.json</conceptApiContract>
     <patternOld>Hooks com fetch direto, Use-Cases legados e Queries paralelas</patternOld>
     <patternNew>Gateways + Actions + Hooks (Ports & Adapters)</patternNew>
-    <folderToDelete>src/infraestructure/queries/</folderToDelete>
+    <folderToDelete>src/infrastructure/queries/</folderToDelete>
   </concepts_and_patterns>
 
   <filesToDelete>
@@ -34,9 +34,9 @@ ________________________________________________________________________________
     </clientFetchHooksGroup>
 
     <queriesLegacyGroup purpose="remover camada paralela de queries (duplicidade de gateways)">
-      <clubQueryApi path="src/infraestructure/queries/club.query.api.ts" role="query" />
-      <dependantQueryApi path="src/infraestructure/queries/dependant.query.api.ts" role="query" />
-      <queryService path="src/infraestructure/services/query.service.api.ts" role="service" />
+      <clubQueryApi path="src/infrastructure/queries/club.query.api.ts" role="query" />
+      <dependantQueryApi path="src/infrastructure/queries/dependant.query.api.ts" role="query" />
+      <queryService path="src/infrastructure/services/query.service.api.ts" role="service" />
     </queriesLegacyGroup>
     <!-- Observação: use-cases permanecem deprecados, mas NÃO serão removidos nesta análise -->
   </filesToDelete>
@@ -242,7 +242,7 @@ ________________________________________________________________________________
 
 <finalState>
   Nenhum arquivo deve importar de <queriesLegacyGroup> (queries/service).
-  # Script: rg -n "src/infraestructure/queries/|src/infraestructure/services/query.service.api" → saída vazia
+  # Script: rg -n "src/infrastructure/queries/|src/infrastructure/services/query.service.api" → saída vazia
 </finalState>
 
 <finalState type="ContractMapping">

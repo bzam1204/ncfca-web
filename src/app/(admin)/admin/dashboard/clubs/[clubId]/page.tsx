@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import { notFound, redirect } from 'next/navigation';
-import { auth } from '@/infraestructure/auth';
+import { auth } from '@/infrastructure/auth';
 import { UserRoles } from '@/domain/enums/user.roles';
 
 import { BackButton } from '@/components/ui/back-button';
-import {getClubAction} from "@/infraestructure/actions/get-club";
+import {getClubAction} from "@/infrastructure/actions/get-club";
 import {AdminClubManagementClient} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/admin-club-management-client";
 import {ClubActionsBar} from "@/app/(admin)/admin/dashboard/clubs/[clubId]/_components/club-actions-bar";
 import {Skeleton} from "@/components/ui/skeleton";

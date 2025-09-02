@@ -8,7 +8,7 @@ import {Badge} from "@/components/ui/badge";
 
 import {MyEnrollmentRequestsDto} from "@/application/gateways/enrollment/enrollment.gateway.dto";
 
-import {enrollmentStatusTranslation, getEnrollmentStatusVariant} from "@/infraestructure/translations";
+import {enrollmentStatusTranslation, getEnrollmentStatusVariant} from "@/infrastructure/translations";
 
 export function RequestDetailsDialog({request, onOpenChange}: RequestDetailsDialogProps) {
   if (!request) return null;
