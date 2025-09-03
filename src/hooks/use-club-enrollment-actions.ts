@@ -1,20 +1,24 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { QueryKeys } from '@/infrastructure/cache/query-keys';
+
 import { approveEnrollmentAction } from '@/infrastructure/actions/approve-enrollment.action';
 import { rejectEnrollmentAction } from '@/infrastructure/actions/reject-enrollment.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 interface ApproveEnrollmentParams {
-  clubId: string;
   enrollmentId: string;
+  clubId: string;
 }
 
+
 interface RejectEnrollmentParams {
-  clubId: string;
-  enrollmentId: string;
   rejectionReason: string;
+  enrollmentId: string;
+  clubId: string;
 }
+
+//todo: move the its own file as the other hooks
 
 export function useApproveEnrollmentMutation() {
   const queryClient = useQueryClient();
@@ -27,6 +31,7 @@ export function useApproveEnrollmentMutation() {
   });
 }
 
+//todo: move the its own file as the other hooks
 export function useRejectEnrollmentMutation() {
   const queryClient = useQueryClient();
 

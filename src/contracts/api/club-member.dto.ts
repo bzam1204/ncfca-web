@@ -26,9 +26,9 @@ export interface SearchMyClubMembersFilterDto {
   name?: string;
 }
 
-export interface SearchMyClubMembersQueryDto {
+export interface SearchMyClubMembersQuery {
   filter?: SearchMyClubMembersFilterDto;
   pagination?: PaginationDto;
 }
 
-export type PaginatedMyClubMemberDto = PaginatedResponseDto<ClubMemberDto>;
+export type SearchMyClubMembersView = PaginatedResponseDto<ClubMemberDto>;

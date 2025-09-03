@@ -27,3 +27,22 @@ export interface PendingEnrollmentDto {
   dependantName: string;
   rejectionReason: string | null;
 }
+
+// OpenAPI-aligned DTOs for MyClub pending enrollment requests
+// Source: openapi.json -> components.schemas.FindMyClubPendingEnrollmentRequestsItemView
+export interface FindMyClubPendingEnrollmentRequestsItemView {
+  id: string;
+  status: EnrollmentStatus;
+  clubId: string;
+  familyId: string;
+  dependantId: string;
+  dependantName: string;
+  requestedAt: string;
+  resolvedAt: string | null;
+  rejectionReason: string | null;
+}
+
+// Source: openapi.json -> components.schemas.FindMyClubPendingEnrollmentRequestsView
+export interface FindMyClubPendingEnrollmentRequestsView {
+  data: FindMyClubPendingEnrollmentRequestsItemView[];
+}

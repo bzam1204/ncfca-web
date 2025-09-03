@@ -9,5 +9,6 @@ export async function searchClubsAction(query: SearchClubsQuery): Promise<Pagina
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
   const gateway = Inject.ClubGateway(session.accessToken);
-  return await gateway.search(query);
+  const clubs = await gateway.search(query);
+  return clubs;
 }

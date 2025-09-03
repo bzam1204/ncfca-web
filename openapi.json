@@ -176,7 +176,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchClubsListView"
+                  "$ref": "#/components/schemas/SearchClubsView"
                 }
               }
             }
@@ -232,17 +232,17 @@
         ]
       }
     },
-    "/my-club": {
+    "/my-club/enrollment-requests/pending": {
       "get": {
-        "operationId": "MyClubController_getMyClubInfo",
+        "operationId": "MyClubController_findMyClubPendingEnrollmentRequests",
         "parameters": [],
         "responses": {
           "200": {
-            "description": "Dados do clube retornados com sucesso.",
+            "description": "Lista de solicitações pendentes.",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ClubDto"
+                  "$ref": "#/components/schemas/FindMyClubPendingEnrollmentRequestsView"
                 }
               }
             }
@@ -253,7 +253,7 @@
             "JWT-auth": []
           }
         ],
-        "summary": "Obtém as informações do clube do diretor autenticado",
+        "summary": "Lista as solicitações de matrícula pendentes para um clube específico",
         "tags": [
           "Gestão de Clube (Diretor)"
         ]
@@ -317,7 +317,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchMyClubMembersListView"
+                  "$ref": "#/components/schemas/SearchMyClubMembersView"
                 }
               }
             }
@@ -329,6 +329,133 @@
           }
         ],
         "summary": "Lista membros ativos do meu clube com paginação e filtros",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/enrollment-requests/{enrollmentRequestId}/approve": {
+      "post": {
+        "operationId": "MyClubController_approveEnrollmentRequest",
+        "parameters": [
+          {
+            "name": "enrollmentRequestId",
+            "required": true,
+            "in": "path",
+            "description": "ID da solicitação de matrícula",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Solicitação de matrícula aprovada."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Aprova uma solicitação de matrícula do meu clube",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/enrollment-requests/{enrollmentRequestId}/reject": {
+      "post": {
+        "operationId": "MyClubController_rejectEnrollmentRequest",
+        "parameters": [
+          {
+            "name": "enrollmentRequestId",
+            "required": true,
+            "in": "path",
+            "description": "ID da solicitação de matrícula",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "description": "Motivo da rejeição",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectEnrollmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Solicitação de matrícula rejeitada."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Rejeita uma solicitação de matrícula do meu clube",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/membership/{membershipId}/revoke": {
+      "post": {
+        "operationId": "MyClubController_revokeMembership",
+        "parameters": [
+          {
+            "name": "membershipId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Afiliação do membro revogada com sucesso."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Revoga a afiliação de um membro do clube",
+        "tags": [
+          "Gestão de Clube (Diretor)"
+        ]
+      }
+    },
+    "/my-club": {
+      "get": {
+        "operationId": "MyClubController_getMyClubInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Dados do clube retornados com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClubDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Obtém as informações do clube do diretor autenticado",
         "tags": [
           "Gestão de Clube (Diretor)"
         ]
@@ -403,7 +530,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SearchClubMembersToAdminListView"
+                  "$ref": "#/components/schemas/SearchClubMembersToAdminView"
                 }
               }
             }
@@ -1702,142 +1829,6 @@
         ]
       }
     },
-    "/club-management/{clubId}/enrollments/pending": {
-      "get": {
-        "operationId": "ClubManagementController_listPending",
-        "parameters": [
-          {
-            "name": "clubId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Lista de solicitações pendentes.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ListPendingEnrollmentsOutputDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Lista as solicitações de matrícula pendentes para um clube específico",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
-    "/club-management/enrollments/{enrollmentId}/approve": {
-      "post": {
-        "operationId": "ClubManagementController_approve",
-        "parameters": [
-          {
-            "name": "enrollmentId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Matrícula aprovada com sucesso."
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Aprova uma solicitação de matrícula",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
-    "/club-management/enrollments/{enrollmentId}/reject": {
-      "post": {
-        "operationId": "ClubManagementController_reject",
-        "parameters": [
-          {
-            "name": "enrollmentId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RejectEnrollmentDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "204": {
-            "description": "Matrícula rejeitada com sucesso."
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Rejeita uma solicitação de matrícula",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
-    "/club-management/membership/{membershipId}/revoke": {
-      "post": {
-        "operationId": "ClubManagementController_removeMember",
-        "parameters": [
-          {
-            "name": "membershipId",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Afiliação do membro revogada com sucesso."
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Revoga a afiliação de um membro do clube",
-        "tags": [
-          "Gestão de Clube (Diretor)"
-        ]
-      }
-    },
     "/club-requests": {
       "post": {
         "operationId": "ClubRequestController_create",
@@ -2763,7 +2754,7 @@
           "page"
         ]
       },
-      "SearchClubsListView": {
+      "SearchClubsView": {
         "type": "object",
         "properties": {
           "data": {
@@ -2779,6 +2770,86 @@
         "required": [
           "data",
           "meta"
+        ]
+      },
+      "FindMyClubPendingEnrollmentRequestsItemView": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID único da solicitação de matrícula.",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status atual da solicitação.",
+            "enum": [
+              "REJECTED",
+              "APPROVED",
+              "PENDING"
+            ],
+            "example": "PENDING"
+          },
+          "clubId": {
+            "type": "string",
+            "description": "ID do clube ao qual a matrícula foi solicitada.",
+            "format": "uuid"
+          },
+          "familyId": {
+            "type": "string",
+            "description": "ID da família que está solicitando a matrícula.",
+            "format": "uuid"
+          },
+          "dependantId": {
+            "type": "string",
+            "description": "ID do dependente para o qual a matrícula se aplica.",
+            "format": "uuid"
+          },
+          "dependantName": {
+            "type": "string",
+            "description": "Nome do dependente para o qual a matrícula se aplica."
+          },
+          "requestedAt": {
+            "type": "string",
+            "description": "Data e hora em que a solicitação foi criada.",
+            "format": "date-time"
+          },
+          "resolvedAt": {
+            "type": "string",
+            "description": "Data e hora em que a solicitação foi resolvida (aprovada/rejeitada).",
+            "format": "date-time",
+            "nullable": true
+          },
+          "rejectionReason": {
+            "type": "string",
+            "description": "Motivo da rejeição, caso o status seja REJECTED.",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "status",
+          "clubId",
+          "familyId",
+          "dependantId",
+          "dependantName",
+          "requestedAt",
+          "resolvedAt",
+          "rejectionReason"
+        ]
+      },
+      "FindMyClubPendingEnrollmentRequestsView": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FindMyClubPendingEnrollmentRequestsItemView"
+            }
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "SearchMyClubMembersFilterDto": {
@@ -2900,7 +2971,7 @@
           "sex"
         ]
       },
-      "SearchMyClubMembersListView": {
+      "SearchMyClubMembersView": {
         "type": "object",
         "properties": {
           "data": {
@@ -2918,6 +2989,20 @@
           "meta"
         ]
       },
+      "RejectEnrollmentDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "Motivo detalhado para a rejeição da matrícula. Mínimo de 10 caracteres.",
+            "example": "Infelizmente, todas as vagas para esta faixa etária já foram preenchidas.",
+            "minLength": 10
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
       "SearchClubMembersFilterDto": {
         "type": "object",
         "properties": {
@@ -2928,7 +3013,7 @@
           }
         }
       },
-      "SearchClubMembersToAdminListView": {
+      "SearchClubMembersToAdminView": {
         "type": "object",
         "properties": {
           "data": {
@@ -4004,94 +4089,6 @@
             ]
           }
         }
-      },
-      "ListPendingEnrollmentsOutputDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "ID único da solicitação de matrícula.",
-            "format": "uuid",
-            "example": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6"
-          },
-          "status": {
-            "type": "string",
-            "description": "Status atual da solicitação.",
-            "enum": [
-              "REJECTED",
-              "APPROVED",
-              "PENDING"
-            ],
-            "example": "PENDING"
-          },
-          "clubId": {
-            "type": "string",
-            "description": "ID do clube ao qual a matrícula foi solicitada.",
-            "format": "uuid",
-            "example": "c1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p7"
-          },
-          "familyId": {
-            "type": "string",
-            "description": "ID da família que está solicitando a matrícula.",
-            "format": "uuid",
-            "example": "d1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p8"
-          },
-          "dependantId": {
-            "type": "string",
-            "description": "ID do dependente para o qual a matrícula se aplica.",
-            "format": "uuid",
-            "example": "e1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p9"
-          },
-          "dependantName": {
-            "type": "string",
-            "description": "Nome do dependente para o qual a matrícula se aplica.",
-            "example": "Augustus Nicodemus"
-          },
-          "requestedAt": {
-            "type": "string",
-            "description": "Data e hora em que a solicitação foi criada.",
-            "format": "date-time",
-            "example": "2025-07-20T14:00:00Z"
-          },
-          "resolvedAt": {
-            "type": "string",
-            "description": "Data e hora em que a solicitação foi resolvida (aprovada/rejeitada).",
-            "format": "date-time",
-            "nullable": true,
-            "example": "2025-07-20T15:30:00Z"
-          },
-          "rejectionReason": {
-            "type": "object",
-            "description": "Motivo da rejeição, caso o status seja REJECTED.",
-            "nullable": true,
-            "example": "Vagas esgotadas para a faixa etária."
-          }
-        },
-        "required": [
-          "id",
-          "status",
-          "clubId",
-          "familyId",
-          "dependantId",
-          "dependantName",
-          "requestedAt",
-          "resolvedAt",
-          "rejectionReason"
-        ]
-      },
-      "RejectEnrollmentDto": {
-        "type": "object",
-        "properties": {
-          "reason": {
-            "type": "string",
-            "description": "Motivo detalhado para a rejeição da matrícula. Mínimo de 10 caracteres.",
-            "example": "Infelizmente, todas as vagas para esta faixa etária já foram preenchidas.",
-            "minLength": 10
-          }
-        },
-        "required": [
-          "reason"
-        ]
       },
       "CreateClubRequestDto": {
         "type": "object",

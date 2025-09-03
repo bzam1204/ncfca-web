@@ -12,7 +12,7 @@ export async function getClubMembersAction(query: SearchClubMembersQueryDto) {
     throw new Error('Acesso negado.');
   }
   const adminGateway = Inject.AdminGateway(session.accessToken);
-  const members = await adminGateway.getClubMembers(query);
+  const members = await adminGateway.searchClubMembersToAdmin(query);
   console.log('Membros do clube:', {members : JSON.stringify(members)});
   return members;
 }

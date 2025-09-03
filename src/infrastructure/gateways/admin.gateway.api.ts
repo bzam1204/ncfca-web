@@ -3,8 +3,8 @@ import { Club, User } from '@/domain/entities/entities';
 
 import { AdminGateway } from '@/application/gateways/admin.gateway';
 import {
-  SearchClubMembersQueryDto,
-  PaginatedClubMemberDto,
+  SearchClubMembersQueryDto as SearchClubMembersToAdminQuery,
+  PaginatedClubMemberDto as SearchClubMembersToAdminView,
   UpdateClubByAdminDto,
   ChangePrincipalDto,
   ManageUserRoleDto,
@@ -125,7 +125,7 @@ export class AdminGatewayApi implements AdminGateway {
     return await res.json();
   }
 
-  async getClubMembers(query: SearchClubMembersQueryDto): Promise<PaginatedClubMemberDto> {
+  async searchClubMembersToAdmin(query: SearchClubMembersToAdminQuery): Promise<SearchClubMembersToAdminView> {
     console.log('Buscando membros do clube com query:', query);
     const params = new URLSearchParams();
     params.append('clubId', query.clubId);
@@ -136,7 +136,7 @@ export class AdminGatewayApi implements AdminGateway {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       next: {
         revalidate: this.revalidateInSeconds,
-        tags: NextKeys.admin.searchClubMembers(query),
+        tags: [NextKeys.admin.all, NextKeys.admin.searchClubMembers(query)],
       },
     });
     if (!res.ok) throw new Error('Falha ao buscar membros do clube.');

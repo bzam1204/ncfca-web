@@ -1,26 +1,32 @@
 'use client';
 
 import { useState } from 'react';
-import { usePendingEnrollmentsQuery } from '@/hooks/use-pending-enrollments';
-import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
-import { useNotify } from '@/hooks/use-notify';
-import { EnrollmentRequestDto, PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+
 import { AlertTriangle, Check, X, MoreHorizontal, FileText, RotateCcw } from 'lucide-react';
+
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { PendingRequestDetailsDialog } from './pending-request-details-dialog';
-import { RejectEnrollmentDialog } from '@/app/dashboard/club-management/_components/reject-enrollment-dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+
 import { QuickRejectEnrollmentDialog } from '@/app/_components/quick-reject-enrollment-dialog';
+import { RejectEnrollmentDialog } from '@/app/dashboard/club-management/_components/reject-enrollment-dialog';
+
+import { EnrollmentRequestDto, PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
+
+import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
+import { useFindMyClubPendingEnrollmentRequests } from '@/hooks/use-find-my-club-pending-enrollment-requests';
+import { useNotify } from '@/hooks/use-notify';
+
+import { PendingRequestDetailsDialog } from './pending-request-details-dialog';
 
 interface PendingRequestsTableProps {
   clubId: string;
 }
 
 export function PendingRequestsTable({ clubId }: PendingRequestsTableProps) {
-  const { data: requests = [], isLoading, error, refetch, isRefetching } = usePendingEnrollmentsQuery(clubId);
+  const { data: requests = [], isLoading, error, refetch, isRefetching } = useFindMyClubPendingEnrollmentRequests();
   const [requestToReject, setRequestToReject] = useState<EnrollmentRequestDto | null>(null);
   const [rejectionTarget, setRejectionTarget] = useState<EnrollmentRequestDto | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<PendingEnrollmentDto | null>(null);
@@ -157,3 +163,4 @@ export function PendingRequestsTable({ clubId }: PendingRequestsTableProps) {
     </div>
   );
 }
+

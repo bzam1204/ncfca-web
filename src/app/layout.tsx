@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 
 import { SessionManager } from '@/components/session-manager';
 import { Toaster } from '@/components/ui/sonner';
+import { ConfirmationDialogProvider } from '@/components/confirmation-dialog';
 
 import { QueryProvider } from '@/infrastructure/providers/query-provider';
 
@@ -31,8 +32,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SessionProvider>
           <SessionManager />
           <QueryProvider>
-            {children}
-            <Toaster richColors />
+            <ConfirmationDialogProvider>
+              {children}
+              <Toaster richColors />
+            </ConfirmationDialogProvider>
           </QueryProvider>
         </SessionProvider>
       </body>

@@ -1,5 +1,5 @@
-import { SearchMyClubMembersQueryDto } from '@/contracts/api/club-member.dto';
 import { SearchClubMembersFilterDto } from '@/contracts/api/admin.dto';
+import { SearchMyClubMembersQuery } from '@/contracts/api/club-member.dto';
 import { SearchClubsQuery } from '@/contracts/api/club.dto';
 import { SearchUsersQuery } from '@/contracts/api/user.dto';
 import { PaginationDto } from '@/contracts/api/pagination.dto';
@@ -25,9 +25,14 @@ export const QueryKeys = {
   club: {
     all: ['club'] as const,
     members: (clubId: string) => ['club', clubId, 'members'] as const,
-    myClubMembers: (query: SearchMyClubMembersQueryDto) => [...QueryKeys.club.all, 'my-club-members', query] as const,
+    myClubMembers: (query: SearchMyClubMembersQuery) => [...QueryKeys.club.all, 'my-club-members', query] as const,
     enrollmentHistory: (clubId: string) => ['club', clubId, 'enrollment-history'] as const,
     pendingEnrollments: (clubId: string) => ['club', clubId, 'pending-enrollments'] as const,
+  },
+  myClub: {
+    all: ['myClub'] as const,
+    members: (query: SearchMyClubMembersQuery) => [...QueryKeys.myClub.all, 'members', query] as const,
+    pendingEnrollmentsRequests: () => [...QueryKeys.myClub.all, 'pending-enrollments-requests'] as const,
   },
   clubRequests: {
     all: ['clubRequests'] as const,

@@ -1,4 +1,5 @@
 import { SearchClubMembersQueryDto } from '@/contracts/api/admin.dto';
+import { SearchMyClubMembersQuery } from '@/contracts/api/club-member.dto';
 
 export const NextKeys = {
   trainings: 'trainings',
@@ -15,8 +16,12 @@ export const NextKeys = {
   clubs: {
     details: (clubId: string) => `clubs.details.${clubId}`,
   },
+  myClub: {
+    all: 'my_club',
+    members: (query?: SearchMyClubMembersQuery) => `my_club.search_members.${query ?? ''}`,
+  },
   admin: {
-    all: ['admin'],
+    all: 'admin',
     clubs: 'admin.clubs',
     users: 'admin.users',
     clubCharts: (clubId: string) => `admin.club_charts.${clubId}`,
@@ -25,7 +30,6 @@ export const NextKeys = {
     searchUsers: 'admin.search_users',
     enrollments: 'admin.enrollments',
     affiliations: 'admin.affiliations',
-    // new pattern, follow to the next implementations
-    searchClubMembers: (query: SearchClubMembersQueryDto): string[] => [...NextKeys.admin.all, 'search_club_members', JSON.stringify(query)],
+    searchClubMembers: (query: SearchClubMembersQueryDto): string => `admin_search_club_members_${JSON.stringify(query)}`,
   },
 };

@@ -1,11 +1,15 @@
+import { revalidateTag } from 'next/cache';
+
 import { Club } from '@/domain/entities/entities';
 
 import { ClubGateway } from '@/application/gateways/club.gateway';
 
-import { ClubMemberDto, SearchMyClubMembersQueryDto, PaginatedMyClubMemberDto } from '@/contracts/api/club-member.dto';
+import { ClubMemberDto, SearchMyClubMembersQuery, SearchMyClubMembersView } from '@/contracts/api/club-member.dto';
+import { PendingEnrollmentDto, FindMyClubPendingEnrollmentRequestsView } from '@/contracts/api/enrollment.dto';
 import { PaginatedClubDto, SearchClubsQuery } from '@/contracts/api/club.dto';
 import { UpdateClubDto, RejectEnrollmentDto } from '@/contracts/api/club-management.dto';
-import { PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
+
+import { NextKeys } from '../cache/next-keys';
 
 export class ClubGatewayApi implements ClubGateway {
   constructor(
@@ -14,12 +18,16 @@ export class ClubGatewayApi implements ClubGateway {
   ) {}
 
   async myClub(): Promise<Club | null> {
-    const res = await fetch(`${this.baseUrl}/my-club`, {
-      headers: { Authorization: `Bearer ${this.accessToken}` },
-      cache: 'no-store',
-    });
-    if (!res.ok) return null;
-    return res.json();
+    try {
+      const res = await fetch(`${this.baseUrl}/my-club`, {
+        headers: { Authorization: `Bearer ${this.accessToken}` },
+        cache: 'no-store',
+      });
+      if (!res.ok) return null;
+      return res.json();
+    } catch {
+      return null;
+    }
   }
 
   async search(query: SearchClubsQuery): Promise<PaginatedClubDto> {
@@ -96,23 +104,18 @@ export class ClubGatewayApi implements ClubGateway {
     return res.json();
   }
 
-  async getMyClubMembers(query?: SearchMyClubMembersQueryDto): Promise<PaginatedMyClubMemberDto> {
+  async searchMyClubMembers(query?: SearchMyClubMembersQuery): Promise<SearchMyClubMembersView> {
     const params = new URLSearchParams();
-
-    if (query?.pagination?.page) {
-      params.append('pagination[page]', query.pagination.page.toString());
-    }
-    if (query?.pagination?.limit) {
-      params.append('pagination[limit]', query.pagination.limit.toString());
-    }
-    if (query?.filter?.name) {
-      params.append('filter[name]', query.filter.name);
-    }
-
+    if (query?.pagination?.page) params.append('pagination[page]', query.pagination.page.toString());
+    if (query?.pagination?.limit) params.append('pagination[limit]', query.pagination.limit.toString());
+    if (query?.filter?.name) params.append('filter[name]', query.filter.name);
     const url = `${this.baseUrl}/my-club/members${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
-      cache: 'no-store',
+      next: {
+        revalidate: 300,
+        tags: [NextKeys.myClub.all, NextKeys.myClub.members(query)],
+      },
     });
     if (!res.ok) {
       const body = await res.json();
@@ -130,6 +133,7 @@ export class ClubGatewayApi implements ClubGateway {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao revogar membership');
     }
+    revalidateTag(NextKeys.myClub.all);
   }
 
   async approveEnrollment(enrollmentId: string): Promise<void> {
@@ -158,8 +162,8 @@ export class ClubGatewayApi implements ClubGateway {
     }
   }
 
-  async getPendingEnrollments(clubId: string): Promise<any[]> {
-    const res = await fetch(`${this.baseUrl}/my-club/enrollments/pending`, {
+  async findMyClubPendingEnrollmentRequests(): Promise<FindMyClubPendingEnrollmentRequestsView> {
+    const res = await fetch(`${this.baseUrl}/my-club/enrollment-requests/pending`, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });

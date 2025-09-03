@@ -10,7 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
 import { useEnrollmentHistoryQuery } from '@/hooks/use-enrollment-history';
-import { useClubMembersQuery } from '@/hooks/use-club-members';
+import { useSearchMyClubMembers } from '@/hooks/use-search-my-club-members';
 
 import { DashboardCharts } from './dashboard-charts';
 
@@ -44,7 +44,7 @@ interface ClubDashboardTabProps {
 export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
   const [period, setPeriod] = useState(12);
 
-  const { data: paginatedMembers, isLoading: isLoadingMembers, error: errorMembers } = useClubMembersQuery();
+  const { data: paginatedMembers, isLoading: isLoadingMembers, error: errorMembers } = useSearchMyClubMembers();
   const members = paginatedMembers?.data || [];
   const { data: allRequests = [], isLoading: isLoadingHistory, error: errorHistory } = useEnrollmentHistoryQuery(clubId);
 
