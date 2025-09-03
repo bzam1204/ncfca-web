@@ -11,7 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 
 import { QuickRejectEnrollmentDialog } from '@/app/_components/quick-reject-enrollment-dialog';
-import { RejectEnrollmentDialog } from '@/app/dashboard/club-management/_components/reject-enrollment-dialog';
+import { RejectEnrollmentDialog } from '@/app/dashboard/my-club/_components/reject-enrollment-dialog';
 
 import { EnrollmentRequestDto, PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
 

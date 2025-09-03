@@ -1,19 +1,24 @@
 'use client';
 
 import { useState } from 'react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogTrigger } from '@/components/ui/dialog';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Edit, Users, AlertTriangle } from 'lucide-react';
+
+import { Club } from '@/domain/entities/entities';
+
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+
+import { useMyClub } from '@/hooks/use-my-club';
+
+import { PendingRequestsTable } from './pending-requests-table';
+import { ClubDashboardTab } from './club-dashboard-tab';
 import { EditClubForm } from './edit-club-form';
 import { MembersTable } from './members-table';
-import { PendingRequestsTable } from './pending-requests-table';
 import { TrainingsTab } from './trainings-tab';
-import { useMyClub } from '@/hooks/use-my-club';
-import { Club } from '@/domain/entities/entities';
-import { ClubDashboardTab } from '@/app/dashboard/club-management/_components/club-dashboard-tab';
 
 export function ClubManagementClient({ initialClub }: { initialClub: Club | null }) {
   const { data: myClub, error, isFetching, refetch } = useMyClub(initialClub);

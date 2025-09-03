@@ -1,8 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { QueryKeys } from '@/infrastructure/cache/query-keys';
+
 import { getEnrollmentHistoryAction } from '@/infrastructure/actions/get-enrollment-history.action';
+import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
 export function useEnrollmentHistoryQuery(clubId: string) {
   return useQuery({

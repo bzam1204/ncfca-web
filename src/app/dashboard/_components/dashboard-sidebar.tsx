@@ -2,9 +2,10 @@
 
 import * as React from 'react';
 
+import { SidebarMenuButton, SidebarContent, SidebarFooter, SidebarHeader, Sidebar } from '@/components/ui/sidebar';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { SidebarMenuButton, SidebarContent, SidebarFooter, SidebarHeader, Sidebar } from '@/components/ui/sidebar';
+
 import { AppConfig } from '@/infrastructure/config';
 
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

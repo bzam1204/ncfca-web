@@ -10,6 +10,7 @@ export interface ClubGateway {
   getMyClubPendingEnrollments(): Promise<PendingEnrollmentDto[]>;
   approveEnrollmentRequest(enrollmentRequestId: string): Promise<void>;
   rejectEnrollmentRequest(enrollmentRequestId: string, payload: RejectEnrollmentDto): Promise<void>;
+  //**critical**: the target method that must be replaced by findMyClubEnrollmentRequests, use teh same name of the openapi spec.
   getEnrollmentHistory(clubId: string): Promise<any[]>;
   revokeMembership(membershipId: string): Promise<void>;
   searchMyClubMembers(query?: SearchMyClubMembersQuery): Promise<SearchMyClubMembersView>;

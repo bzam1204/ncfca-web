@@ -7,7 +7,7 @@ import {SearchMyClubMembersQuery, SearchMyClubMembersView} from '@/contracts/api
 import {searchMyClubMembersAction} from '@/infrastructure/actions/search-my-club-members.action';
 import {QueryKeys} from '@/infrastructure/cache/query-keys';
 
-export function useSearchMyClubMembers(query: SearchMyClubMembersQuery) {
+export function useSearchMyClubMembers(query?: SearchMyClubMembersQuery) {
   return useQuery<SearchMyClubMembersView>({
     queryKey : QueryKeys.myClub.members(query),
     queryFn : () => searchMyClubMembersAction(query),

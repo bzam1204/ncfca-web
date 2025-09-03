@@ -31,7 +31,7 @@ export const QueryKeys = {
   },
   myClub: {
     all: ['myClub'] as const,
-    members: (query: SearchMyClubMembersQuery) => [...QueryKeys.myClub.all, 'members', query] as const,
+    members: (query?: SearchMyClubMembersQuery) => [...QueryKeys.myClub.all, 'members', query ?? '*'] as const,
     pendingEnrollmentsRequests: () => [...QueryKeys.myClub.all, 'pending-enrollments-requests'] as const,
   },
   clubRequests: {
