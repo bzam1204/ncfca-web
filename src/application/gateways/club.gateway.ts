@@ -8,14 +8,9 @@ import { PendingEnrollmentDto, FindMyClubPendingEnrollmentRequestsView } from '@
 export interface ClubGateway {
   findMyClubPendingEnrollmentRequests(): Promise<FindMyClubPendingEnrollmentRequestsView>;
   getMyClubPendingEnrollments(): Promise<PendingEnrollmentDto[]>;
+  approveEnrollmentRequest(enrollmentRequestId: string): Promise<void>;
+  rejectEnrollmentRequest(enrollmentRequestId: string, payload: RejectEnrollmentDto): Promise<void>;
   getEnrollmentHistory(clubId: string): Promise<any[]>;
-  /**
-   * todo: the @openapi.json was update. the method signature should be updated to reflect the changes, also the implementation in ClubGatewayApi must be updated, and its usages.
-   * see: src/infrastructure/gateways/club.gateway.api.ts
-   * see: src/app/dashboard/_components/pending-enrollments-table.tsx
-   */
-  approveEnrollment(enrollmentId: string): Promise<void>;
-  rejectEnrollment(enrollmentId: string, payload: RejectEnrollmentDto): Promise<void>;
   revokeMembership(membershipId: string): Promise<void>;
   searchMyClubMembers(query?: SearchMyClubMembersQuery): Promise<SearchMyClubMembersView>;
   updateMyClub(payload: UpdateClubDto): Promise<Club>;

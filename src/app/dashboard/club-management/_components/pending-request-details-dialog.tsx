@@ -25,29 +25,11 @@ import {
   AlertDialog,
 } from '@/components/ui/alert-dialog';
 
+import useApproveEnrollmentRequest from '@/hooks/use-approve-enrollment-request';
+import useRejectEnrollmentRequest from '@/hooks/use-reject-enrollment-request';
 import { useDependantDetails } from '@/hooks/use-dependant-details';
-import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
 import { useNotify } from '@/hooks/use-notify';
 
-const rejectionSchema = z.object({
-  reason: z.string().min(10, { message: 'O motivo deve ter no mínimo 10 caracteres.' }),
-});
-type RejectionInput = z.infer<typeof rejectionSchema>;
-
-interface PendingRequestDetailsDialogProps {
-  request: EnrollmentRequestDto | null;
-  onOpenChange: (isOpen: boolean) => void;
-  onSuccess: () => void;
-  clubId: string;
-}
-
-const InfoField = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | undefined | null }) => (
-  <div className="flex items-center gap-3 text-sm">
-    <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-    <span className="font-semibold">{label}:</span>
-    <span className="text-muted-foreground truncate">{value || 'Não informado'}</span>
-  </div>
-);
 
 export function PendingRequestDetailsDialog({ request, onOpenChange, onSuccess, clubId }: PendingRequestDetailsDialogProps) {
   const [isRejectionMode, setRejectionMode] = useState(false);
@@ -60,8 +42,8 @@ export function PendingRequestDetailsDialog({ request, onOpenChange, onSuccess, 
   const { data: dependant, isLoading, error } = useDependantDetails(request?.dependantId || '');
 
   const notify = useNotify();
-  const { mutate: approve, isPending: isApproving } = useApproveEnrollmentMutation();
-  const { mutate: reject, isPending: isRejecting } = useRejectEnrollmentMutation();
+  const { mutate: approve, isPending: isApproving } = useApproveEnrollmentRequest();
+  const { mutate: reject, isPending: isRejecting } = useRejectEnrollmentRequest();
 
   const handleApprove = () => {
     if (!request) return;
@@ -183,3 +165,24 @@ export function PendingRequestDetailsDialog({ request, onOpenChange, onSuccess, 
     </Dialog>
   );
 }
+
+
+const rejectionSchema = z.object({
+  reason: z.string().min(10, { message: 'O motivo deve ter no mínimo 10 caracteres.' }),
+});
+type RejectionInput = z.infer<typeof rejectionSchema>;
+
+interface PendingRequestDetailsDialogProps {
+  request: EnrollmentRequestDto | null;
+  onOpenChange: (isOpen: boolean) => void;
+  onSuccess: () => void;
+  clubId: string;
+}
+
+const InfoField = ({ icon: Icon, label, value }: { icon: React.ElementType; label: string; value: string | undefined | null }) => (
+  <div className="flex items-center gap-3 text-sm">
+    <Icon className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+    <span className="font-semibold">{label}:</span>
+    <span className="text-muted-foreground truncate">{value || 'Não informado'}</span>
+  </div>
+);

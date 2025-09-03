@@ -15,8 +15,9 @@ import { RejectEnrollmentDialog } from '@/app/dashboard/club-management/_compone
 
 import { EnrollmentRequestDto, PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
 
-import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
 import { useFindMyClubPendingEnrollmentRequests } from '@/hooks/use-find-my-club-pending-enrollment-requests';
+import useApproveEnrollmentMutation from '@/hooks/use-approve-enrollment-request';
+import useRejectEnrollmentRequest from '@/hooks/use-reject-enrollment-request';
 import { useNotify } from '@/hooks/use-notify';
 
 import { PendingRequestDetailsDialog } from './pending-request-details-dialog';
@@ -31,7 +32,7 @@ export function PendingRequestsTable({ clubId }: PendingRequestsTableProps) {
   const [rejectionTarget, setRejectionTarget] = useState<EnrollmentRequestDto | null>(null);
   const [selectedRequest, setSelectedRequest] = useState<PendingEnrollmentDto | null>(null);
   const { mutate: approve, isPending: isApproving } = useApproveEnrollmentMutation();
-  const { mutate: reject, isPending: isRejecting } = useRejectEnrollmentMutation();
+  const { mutate: reject, isPending: isRejecting } = useRejectEnrollmentRequest();
   const notify = useNotify();
 
   const handleQuickApprove = (id: string) => {
@@ -163,4 +164,3 @@ export function PendingRequestsTable({ clubId }: PendingRequestsTableProps) {
     </div>
   );
 }
-

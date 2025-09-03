@@ -136,8 +136,8 @@ export class ClubGatewayApi implements ClubGateway {
     revalidateTag(NextKeys.myClub.all);
   }
 
-  async approveEnrollment(enrollmentId: string): Promise<void> {
-    const res = await fetch(`${this.baseUrl}/enrollments/${enrollmentId}/approve`, {
+  async approveEnrollmentRequest(enrollmentRequestId: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/enrollment-requests/${enrollmentRequestId}/approve`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
@@ -145,10 +145,11 @@ export class ClubGatewayApi implements ClubGateway {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao aprovar matrícula');
     }
+    revalidateTag(NextKeys.myClub.all);
   }
 
-  async rejectEnrollment(enrollmentId: string, payload: RejectEnrollmentDto): Promise<void> {
-    const res = await fetch(`${this.baseUrl}/enrollments/${enrollmentId}/reject`, {
+  async rejectEnrollmentRequest(enrollmentRequestId: string, payload: RejectEnrollmentDto): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/enrollment-requests/${enrollmentRequestId}/reject`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${this.accessToken}`,
