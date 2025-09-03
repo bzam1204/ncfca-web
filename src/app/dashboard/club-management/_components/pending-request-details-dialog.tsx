@@ -1,30 +1,33 @@
 'use client';
 
 import { useState } from 'react';
-import { useDependantDetails } from '@/hooks/use-dependant-details';
-import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
-import { useNotify } from '@/hooks/use-notify';
-import { useForm } from 'react-hook-form';
+
+import { User, Phone, Mail, Shield, Check, X, AlertCircle, Loader2 } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { EnrollmentRequestDto } from '@/contracts/api/enrollment.dto';
+
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { EnrollmentRequestDto } from '@/contracts/api/enrollment.dto';
+import { Textarea } from '@/components/ui/textarea';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 import {
-  AlertDialog,
+  AlertDialogDescription,
+  AlertDialogContent,
+  AlertDialogTrigger,
   AlertDialogAction,
   AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialog,
 } from '@/components/ui/alert-dialog';
-import { Textarea } from '@/components/ui/textarea';
-import { User, Phone, Mail, Shield, Check, X, AlertCircle, Loader2 } from 'lucide-react';
+
+import { useDependantDetails } from '@/hooks/use-dependant-details';
+import { useApproveEnrollmentMutation, useRejectEnrollmentMutation } from '@/hooks/use-club-enrollment-actions';
+import { useNotify } from '@/hooks/use-notify';
 
 const rejectionSchema = z.object({
   reason: z.string().min(10, { message: 'O motivo deve ter no mínimo 10 caracteres.' }),
@@ -54,7 +57,7 @@ export function PendingRequestDetailsDialog({ request, onOpenChange, onSuccess, 
     formState: { errors },
   } = useForm<RejectionInput>({ resolver: zodResolver(rejectionSchema) });
 
-  const { data: dependant, isLoading, error } = useDependantDetails(request?.dependantId ?? null);
+  const { data: dependant, isLoading, error } = useDependantDetails(request?.dependantId || '');
 
   const notify = useNotify();
   const { mutate: approve, isPending: isApproving } = useApproveEnrollmentMutation();

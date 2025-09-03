@@ -2,9 +2,9 @@ import { Club } from '@/domain/entities/entities';
 
 import { ClubGateway } from '@/application/gateways/club.gateway';
 
+import { ClubMemberDto, SearchMyClubMembersQueryDto, PaginatedMyClubMemberDto } from '@/contracts/api/club-member.dto';
 import { PaginatedClubDto, SearchClubsQuery } from '@/contracts/api/club.dto';
 import { UpdateClubDto, RejectEnrollmentDto } from '@/contracts/api/club-management.dto';
-import { ClubMemberDto } from '@/contracts/api/club-member.dto';
 import { PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
 
 export class ClubGatewayApi implements ClubGateway {
@@ -96,8 +96,21 @@ export class ClubGatewayApi implements ClubGateway {
     return res.json();
   }
 
-  async getMyClubMembers(): Promise<ClubMemberDto[]> {
-    const res = await fetch(`${this.baseUrl}/my-club/members`, {
+  async getMyClubMembers(query?: SearchMyClubMembersQueryDto): Promise<PaginatedMyClubMemberDto> {
+    const params = new URLSearchParams();
+
+    if (query?.pagination?.page) {
+      params.append('pagination[page]', query.pagination.page.toString());
+    }
+    if (query?.pagination?.limit) {
+      params.append('pagination[limit]', query.pagination.limit.toString());
+    }
+    if (query?.filter?.name) {
+      params.append('filter[name]', query.filter.name);
+    }
+
+    const url = `${this.baseUrl}/my-club/members${params.toString() ? `?${params.toString()}` : ''}`;
+    const res = await fetch(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       cache: 'no-store',
     });

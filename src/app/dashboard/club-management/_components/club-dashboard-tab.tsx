@@ -1,14 +1,17 @@
-// src/app/dashboard/club-management/_components/club-dashboard-tab.tsx
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useClubMembersQuery } from '@/hooks/use-club-members';
-import { useEnrollmentHistoryQuery } from '@/hooks/use-enrollment-history';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+
 import { AlertTriangle, BarChart2, Clock } from 'lucide-react';
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import { useEnrollmentHistoryQuery } from '@/hooks/use-enrollment-history';
+import { useClubMembersQuery } from '@/hooks/use-club-members';
+
 import { DashboardCharts } from './dashboard-charts';
 
 const StatCard = ({ title, value, icon: Icon }: { title: string; value: string | number; icon: React.ElementType }) => (
@@ -41,7 +44,8 @@ interface ClubDashboardTabProps {
 export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
   const [period, setPeriod] = useState(12);
 
-  const { data: members = [], isLoading: isLoadingMembers, error: errorMembers } = useClubMembersQuery(clubId);
+  const { data: paginatedMembers, isLoading: isLoadingMembers, error: errorMembers } = useClubMembersQuery();
+  const members = paginatedMembers?.data || [];
   const { data: allRequests = [], isLoading: isLoadingHistory, error: errorHistory } = useEnrollmentHistoryQuery(clubId);
 
   const isLoading = isLoadingMembers || isLoadingHistory;

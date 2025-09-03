@@ -1,54 +1,105 @@
 'use client';
 
-import { useState } from 'react';
-import { useClubMembersQuery } from '@/hooks/use-club-members';
-import { useRevokeMembershipMutation } from '@/hooks/use-revoke-membership';
-import { useNotify } from '@/hooks/use-notify';
+import { useState, useCallback } from 'react';
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
+import { AlertTriangle, MoreHorizontal, Eye, RotateCcw, Search } from 'lucide-react';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { AlertTriangle, MoreHorizontal, Trash2, Eye, RotateCcw } from 'lucide-react';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
+import { PaginationControls } from '@/components/ui/pagination-controls';
 import { ClubMemberDto } from '@/contracts/api/club-member.dto';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+
+import { useAdminClubMembers } from "@/hooks/use-admin-club-members";
+import { useDebounce } from '@/hooks/use-debounce';
+
 import { MemberDetailsDialog } from './member-details';
 
-interface MembersTableProps {
-  clubId: string;
-}
-
 export function MembersTable({ clubId }: MembersTableProps) {
-  const notify = useNotify();
   const [selectedMember, setSelectedMember] = useState<ClubMemberDto | null>(null);
-  const { data: members = [], isLoading: isLoadingMembers, error, isRefetching, refetch } = useClubMembersQuery(clubId);
-  const { mutate: revoke, isPending } = useRevokeMembershipMutation();
-  console.log({ members });
-  if (isLoading()) return LoadingView();
-  if (error) return ErrorView();
-  return TheTable();
+  const [nameFilter, setNameFilter] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize] = useState(10);
 
-  function TheTable() {
+  const debouncedNameFilter = useDebounce(nameFilter, 500);
+
+  const query = {
+    clubId,
+    filter: debouncedNameFilter ? { name: debouncedNameFilter } : undefined,
+    pagination: { page: currentPage, limit: pageSize },
+  };
+
+  const { data: paginatedMembers, isLoading: isLoadingMembers, error, isRefetching, refetch } = useAdminClubMembers(query);
+  const members = paginatedMembers?.data || [];
+  const pagination = paginatedMembers?.meta;
+
+  const handleNameFilterChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setNameFilter(e.target.value);
+    setCurrentPage(1);
+  }, []);
+
+  const handleRefetch = useCallback(() => {
+    refetch();
+  }, [refetch]);
+
+  const handleMemberSelect = useCallback((member: ClubMemberDto | null) => {
+    setSelectedMember(member);
+  }, []);
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+  }, []);
+
+  if (error) {
     return (
-      <div className="flex flex-col gap-4">
-        <Button className="w-fit" variant="outline" size="sm" onClick={() => refetch()}>
-          <RotateCcw /> Atualizar{' '}
+      <Alert variant="destructive">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Erro</AlertTitle>
+        <AlertDescription>{error.message}</AlertDescription>
+      </Alert>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <div className="flex gap-2 items-center">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={nameFilter}
+              onChange={handleNameFilterChange}
+              className="pl-8 w-64"
+              placeholder="Filtrar por nome..."
+            />
+          </div>
+        </div>
+        <Button variant="outline" size="sm" onClick={handleRefetch} disabled={isRefetching}>
+          <RotateCcw className={`h-4 w-4 mr-1 ${isRefetching ? 'animate-spin' : ''}`} />
+          Atualizar
         </Button>
-        <div className="border rounded-md">
+      </div>
+
+      {/* Table */}
+      {isLoadingMembers && !paginatedMembers ? (
+        <Skeleton className="h-40 w-full" />
+      ) : (
+        <div className="border rounded-md relative">
+          {isRefetching && (
+            <div className="absolute inset-0 bg-background/50 z-10 flex items-center justify-center">
+              <div className="bg-background border rounded-md p-2 shadow-sm">
+                <RotateCcw className="h-4 w-4 animate-spin" />
+              </div>
+            </div>
+          )}
+
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Nome</TableHead>
+                <TableHead>Email</TableHead>
                 <TableHead>Membro desde</TableHead>
                 <TableHead className="text-right">Ações</TableHead>
               </TableRow>
@@ -56,91 +107,67 @@ export function MembersTable({ clubId }: MembersTableProps) {
             <TableBody>
               {members.length > 0 ? (
                 members.map((member) => (
-                  <TableRow key={member.id} onClick={() => setSelectedMember(member)} className="cursor-pointer">
-                    <TableCell className="font-medium flex items-center gap-3">
+                  <TableRow
+                    key={member.id}
+                    onClick={() => handleMemberSelect(member)}
+                    className={`cursor-pointer hover:bg-muted/50 ${isRefetching ? 'opacity-50' : ''}`}
+                  >
+                    <TableCell className="font-medium">
                       {member.firstName} {member.lastName}
                     </TableCell>
+                    <TableCell className="text-muted-foreground">{member.email}</TableCell>
                     <TableCell>{member.memberSince ? new Date(member.memberSince).toLocaleDateString('pt-BR') : 'N/A'}</TableCell>
                     <TableCell className="text-right">
-                      <AlertDialog>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button onClick={(e) => e.stopPropagation()} variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
-                            <DropdownMenuItem onSelect={() => setSelectedMember(member)}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              Ver Detalhes
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <AlertDialogTrigger asChild>
-                              <DropdownMenuItem onSelect={(event) => event.stopPropagation()} className="text-red-600">
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Remover Membro
-                              </DropdownMenuItem>
-                            </AlertDialogTrigger>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                        <AlertDialogContent onClick={(e) => e.stopPropagation()}>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Confirmar Remoção</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Esta ação irá remover permanentemente {member.firstName} {member.lastName} do seu clube.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleRevoke(member.id)} disabled={isPending}>
-                              Confirmar Remoção
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button onClick={(e) => e.stopPropagation()} variant="ghost" size="icon" disabled={isRefetching}>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" onClick={(e) => e.stopPropagation()}>
+                          <DropdownMenuItem onSelect={() => handleMemberSelect(member)}>
+                            <Eye className="mr-2 h-4 w-4" />
+                            Ver Detalhes
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </TableCell>
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={3} className="h-24 text-center">
-                    Nenhum membro ativo no clube.
+                  <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                    {isLoadingMembers ? (
+                      <Skeleton className="h-6 w-32 mx-auto" />
+                    ) : (
+                      debouncedNameFilter ? 'Nenhum membro encontrado com os filtros aplicados.' : 'Nenhum membro ativo no clube.'
+                    )}
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <MemberDetailsDialog member={selectedMember} onOpenChange={(isOpen) => !isOpen && setSelectedMember(null)} />
-      </div>
-    );
-  }
+      )}
 
-  function ErrorView() {
-    return (
-      <Alert variant="destructive">
-        <AlertTriangle className="h-4 w-4" />
-        <AlertTitle>Erro</AlertTitle>
-        <AlertDescription>{error?.message || 'Erro desconhecido'}</AlertDescription>
-      </Alert>
-    );
-  }
+      {pagination && (
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={pagination.totalPages}
+          onPageChange={handlePageChange}
+        />
+      )}
 
-  function LoadingView() {
-    return <Skeleton className="h-40 w-full" />;
-  }
+      {selectedMember && (
+        <MemberDetailsDialog
+          member={selectedMember}
+          onOpenChange={(isOpen) => !isOpen && handleMemberSelect(null)}
+        />
+      )}
+    </div>
+  );
+}
 
-  function isLoading() {
-    return isLoadingMembers || isRefetching;
-  }
-
-  function handleRevoke(membershipId: string) {
-    revoke(
-      { clubId, membershipId },
-      {
-        onSuccess: () => notify.success('Membro removido do clube.'),
-        onError: (e) => notify.error(e.message),
-      },
-    );
-  }
+interface MembersTableProps {
+  clubId: string;
 }
