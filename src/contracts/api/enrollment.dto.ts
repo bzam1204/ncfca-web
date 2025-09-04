@@ -46,3 +46,9 @@ export interface FindMyClubPendingEnrollmentRequestsItemView {
 export interface FindMyClubPendingEnrollmentRequestsView {
   data: FindMyClubPendingEnrollmentRequestsItemView[];
 }
+
+// Source: openapi.json -> components.schemas.FindMyClubEnrollmentRequestsView
+// Aligns with API naming convention using the View suffix
+export interface FindMyClubEnrollmentRequestsView {
+  data: EnrollmentRequestDto[];
+}

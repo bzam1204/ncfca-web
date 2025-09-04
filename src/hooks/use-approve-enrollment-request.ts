@@ -10,7 +10,7 @@ export default function useApproveEnrollmentRequest() {
   return useMutation({
     mutationFn: ({ enrollmentId }: ApproveEnrollmentParams) => approveEnrollmentRequestAction(enrollmentId),
     onSuccess: (_, { clubId }) => {
-      queryClient.invalidateQueries({ queryKey: QueryKeys.club.enrollmentHistory(clubId) });
+      queryClient.invalidateQueries({ queryKey: QueryKeys.myClub.enrollmentRequests() });
       queryClient.invalidateQueries({ queryKey: QueryKeys.myClub.all });
     },
   });

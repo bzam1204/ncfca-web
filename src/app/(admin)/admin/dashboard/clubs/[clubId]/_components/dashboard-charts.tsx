@@ -1,14 +1,16 @@
-// src/app/(admin)/admin/dashboard/clubs/[clubId]/_components/dashboard-charts.tsx
 'use client';
 
 import * as React from 'react';
+
 import { Area, AreaChart, CartesianGrid, Pie, PieChart, XAxis } from 'recharts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { useAdminClubCharts } from '@/hooks/use-admin-club-charts';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle } from 'lucide-react';
+
+import { ChartConfig, ChartContainer, ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+
+import { useAdminClubCharts } from '@/hooks/use-admin-club-charts';
 
 // --- GRÁFICO DE DISTRIBUIÇÃO (PIZZA/DONUT) ---
 
@@ -65,31 +67,31 @@ const trendChartConfig = {
   },
 } satisfies ChartConfig;
 
-const EnrollmentTrendChart = ({ data }: TrendChartProps) => (
-  <Card>
-    <CardHeader>
-      <CardTitle>Tendência de Matrículas</CardTitle>
-      <CardDescription>Volume de solicitações de matrícula aprovadas e rejeitadas ao longo do tempo.</CardDescription>
-    </CardHeader>
-    <CardContent>
-      <ChartContainer config={trendChartConfig}>
-        <AreaChart
-          accessibilityLayer
-          data={data}
-          margin={{
-            left: 12,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
-          <Area dataKey="approved" type="natural" fill="var(--color-approved)" fillOpacity={0.4} stroke="var(--color-approved)" stackId="a" />
-          <Area dataKey="rejected" type="natural" fill="var(--color-rejected)" fillOpacity={0.4} stroke="var(--color-rejected)" stackId="a" />
-        </AreaChart>
-      </ChartContainer>
-    </CardContent>
-  </Card>
+const EnrollmentTrendChart = ({data}: TrendChartProps) => (
+    <Card>
+      <CardHeader>
+        <CardTitle>Tendência de Matrículas</CardTitle>
+        <CardDescription>Volume de solicitações de matrícula aprovadas e rejeitadas ao longo do tempo.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <ChartContainer config={trendChartConfig} className="max-h-[600px]">
+          <AreaChart
+              accessibilityLayer
+              data={data}
+              margin={{
+                left : 12,
+                right : 12,
+              }}
+          >
+            <CartesianGrid className="max-h-1/4" vertical={false} />
+            <XAxis dataKey="month" tickLine={false} axisLine={false} tickMargin={8} tickFormatter={(value) => value.slice(0, 3)} />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" />} />
+            <Area dataKey="approved" type="natural" fill="var(--color-approved)" fillOpacity={0.4} stroke="var(--color-approved)" stackId="a" />
+            <Area dataKey="rejected" type="natural" fill="var(--color-rejected)" fillOpacity={0.4} stroke="var(--color-rejected)" stackId="a" />
+          </AreaChart>
+        </ChartContainer>
+      </CardContent>
+    </Card>
 );
 
 // --- COMPONENTE EXPORTADO ---

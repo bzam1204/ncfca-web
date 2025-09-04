@@ -5,7 +5,7 @@ import { Club } from '@/domain/entities/entities';
 import { ClubGateway } from '@/application/gateways/club.gateway';
 
 import { ClubMemberDto, SearchMyClubMembersQuery, SearchMyClubMembersView } from '@/contracts/api/club-member.dto';
-import { PendingEnrollmentDto, FindMyClubPendingEnrollmentRequestsView } from '@/contracts/api/enrollment.dto';
+import { PendingEnrollmentDto, FindMyClubPendingEnrollmentRequestsView, FindMyClubEnrollmentRequestsView } from '@/contracts/api/enrollment.dto';
 import { PaginatedClubDto, SearchClubsQuery } from '@/contracts/api/club.dto';
 import { UpdateClubDto, RejectEnrollmentDto } from '@/contracts/api/club-management.dto';
 
@@ -92,17 +92,7 @@ export class ClubGatewayApi implements ClubGateway {
     return res.json();
   }
 
-  async getEnrollmentHistory(clubId: string): Promise<any[]> {
-    const res = await fetch(`${this.baseUrl}/my-club/enrollments`, {
-      headers: { Authorization: `Bearer ${this.accessToken}` },
-      cache: 'no-store',
-    });
-    if (!res.ok) {
-      const body = await res.json();
-      throw new Error(body.message || 'Falha ao buscar histórico de matrículas');
-    }
-    return res.json();
-  }
+  // removed legacy getEnrollmentHistory
 
   async searchMyClubMembers(query?: SearchMyClubMembersQuery): Promise<SearchMyClubMembersView> {
     const params = new URLSearchParams();
@@ -171,6 +161,18 @@ export class ClubGatewayApi implements ClubGateway {
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao buscar matrículas pendentes');
+    }
+    return res.json();
+  }
+
+  async findMyClubEnrollmentRequests(): Promise<FindMyClubEnrollmentRequestsView> {
+    const res = await fetch(`${this.baseUrl}/my-club/enrollment-requests`, {
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      cache: 'no-store',
+    });
+    if (!res.ok) {
+      const body = await res.json();
+      throw new Error(body.message || 'Falha ao buscar solicitações de matrícula do meu clube');
     }
     return res.json();
   }

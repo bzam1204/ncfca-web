@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { useEnrollmentHistoryQuery } from '@/hooks/use-enrollment-history';
+import { useFindMyClubEnrollmentRequests } from '@/hooks/use-find-my-club-enrollment-requests';
 import { useSearchMyClubMembers } from '@/hooks/use-search-my-club-members';
 
 import { DashboardCharts } from './dashboard-charts';
@@ -46,7 +46,8 @@ export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
 
   const { data: paginatedMembers, isLoading: isLoadingMembers, error: errorMembers } = useSearchMyClubMembers();
   const members = paginatedMembers?.data || [];
-  const { data: allRequests = [], isLoading: isLoadingHistory, error: errorHistory } = useEnrollmentHistoryQuery(clubId);
+  const { data: enrollmentRequestsView, isLoading: isLoadingHistory, error: errorHistory } = useFindMyClubEnrollmentRequests();
+  const allRequests = enrollmentRequestsView?.data ?? [];
 
   const isLoading = isLoadingMembers || isLoadingHistory;
 
@@ -151,7 +152,7 @@ export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
         </Select>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
         <StatCard title="Taxa de Aprovação" value={isLoading ? '...' : operational.conversionRate} icon={BarChart2} />
         <StatCard title="Tempo Médio de Resposta" value={isLoading ? '...' : operational.avgResponseTimeDays} icon={Clock} />
       </div>
