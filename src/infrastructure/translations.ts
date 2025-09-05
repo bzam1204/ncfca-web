@@ -6,6 +6,7 @@ import { DependantRelationship } from '@/domain/enums/dependant-relationship.enu
 import { Sex } from '@/domain/enums/sex.enum';
 import { FamilyStatus } from '@/domain/enums/family-status.enum';
 import { EnrollmentStatus } from '@/domain/enums/enrollment-status.enum';
+import { RegistrationStatus } from '@/contracts/api/registration.dto';
 import { DependantType } from '@/domain/enums/dependant-type.enum';
 
 export const sexTranslation: Record<Sex, string> = {
@@ -62,6 +63,29 @@ export const getEnrollmentStatusVariant = (status: EnrollmentStatus): VariantPro
     case EnrollmentStatus.REJECTED:
       return 'destructive';
     case EnrollmentStatus.PENDING:
+    default:
+      return 'secondary';
+  }
+};
+
+// Torneios: Tradução e variantes para o status da inscrição em torneios.
+export const registrationStatusTranslation: Record<RegistrationStatus, string> = {
+  CONFIRMED: 'Confirmada',
+  CANCELLED: 'Cancelada',
+  PENDING_APPROVAL: 'Aguardando Aprovação',
+  REJECTED: 'Rejeitada',
+};
+
+export const getRegistrationStatusVariant = (
+  status: RegistrationStatus,
+): VariantProps<typeof badgeVariants>['variant'] => {
+  switch (status) {
+    case 'CONFIRMED':
+      return 'default';
+    case 'REJECTED':
+    case 'CANCELLED':
+      return 'destructive';
+    case 'PENDING_APPROVAL':
     default:
       return 'secondary';
   }

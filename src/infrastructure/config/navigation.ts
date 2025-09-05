@@ -1,4 +1,4 @@
-import { Baby, CreditCard, HomeIcon, LayoutGrid, PlayCircle, School, Shield, ShieldUser, UserSearch } from 'lucide-react';
+import { Baby, CreditCard, HomeIcon, LayoutGrid, PlayCircle, School, Shield, ShieldUser, Trophy, UserSearch } from 'lucide-react';
 
 import { UserRoles } from '@/domain/enums/user.roles';
 
@@ -9,6 +9,7 @@ export const navigation = {
       url: '/dashboard',
       Icon: LayoutGrid,
     },
+
     {
       title: 'Meus Dependentes',
       url: '/dashboard/dependants',
@@ -28,6 +29,11 @@ export const navigation = {
       title: 'Meu Clube',
       url: '/dashboard/my-club',
       Icon: Shield,
+    },
+    {
+      title: 'Explorar Torneios',
+      url: '/dashboard/tournaments',
+      Icon: Trophy,
     },
     {
       title: 'Administração',
