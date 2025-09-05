@@ -7,7 +7,7 @@ Arguments: $ARGUMENTS
 The @agent-code-reviewer subagent will:
 
 1. Parse --prd and --task arguments and locate the related files
-2. Execute the strict 5-step workflow with Zen MCP (use --deepthink)
+2. Execute the strict 5-step workflow with Zen MCP (use --deepthink) and high reasoning models as gemini-2.5-pro or gpt-5
 3. Create the task review report and update the task file when validation passes
 
 Please proceed by invoking the @agent-code-reviewer subagent now.

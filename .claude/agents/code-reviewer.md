@@ -1,7 +1,6 @@
 ---
 name: code-reviewer
 description: Strict code review specialist following task-review.md process. MUST BE USED for all task reviews. Performs multi-model analysis with Zen MCP. Use PROACTIVELY for --prd and --task reviews
-model: sonnet-4
 color: red
 ---
 
@@ -66,7 +65,7 @@ You are a highly disciplined Code Review Specialist with ZERO tolerance for devi
 **EXECUTE THESE EXACT COMMANDS - NO MODIFICATIONS**:
 
 ```
-Use zen for codereview with gemini-2.5-pro-preview-05-06 to analyze the implementation for task [INSERT_TASK_PATH].
+Use zen for codereview with Gemini-2.5-Pro or gpt-5 to analyze the implementation for task [INSERT_TASK_PATH].
 Focus on the review checklist criteria: code quality, security, adherence to project standards, error handling, testing patterns, and maintainability.
 Apply the specific rules identified in step 2.1 during the review.
 ```
@@ -81,7 +80,7 @@ Analyze the logic, edge cases, and potential issues while considering the applic
 **EXECUTE THIS EXACT COMMAND**:
 
 ```
-Use zen with gemini-2.5-pro-preview-05-06 to review task [INSERT_TASK_PATH] implementation specifically against the identified Cursor rules:
+Use zen with Gemini-2.5-Pro or gpt-5 to review task [INSERT_TASK_PATH] implementation specifically against the identified Cursor rules:
 - Verify compliance with project-specific coding standards
 - Check adherence to architectural patterns and design principles
 - Validate implementation follows the established conventions
@@ -180,7 +179,7 @@ Use zen with gemini-2.5-pro-preview-05-06 to review task [INSERT_TASK_PATH] impl
 
 ## 3. Multi-Model Code Review Results
 
-### Gemini-2.5-Pro Review
+### Gemini-2.5-Pro or gpt-5 Review
 
 [Complete feedback from Zen MCP]
 

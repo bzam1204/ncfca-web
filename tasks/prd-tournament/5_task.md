@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: completed # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
@@ -27,12 +27,12 @@ Create TanStack Query hooks for tournaments and registrations queries, consuming
 
 ## Subtasks
 
-- [ ] 5.1 `use-featured-tournaments.ts` → lists featured tournaments.
-- [ ] 5.2 `use-search-tournaments.ts` → accepts `SearchTournamentsQuery`; supports filters and pagination.
-- [ ] 5.3 `use-tournament-details.ts` → fetches details by `id`.
-- [ ] 5.4 `use-my-registrations.ts` → lists my registrations with optional filter.
-- [ ] 5.5 `use-my-pending-registrations.ts` → lists pending duo approvals.
-- [ ] 5.6 Validation: ensure keys match `QueryKeys` and no direct fetch/useSession.
+- [x] 5.1 `use-featured-tournaments.ts` → lists featured tournaments.
+- [x] 5.2 `use-search-tournaments.ts` → accepts `SearchTournamentsQuery`; supports filters and pagination.
+- [x] 5.3 `use-tournament-details.ts` → fetches details by `id`.
+- [x] 5.4 `use-my-registrations.ts` → lists my registrations with optional filter.
+- [x] 5.5 `use-my-pending-registrations.ts` → lists pending duo approvals.
+- [x] 5.6 Validation: ensure keys match `QueryKeys` and no direct fetch/useSession.
 
 ## Implementation Details
 
