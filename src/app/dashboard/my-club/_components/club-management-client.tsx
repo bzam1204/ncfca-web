@@ -76,7 +76,7 @@ export function ClubManagementClient({ initialClub }: { initialClub: Club | null
             <TabsTrigger value="trainings">Treinamentos</TabsTrigger>
           </TabsList>
           <TabsContent value="dashboard" className="mt-6">
-            <ClubDashboardTab clubId={myClub.id} />
+            <ClubDashboardTab />
           </TabsContent>
           <TabsContent value="requests" className="mt-6">
             <PendingRequestsTable clubId={myClub.id} />

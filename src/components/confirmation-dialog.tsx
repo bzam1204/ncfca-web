@@ -60,7 +60,7 @@ export function ConfirmationDialogProvider({ children }: { children: ReactNode }
       resolverRef.current?.(true);
       resolverRef.current = null;
       close();
-    } catch (err) {
+    } catch {
       // keep dialog open to allow user to retry or cancel
     } finally {
       setPending(false);

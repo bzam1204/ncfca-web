@@ -3,6 +3,8 @@ import {Dependant} from '@/domain/entities/dependant.entity';
 import {Family} from '@/domain/entities/entities';
 import {NextKeys} from '@/infrastructure/cache/next-keys';
 import {AddDependantRequestDto, DependantDto, UpdateDependantRequestDto} from '@/contracts/api/dependant.dto';
+import { SearchDependantsFilter, SearchDependantsView } from '@/contracts/api/dependants-search.dto';
+import { PaginationDto } from '@/contracts/api/pagination.dto';
 
 export class FamilyGatewayApi implements FamilyGateway {
   constructor(
@@ -99,5 +101,26 @@ export class FamilyGatewayApi implements FamilyGateway {
       const error = await res.json().catch(() => ({}));
       throw new Error(error.message || 'Falha ao processar pagamento');
     }
+  }
+
+  async searchDependants(filter: SearchDependantsFilter, pagination?: PaginationDto): Promise<SearchDependantsView> {
+    const params = new URLSearchParams();
+    if (filter?.email) params.append('filter[email]', filter.email);
+    if (pagination?.page) params.append('pagination[page]', String(pagination.page));
+    if (pagination?.limit) params.append('pagination[limit]', String(pagination.limit));
+
+    const url = `${this.baseUrl}/dependants/search${params.toString() ? `?${params.toString()}` : ''}`;
+    const res = await fetch(url, {
+      headers: { Authorization: `Bearer ${this.accessToken}` },
+      next: {
+        revalidate: 60,
+        tags: [NextKeys.dependants.search(filter)],
+      },
+    });
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.message || 'Falha ao buscar dependentes');
+    }
+    return res.json();
   }
 }

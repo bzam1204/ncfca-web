@@ -80,7 +80,7 @@ export class ClubGatewayApi implements ClubGateway {
     return res.json();
   }
 
-  async getMembers(clubId: string): Promise<ClubMemberDto[]> {
+  async getMembers(): Promise<ClubMemberDto[]> {
     const res = await fetch(`${this.baseUrl}/my-club/members`, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       cache: 'no-store',

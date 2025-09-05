@@ -9,7 +9,7 @@ export default function useRejectEnrollmentRequest() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ enrollmentId, rejectionReason }: RejectEnrollmentParams) => rejectEnrollmentRequestAction(enrollmentId, rejectionReason),
-    onSuccess: (_, { clubId }) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.myClub.enrollmentRequests() });
       queryClient.invalidateQueries({ queryKey: QueryKeys.myClub.all });
     },

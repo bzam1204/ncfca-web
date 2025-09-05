@@ -3,7 +3,7 @@
 import {ClubMemberDto} from '@/contracts/api/club-member.dto';
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription} from '@/components/ui/dialog';
 import {Button} from '@/components/ui/button';
-import {User, Phone, Mail, MessageSquare, VenusAndMars, Badge, CalendarIcon, Shield} from 'lucide-react';
+import {User, Phone, Mail, MessageSquare, VenusAndMars, CalendarIcon, Shield} from 'lucide-react';
 
 interface MemberDetailsDialogProps {
   member: ClubMemberDto | null;

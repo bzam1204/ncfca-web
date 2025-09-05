@@ -37,11 +37,7 @@ const calculateAge = (birthdate: string | Date): number => {
   return age;
 };
 
-interface ClubDashboardTabProps {
-  clubId: string;
-}
-
-export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
+export function ClubDashboardTab() {
   const [period, setPeriod] = useState(12);
 
   const { data: paginatedMembers, isLoading: isLoadingMembers, error: errorMembers } = useSearchMyClubMembers();
@@ -55,7 +51,7 @@ export function ClubDashboardTab({ clubId }: ClubDashboardTabProps) {
     const cutoffDate = new Date();
     cutoffDate.setMonth(cutoffDate.getMonth() - period);
     return allRequests.filter((req) => new Date(req.requestedAt) >= cutoffDate);
-  }, [allRequests, period]);
+  }, [period]);
 
   const demographics = useMemo(() => {
     if (isLoading) return { gender: [], age: [] };
