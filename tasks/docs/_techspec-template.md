@@ -2,35 +2,23 @@
 
 ## Executive Summary
 
-[Provide a brief technical overview of the solution approach. Summarize the key architectural decisions and implementation strategy in 1-2 paragraphs.]
+[Provide a brief technical overview of the solution approach. Summarize the key architectural decisions and implementation strategy in 1 paragraphs.]
 
 ## System Architecture
 
 ### Domain Placement
 
-[Specify which `engine/` subdirectory components belong to:
+[Specify which `src/` subdirectory components belong to:
 
-- agent/ - Agent configurations and orchestration
-- task/ - Task execution and state management
-- tool/ - Tool definitions and execution
-- workflow/ - Workflow orchestration and management
-- runtime/ - Bun runtime for tool execution
-- infra/ - Infrastructure (cache, monitoring, server, store)
-- llm/ - LLM integration and orchestration
-- mcp/ - Model Context Protocol integration
-- project/ - Project configuration management
-- schema/ - Schema validation and types
-- autoload/ - Resource discovery and loading
-- core/ - Core types and utilities
+- app/ - next pages
+- domain/ - the application center; independent business logic
+- application/ - serve as a port to business logic; abstractions (hexagonal arch)
+- hooks/ - react hooks
+- store/ - zustand state
+- types/ - shared types
+- contracts/ - api dtos
+- components/ - ui components. also shadcn components.
 
-For internal packages, use `pkg/` directory:
-
-- logger/ - Structured logging
-- mcp-proxy/ - MCP proxy server
-- normalizer/ - Configuration normalization
-- ref/ - Reference resolution
-- tplengine/ - Template engine
-- utils/ - Common utilities]
 
 ### Component Overview
 
@@ -46,10 +34,11 @@ For internal packages, use `pkg/` directory:
 
 [Define key service interfaces (≤20 lines per example):
 
-```go
+```typescript
 // Example interface definition
-type ServiceName interface {
-    MethodName(ctx context.Context, input Type) (output Type, error)
+interface ClubQuery {
+    method(input: Input): Return;
+    attribute: Type;
 }
 ```
 
@@ -60,14 +49,13 @@ type ServiceName interface {
 [Define essential data structures:
 
 - Core domain entities
-- Request/response types
-- Database schemas (if applicable)]
+\- Request/response types
 
 ### API Endpoints
 
 [List API endpoints if applicable:
 
-- Method and path (e.g., `POST /api/v0/resource`)
+- Method and path (e.g., `POST /resource`)
 - Brief description
 - Request/response format references]
 
@@ -94,24 +82,6 @@ type ServiceName interface {
 - **Shared Resources:** Database tables, caches, queues used by multiple components
 - **API Changes:** Any modifications to existing endpoints or contracts
 - **Performance Impact:** Components that might experience load changes]
-
-## Testing Approach
-
-### Unit Tests
-
-[Describe unit testing strategy:
-
-- Key components to test
-- Mock requirements (external services only)
-- Critical test scenarios]
-
-### Integration Tests
-
-[If needed, describe integration testing:
-
-- Components to test together
-- Test data requirements
-- Tests should go in `test/integration/` directory]
 
 ## Development Sequencing
 

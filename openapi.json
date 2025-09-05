@@ -155,7 +155,7 @@
             "name": "filter",
             "required": false,
             "in": "query",
-            "description": "Container para os filtros de busca de clubes.",
+            "description": "Container para os filtros de busca.",
             "schema": {
               "$ref": "#/components/schemas/SearchClubsFilterDto"
             }
@@ -696,7 +696,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DependantsListItemView"
+                    "$ref": "#/components/schemas/DependantsItemView"
                   }
                 }
               }
@@ -1544,6 +1544,52 @@
         ]
       }
     },
+    "/dependants/search": {
+      "get": {
+        "operationId": "DependantController_search",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Container para filtros de busca.",
+            "schema": {
+              "$ref": "#/components/schemas/SearchDependantsFilter"
+            }
+          },
+          {
+            "name": "pagination",
+            "required": false,
+            "in": "query",
+            "description": "Parâmetros de paginação.",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de dependentes encontrada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchDependantsView"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Busca dependentes por email com paginação",
+        "tags": [
+          "Família e Dependentes"
+        ]
+      }
+    },
     "/dependants": {
       "post": {
         "operationId": "DependantController_add",
@@ -2119,18 +2165,34 @@
     },
     "/tournaments": {
       "get": {
-        "operationId": "TournamentController_list",
-        "parameters": [],
+        "operationId": "TournamentController_searchTournaments",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Container para os filtros de busca.",
+            "schema": {
+              "$ref": "#/components/schemas/SearchTournamentFilter"
+            }
+          },
+          {
+            "name": "pagination",
+            "required": false,
+            "in": "query",
+            "description": "Container para os parâmetros de paginação.",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationDto"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Lista de torneios retornada com sucesso.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TournamentListItemView"
-                  }
+                  "$ref": "#/components/schemas/SearchTournamentsView"
                 }
               }
             }
@@ -2145,39 +2207,6 @@
           }
         ],
         "summary": "Lista torneios com filtros e paginação",
-        "tags": [
-          "Torneios"
-        ]
-      }
-    },
-    "/tournaments/my-pending-registrations": {
-      "get": {
-        "operationId": "TournamentController_listMyPendingRegistrations",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Lista de inscrições pendentes retornada com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetMyPendingRegistrationsListItemView"
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Acesso negado."
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Lista inscrições de dupla pendentes para meus dependentes",
         "tags": [
           "Torneios"
         ]
@@ -2225,9 +2254,233 @@
         ]
       }
     },
-    "/tournaments/registrations/request-individual": {
+    "/featured-tournaments/create": {
       "post": {
-        "operationId": "TournamentController_registerIndividualCompetitor",
+        "operationId": "FeaturedTournamentController_createFeatured",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFeaturedTournamentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Destaque criado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeaturedTournamentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Cria um destaque de torneio (featured)",
+        "tags": [
+          "Torneios - Destaques"
+        ]
+      }
+    },
+    "/featured-tournaments": {
+      "get": {
+        "operationId": "FeaturedTournamentController_listFeatured",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de destaques retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeaturedTournamentResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista torneios em destaque (carousel)",
+        "tags": [
+          "Torneios - Destaques"
+        ]
+      }
+    },
+    "/featured-tournaments/{id}/update": {
+      "post": {
+        "operationId": "FeaturedTournamentController_updateFeatured",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFeaturedTournamentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Destaque atualizado com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeaturedTournamentResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Atualiza um destaque de torneio",
+        "tags": [
+          "Torneios - Destaques"
+        ]
+      }
+    },
+    "/featured-tournaments/{id}/delete": {
+      "post": {
+        "operationId": "FeaturedTournamentController_deleteFeatured",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Destaque removido com sucesso."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Remove um destaque de torneio (hard delete)",
+        "tags": [
+          "Torneios - Destaques"
+        ]
+      }
+    },
+    "/my-registrations/pending": {
+      "get": {
+        "operationId": "RegistrationController_findMyPendingRegistrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de inscrições pendentes retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetMyPendingRegistrationsItemView"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Acesso negado."
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista inscrições de dupla pendentes para meus dependentes",
+        "tags": [
+          "Torneios - Inscrições"
+        ]
+      }
+    },
+    "/my-registrations": {
+      "get": {
+        "operationId": "RegistrationController_searchMyRegistrations",
+        "parameters": [
+          {
+            "name": "filter",
+            "required": false,
+            "in": "query",
+            "description": "Container para os filtros de busca.",
+            "schema": {
+              "$ref": "#/components/schemas/SearchMyRegistrationsFilter"
+            }
+          },
+          {
+            "name": "pagination",
+            "required": false,
+            "in": "query",
+            "description": "Container para os parâmetros de paginação.",
+            "schema": {
+              "$ref": "#/components/schemas/PaginationDto"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de inscrições retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchMyRegistrationView"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista todas as minhas inscrições (individual e dupla) com filtros e paginação",
+        "tags": [
+          "Torneios - Inscrições"
+        ]
+      }
+    },
+    "/registrations/request-individual": {
+      "post": {
+        "operationId": "RegistrationController_registerIndividualCompetitor",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2267,13 +2520,13 @@
         ],
         "summary": "Solicita inscrição individual em um torneio",
         "tags": [
-          "Torneios"
+          "Torneios - Inscrições"
         ]
       }
     },
-    "/tournaments/registrations/request-duo": {
+    "/registrations/request-duo": {
       "post": {
-        "operationId": "TournamentController_requestDuoCompetitorRegistration",
+        "operationId": "RegistrationController_requestDuoCompetitorRegistration",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2313,13 +2566,13 @@
         ],
         "summary": "Solicita inscrição de dupla em um torneio",
         "tags": [
-          "Torneios"
+          "Torneios - Inscrições"
         ]
       }
     },
-    "/tournaments/registrations/{id}/accept": {
+    "/registrations/{id}/accept": {
       "post": {
-        "operationId": "TournamentController_acceptDuoCompetitorRegistration",
+        "operationId": "RegistrationController_acceptDuoCompetitorRegistration",
         "parameters": [
           {
             "name": "id",
@@ -2332,14 +2585,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Inscrição de dupla aceita com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AcceptDuoRegistrationResponseDto"
-                }
-              }
-            }
+            "description": "Inscrição de dupla aceita com sucesso."
           },
           "400": {
             "description": "Registro não está pendente de aprovação."
@@ -2358,13 +2604,13 @@
         ],
         "summary": "Aceita uma inscrição de dupla pendente",
         "tags": [
-          "Torneios"
+          "Torneios - Inscrições"
         ]
       }
     },
-    "/tournaments/registrations/{id}/reject": {
+    "/registrations/{id}/reject": {
       "post": {
-        "operationId": "TournamentController_rejectDuoCompetitorRegistration",
+        "operationId": "RegistrationController_rejectDuoCompetitorRegistration",
         "parameters": [
           {
             "name": "id",
@@ -2377,14 +2623,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Inscrição de dupla rejeitada com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RejectDuoRegistrationResponseDto"
-                }
-              }
-            }
+            "description": "Inscrição de dupla rejeitada com sucesso."
           },
           "400": {
             "description": "Registro não está pendente de aprovação."
@@ -2403,13 +2642,13 @@
         ],
         "summary": "Rejeita uma inscrição de dupla pendente",
         "tags": [
-          "Torneios"
+          "Torneios - Inscrições"
         ]
       }
     },
-    "/tournaments/registrations/cancel": {
+    "/registrations/cancel": {
       "post": {
-        "operationId": "TournamentController_cancelCompetitorRegistration",
+        "operationId": "RegistrationController_cancelCompetitorRegistration",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -2439,7 +2678,7 @@
         ],
         "summary": "Cancela uma inscrição em torneio",
         "tags": [
-          "Torneios"
+          "Torneios - Inscrições"
         ]
       }
     }
@@ -3235,7 +3474,7 @@
           "meta"
         ]
       },
-      "DependantsListItemView": {
+      "DependantsItemView": {
         "type": "object",
         "properties": {
           "email": {
@@ -3865,6 +4104,34 @@
           "paymentMethod"
         ]
       },
+      "SearchDependantsFilter": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Filtro por email do dependente (parcial, case-insensitive).",
+            "example": "joao"
+          }
+        }
+      },
+      "SearchDependantsView": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DependantsItemView"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
       "AddDependantDto": {
         "type": "object",
         "properties": {
@@ -4455,7 +4722,31 @@
           }
         }
       },
-      "TournamentListItemView": {
+      "SearchTournamentFilter": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Filtra por nome do torneio (busca parcial, case-insensitive).",
+            "example": "Torneio Nacional"
+          },
+          "type": {
+            "type": "string",
+            "description": "Filtra por tipo de torneio.",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ]
+          },
+          "showDeleted": {
+            "type": "boolean",
+            "description": "Inclui torneios excluídos (soft-delete) no resultado.",
+            "example": false,
+            "default": false
+          }
+        }
+      },
+      "SearchTournamentsItemView": {
         "type": "object",
         "properties": {
           "id": {
@@ -4512,48 +4803,22 @@
           "registrationStartDate"
         ]
       },
-      "GetMyPendingRegistrationsListItemView": {
+      "SearchTournamentsView": {
         "type": "object",
         "properties": {
-          "registrationId": {
-            "type": "string",
-            "description": "ID único da inscrição",
-            "format": "uuid"
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchTournamentsItemView"
+            }
           },
-          "tournamentName": {
-            "type": "string",
-            "description": "Nome do torneio",
-            "example": "Torneio Nacional 2024"
-          },
-          "competitorName": {
-            "type": "string",
-            "description": "Nome do dependente solicitante",
-            "example": "João Silva"
-          },
-          "competitorId": {
-            "type": "string",
-            "description": "ID do dependente solicitante",
-            "format": "uuid"
-          },
-          "requestedAt": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Data da solicitação",
-            "example": "2024-01-15T10:30:00Z"
-          },
-          "tournamentType": {
-            "type": "string",
-            "description": "Tipo do torneio",
-            "example": "DUO"
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
           }
         },
         "required": [
-          "registrationId",
-          "tournamentName",
-          "competitorName",
-          "competitorId",
-          "requestedAt",
-          "tournamentType"
+          "data",
+          "meta"
         ]
       },
       "TournamentDetailsView": {
@@ -4631,6 +4896,262 @@
           "registrationCount",
           "registrationEndDate",
           "registrationStartDate"
+        ]
+      },
+      "CreateFeaturedTournamentDto": {
+        "type": "object",
+        "properties": {
+          "tournamentId": {
+            "type": "string",
+            "description": "Tournament id to feature",
+            "example": "uuid"
+          },
+          "position": {
+            "type": "number",
+            "description": "Carousel position (unique, >=1)",
+            "example": 1
+          }
+        },
+        "required": [
+          "tournamentId",
+          "position"
+        ]
+      },
+      "FeaturedTournamentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID do destaque",
+            "example": "8a5a5d4e-1b8c-4fd6-a3b3-9e2f0c2d1b7a"
+          },
+          "tournamentId": {
+            "type": "string",
+            "description": "ID do torneio destacado",
+            "example": "e7c1a6c9-2c3d-4f2e-b9f3-1a2b3c4d5e6f"
+          },
+          "position": {
+            "type": "number",
+            "description": "Posição no carrossel (única)",
+            "example": 1
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Data de criação",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Data da última atualização",
+            "format": "date-time"
+          },
+          "tournamentName": {
+            "type": "string",
+            "description": "Nome do torneio"
+          },
+          "tournamentType": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "enum": [
+              "INDIVIDUAL",
+              "DUO"
+            ]
+          },
+          "startDate": {
+            "type": "string",
+            "description": "Data de início do torneio",
+            "format": "date-time"
+          },
+          "registrationStartDate": {
+            "type": "string",
+            "description": "Início das inscrições",
+            "format": "date-time"
+          },
+          "registrationEndDate": {
+            "type": "string",
+            "description": "Fim das inscrições",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "tournamentId",
+          "position",
+          "createdAt",
+          "updatedAt",
+          "tournamentName",
+          "tournamentType",
+          "startDate",
+          "registrationStartDate",
+          "registrationEndDate"
+        ]
+      },
+      "UpdateFeaturedTournamentDto": {
+        "type": "object",
+        "properties": {
+          "tournamentId": {
+            "type": "string",
+            "description": "New tournament id",
+            "example": "uuid"
+          },
+          "position": {
+            "type": "number",
+            "description": "New position (unique, >=1)",
+            "example": 2
+          }
+        }
+      },
+      "GetMyPendingRegistrationsItemView": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID único da inscrição",
+            "format": "uuid"
+          },
+          "tournamentName": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional 2024"
+          },
+          "competitorName": {
+            "type": "string",
+            "description": "Nome do dependente solicitante",
+            "example": "João Silva"
+          },
+          "competitorId": {
+            "type": "string",
+            "description": "ID do dependente solicitante",
+            "format": "uuid"
+          },
+          "requestedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data da solicitação",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "tournamentType": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "example": "DUO"
+          }
+        },
+        "required": [
+          "registrationId",
+          "tournamentName",
+          "competitorName",
+          "competitorId",
+          "requestedAt",
+          "tournamentType"
+        ]
+      },
+      "SearchMyRegistrationsFilter": {
+        "type": "object",
+        "properties": {
+          "tournamentName": {
+            "type": "string",
+            "description": "Filtra por nome do torneio (busca parcial, case-insensitive)."
+          },
+          "status": {
+            "type": "string",
+            "description": "Filtra por status da inscrição.",
+            "enum": [
+              "CONFIRMED",
+              "CANCELLED",
+              "PENDING_APPROVAL",
+              "REJECTED"
+            ]
+          },
+          "order": {
+            "type": "string",
+            "description": "Ordenação por data de criação (asc ou desc).",
+            "example": "desc"
+          }
+        }
+      },
+      "SearchMyRegistrationItemView": {
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "type": "string",
+            "description": "ID único da inscrição",
+            "format": "uuid"
+          },
+          "tournamentName": {
+            "type": "string",
+            "description": "Nome do torneio",
+            "example": "Torneio Nacional 2024"
+          },
+          "tournamentType": {
+            "type": "string",
+            "description": "Tipo do torneio",
+            "example": "DUO"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status da inscrição",
+            "enum": [
+              "CONFIRMED",
+              "CANCELLED",
+              "PENDING_APPROVAL",
+              "REJECTED"
+            ]
+          },
+          "competitorName": {
+            "type": "string",
+            "description": "Nome do competidor principal",
+            "example": "João Silva"
+          },
+          "competitorId": {
+            "type": "string",
+            "description": "ID do competidor principal",
+            "format": "uuid"
+          },
+          "partnerName": {
+            "type": "object",
+            "description": "Nome do parceiro (se houver)",
+            "example": "Maria Souza",
+            "nullable": true
+          },
+          "partnerId": {
+            "type": "object",
+            "description": "ID do parceiro (se houver)",
+            "format": "uuid",
+            "nullable": true
+          },
+          "requestedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "Data da solicitação",
+            "example": "2024-01-15T10:30:00Z"
+          }
+        },
+        "required": [
+          "registrationId",
+          "tournamentName",
+          "tournamentType",
+          "status",
+          "competitorName",
+          "competitorId",
+          "requestedAt"
+        ]
+      },
+      "SearchMyRegistrationView": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SearchMyRegistrationItemView"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/PaginationMetaDto"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
         ]
       },
       "RequestIndividualRegistrationInputDto": {
@@ -4721,32 +5242,6 @@
           "status"
         ]
       },
-      "AcceptDuoRegistrationResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Mensagem de confirmação da aceitação da inscrição",
-            "example": "Inscrição de dupla aceita com sucesso"
-          }
-        },
-        "required": [
-          "message"
-        ]
-      },
-      "RejectDuoRegistrationResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Mensagem de confirmação da rejeição da inscrição",
-            "example": "Inscrição de dupla rejeitada com sucesso"
-          }
-        },
-        "required": [
-          "message"
-        ]
-      },
       "CancelRegistrationDto": {
         "type": "object",
         "properties": {
@@ -4754,16 +5249,10 @@
             "type": "string",
             "description": "ID da inscrição a ser cancelada",
             "example": "550e8400-e29b-41d4-a716-446655440002"
-          },
-          "reason": {
-            "type": "string",
-            "description": "Motivo do cancelamento da inscrição",
-            "example": "Conflito de agenda"
           }
         },
         "required": [
-          "registrationId",
-          "reason"
+          "registrationId"
         ]
       }
     }

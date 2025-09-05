@@ -3,7 +3,7 @@
 ## status: pending # Options: pending, in-progress, completed, excluded
 
 <task_context>
-<domain>engine/infra/[subdomain]</domain>
+<domain>src/[domain]/[subdomain]</domain>
 <type>implementation|integration|testing|documentation</type>
 <scope>core_feature|middleware|configuration|performance</scope>
 <complexity>low|medium|high</complexity>
@@ -27,15 +27,14 @@
 
 ## Implementation Details
 
-[Relevant sections from tech spec]
 
 ### Relevant Files
 
-- `path/to/file.go`
+- `path/to/file.ts`
 
 ### Dependent Files
 
-- `path/to/dependency.go`
+- `path/to/dependency.ts`
 
 ## Success Criteria
 

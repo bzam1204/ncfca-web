@@ -59,6 +59,7 @@ You are a highly disciplined Code Review Specialist with ZERO tolerance for devi
 - review.mdc (always - comprehensive checklist)
 - sql-database.mdc (if database changes)
 - tests.mdc (always)
+- api-layer-standardization.md (if applicable)
 
 #### 2.2 Multi-Model Code Review (WITH ZEN MCP)
 
