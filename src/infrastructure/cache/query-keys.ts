@@ -1,5 +1,8 @@
+import { SearchMyRegistrationsFilter } from '@/contracts/api/registration.dto';
 import { SearchClubMembersFilterDto } from '@/contracts/api/admin.dto';
 import { SearchMyClubMembersQuery } from '@/contracts/api/club-member.dto';
+import { SearchDependantsFilter } from '@/contracts/api/dependants-search.dto';
+import { SearchTournamentsQuery } from '@/contracts/api/tournament.dto';
 import { SearchClubsQuery } from '@/contracts/api/club.dto';
 import { SearchUsersQuery } from '@/contracts/api/user.dto';
 import { PaginationDto } from '@/contracts/api/pagination.dto';
@@ -11,8 +14,10 @@ export const QueryKeys = {
   },
   dependants: {
     all: ['dependants'] as const,
+    search: (query: SearchDependantsFilter) => [...QueryKeys.dependants.all, 'search', query] as const,
     details: (dependantId: string) => [...QueryKeys.dependants.all, dependantId] as const,
   },
+  //todo: unify "clubs" and "club" and refactor usages
   clubs: {
     all: ['clubs'] as const,
     search: {
@@ -56,5 +61,21 @@ export const QueryKeys = {
     searchUsers: (query: SearchUsersQuery) => ['admin', 'users', 'search', query] as const,
     userById: (userId: string) => ['admin', 'users', userId] as const,
     userFamily: (userId: string) => ['admin', 'users', userId, 'family'] as const,
+  },
+  tournaments: {
+    all: ['tournaments'] as const,
+    search: {
+      all: () => [...QueryKeys.tournaments.all, 'search'] as const,
+      query: (query: SearchTournamentsQuery) => [...QueryKeys.tournaments.search.all(), query] as const,
+    },
+    details: (id: string) => [...QueryKeys.tournaments.all, 'details', id] as const,
+  },
+  featuredTournaments: {
+    all: () => ['featured-tournaments'] as const,
+  },
+  registrations: {
+    all: ['registrations'] as const,
+    mine: (filter?: SearchMyRegistrationsFilter) => [...QueryKeys.registrations.all, 'mine', filter ?? '*'] as const,
+    pending: () => [...QueryKeys.registrations.all, 'pending'] as const,
   },
 };

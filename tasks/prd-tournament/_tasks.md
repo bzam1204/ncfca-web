@@ -36,7 +36,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Contracts & Cache Keys
+- [x] 1.0 Contracts & Cache Keys
 - [ ] 2.0 Gateways & DI Wiring
 - [ ] 3.0 Server Actions — Queries
 - [ ] 4.0 Server Actions — Mutations

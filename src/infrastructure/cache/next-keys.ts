@@ -1,5 +1,7 @@
 import { SearchClubMembersQueryDto } from '@/contracts/api/admin.dto';
 import { SearchMyClubMembersQuery } from '@/contracts/api/club-member.dto';
+import { SearchTournamentsQuery } from '@/contracts/api/tournament.dto';
+import { SearchDependantsFilter } from '@/contracts/api/dependants-search.dto';
 
 export const NextKeys = {
   trainings: 'trainings',
@@ -31,5 +33,19 @@ export const NextKeys = {
     enrollments: 'admin.enrollments',
     affiliations: 'admin.affiliations',
     searchClubMembers: (query: SearchClubMembersQueryDto): string => `admin_search_club_members_${JSON.stringify(query)}`,
+  },
+  tournaments: {
+    search: (query: SearchTournamentsQuery): string => `tournaments.search.${JSON.stringify(query)}`,
+    details: (id: string) => `tournaments.details.${id}`,
+  },
+  featuredTournaments: {
+    list: 'featured_tournaments.list',
+  },
+  registrations: {
+    mine: 'registrations.mine',
+    pending: 'registrations.pending',
+  },
+  dependants: {
+    search: (query: SearchDependantsFilter): string => `dependants.search.${JSON.stringify(query)}`,
   },
 };

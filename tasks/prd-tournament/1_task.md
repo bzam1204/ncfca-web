@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: completed # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
@@ -27,25 +27,25 @@ Define all tournament, registration, and dependants-search DTOs per OpenAPI and 
 
 ## Subtasks
 
-- [ ] 1.1 Add `src/contracts/api/tournament.dto.ts` with:
+- [x] 1.1 Add `src/contracts/api/tournament.dto.ts` with:
   - `TournamentType = 'INDIVIDUAL'|'DUO'`
   - `SearchTournamentsItemView`, `SearchTournamentsView`, `SearchTournamentFilter`, `SearchTournamentsQuery`, `TournamentDetailsView`, `FeaturedTournamentResponseDto`.
-- [ ] 1.2 Add `src/contracts/api/registration.dto.ts` with:
+- [x] 1.2 Add `src/contracts/api/registration.dto.ts` with:
   - `SearchMyRegistrationItemView`, `SearchMyRegistrationView`, `SearchMyRegistrationsFilter`, `GetMyPendingRegistrationsListItemView`,
   - `RequestIndividualRegistrationInputDto`/`OutputDto`, `RequestDuoRegistrationDto`/`OutputDto`, `CancelRegistrationDto`.
-- [ ] 1.3 Add `src/contracts/api/dependants-search.dto.ts` with:
+- [x] 1.3 Add `src/contracts/api/dependants-search.dto.ts` with:
   - `SearchDependantsFilter` { email?: string }
   - `DependantsItemView` { id, name, email }
   - `SearchDependantsView` { data: DependantsItemView[], meta }
-- [ ] 1.4 Extend `src/infrastructure/cache/query-keys.ts` with:
+- [x] 1.4 Extend `src/infrastructure/cache/query-keys.ts` with:
   - `tournaments.all`, `tournaments.search.query(query)`, `tournaments.details(id)`
   - `featuredTournaments.all()`
   - `registrations.mine()`, `registrations.pending()`
   - `dependants.search(query)`
-- [ ] 1.5 Extend `src/infrastructure/cache/next-keys.ts` with:
+- [x] 1.5 Extend `src/infrastructure/cache/next-keys.ts` with:
   - `featuredTournaments.list`, `tournaments.search(query)`, `tournaments.details(id)`,
   - `registrations.mine`, `registrations.pending`, `dependants.search(query)`
-- [ ] 1.6 Validation: Type-check project; verify imports and naming consistency.
+- [x] 1.6 Validation: Type-check project; verify imports and naming consistency.
 
 ## Implementation Details
 
