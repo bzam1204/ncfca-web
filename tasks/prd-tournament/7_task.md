@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: complete # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
