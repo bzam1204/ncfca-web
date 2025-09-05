@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: completed # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
@@ -27,12 +27,12 @@ Create server actions for tournaments and registrations queries. Actions must pe
 
 ## Subtasks
 
-- [ ] 3.1 `listFeaturedTournamentsAction(): Promise<FeaturedTournamentResponseDto[]>`
-- [ ] 3.2 `searchTournamentsAction(query: SearchTournamentsQuery): Promise<SearchTournamentsView>`
-- [ ] 3.3 `getTournamentDetailsAction(id: string): Promise<TournamentDetailsView>`
-- [ ] 3.4 `getMyRegistrationsAction(filter?: SearchMyRegistrationsFilter): Promise<SearchMyRegistrationView>`
-- [ ] 3.5 `getMyPendingRegistrationsAction(): Promise<GetMyPendingRegistrationsListItemView[]>`
-- [ ] 3.6 Validation: ensure no fetch/useSession in actions’ callers (hooks will call actions only).
+- [x] 3.1 `listFeaturedTournamentsAction(): Promise<FeaturedTournamentResponseDto[]>`
+- [x] 3.2 `searchTournamentsAction(query: SearchTournamentsQuery): Promise<SearchTournamentsView>`
+- [x] 3.3 `getTournamentDetailsAction(id: string): Promise<TournamentDetailsView>`
+- [x] 3.4 `getMyRegistrationsAction(filter?: SearchMyRegistrationsFilter): Promise<SearchMyRegistrationView>`
+- [x] 3.5 `getMyPendingRegistrationsAction(): Promise<GetMyPendingRegistrationsListItemView[]>`
+- [x] 3.6 Validation: ensure no fetch/useSession in actions' callers (hooks will call actions only).
 
 ## Implementation Details
 
