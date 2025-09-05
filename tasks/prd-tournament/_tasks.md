@@ -41,7 +41,7 @@
 - [x] 3.0 Server Actions — Queries
 - [x] 4.0 Server Actions — Mutations
 - [x] 5.0 Hooks — Queries
-- [ ] 6.0 Hooks — Mutations
+- [x] 6.0 Hooks — Mutations
 - [ ] 7.0 UI — Panel Page
 - [ ] 8.0 UI — Individual Page
 - [ ] 9.0 Dialogs — Individual & Duo Registration

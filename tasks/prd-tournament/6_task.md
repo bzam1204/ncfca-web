@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: completed # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
@@ -27,12 +27,12 @@ Create TanStack Mutation hooks for registration flows. Use `useNotify` for succe
 
 ## Subtasks
 
-- [ ] 6.1 `use-request-individual-registration.ts`
-- [ ] 6.2 `use-request-duo-registration.ts`
-- [ ] 6.3 `use-accept-duo-registration.ts`
-- [ ] 6.4 `use-reject-duo-registration.ts`
-- [ ] 6.5 `use-cancel-registration.ts`
-- [ ] 6.6 Validation: verify invalidations via `QueryKeys` and toasts via `useNotify`.
+- [x] 6.1 `use-request-individual-registration.ts`
+- [x] 6.2 `use-request-duo-registration.ts`
+- [x] 6.3 `use-accept-duo-registration.ts`
+- [x] 6.4 `use-reject-duo-registration.ts`
+- [x] 6.5 `use-cancel-registration.ts`
+- [x] 6.6 Validation: verify invalidations via `QueryKeys` and toasts via `useNotify`.
 
 ## Implementation Details
 

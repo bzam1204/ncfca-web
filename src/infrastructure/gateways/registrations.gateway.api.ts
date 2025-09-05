@@ -109,7 +109,6 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
     }
     revalidateTag(NextKeys.registrations.mine);
     revalidateTag(NextKeys.registrations.pending);
-    revalidateTag(NextKeys.featuredTournaments.list);
   }
 
   async rejectDuoCompetitorRegistration(id: string): Promise<void> {
@@ -123,7 +122,6 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
     }
     revalidateTag(NextKeys.registrations.pending);
     revalidateTag(NextKeys.registrations.mine);
-    revalidateTag(NextKeys.featuredTournaments.list);
   }
 
   async cancelCompetitorRegistration(input: CancelRegistrationDto): Promise<void> {
@@ -140,8 +138,5 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       throw new Error(body.message || 'Falha ao cancelar inscrição');
     }
     revalidateTag(NextKeys.registrations.mine);
-    revalidateTag(NextKeys.registrations.pending);
-    revalidateTag(NextKeys.featuredTournaments.list);
-    // Note: tournamentId not available in CancelRegistrationDto to revalidate specific tournament details
   }
 }

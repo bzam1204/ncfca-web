@@ -7,6 +7,5 @@ export async function acceptDuoRegistrationAction(registrationId: string): Promi
   const session = await auth();
   if (!session?.accessToken) throw new Error('Session is not valid');
   const gateway = Inject.RegistrationsGateway(session.accessToken);
-  const registration = await gateway.acceptDuoCompetitorRegistration(registrationId);
-  return registration;
+  await gateway.acceptDuoCompetitorRegistration(registrationId);
 }
