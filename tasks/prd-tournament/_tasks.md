@@ -39,7 +39,7 @@
 - [x] 1.0 Contracts & Cache Keys
 - [x] 2.0 Gateways & DI Wiring
 - [ ] 3.0 Server Actions — Queries
-- [ ] 4.0 Server Actions — Mutations
+- [x] 4.0 Server Actions — Mutations
 - [ ] 5.0 Hooks — Queries
 - [ ] 6.0 Hooks — Mutations
 - [ ] 7.0 UI — Panel Page

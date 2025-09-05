@@ -1,5 +1,5 @@
 ---
-status: pending # Options: pending, in-progress, completed, excluded
+status: completed # Options: pending, in-progress, completed, excluded
 ---
 
 <task_context>
@@ -27,12 +27,12 @@ Create server actions for registration mutations: request individual/duo, accept
 
 ## Subtasks
 
-- [ ] 4.1 `requestIndividualRegistrationAction(input): Promise<RequestIndividualRegistrationOutputDto>`
-- [ ] 4.2 `requestDuoRegistrationAction(input): Promise<RequestDuoRegistrationOutputDto>`
-- [ ] 4.3 `acceptDuoRegistrationAction(registrationId: string): Promise<void>`
-- [ ] 4.4 `rejectDuoRegistrationAction(registrationId: string): Promise<void>`
-- [ ] 4.5 `cancelRegistrationAction(input: CancelRegistrationDto): Promise<void>`
-- [ ] 4.6 Revalidate tags: `registrations.mine`, `registrations.pending`, `tournaments.details(id)`, `tournaments.search(query)`, `featuredTournaments.list`.
+- [x] 4.1 `requestIndividualRegistrationAction(input): Promise<RequestIndividualRegistrationOutputDto>`
+- [x] 4.2 `requestDuoRegistrationAction(input): Promise<RequestDuoRegistrationOutputDto>`
+- [x] 4.3 `acceptDuoRegistrationAction(registrationId: string): Promise<void>`
+- [x] 4.4 `rejectDuoRegistrationAction(registrationId: string): Promise<void>`
+- [x] 4.5 `cancelRegistrationAction(input: CancelRegistrationDto): Promise<void>`
+- [x] 4.6 Revalidate tags: `registrations.mine`, `registrations.pending`, `tournaments.details(id)`, `tournaments.search(query)`, `featuredTournaments.list`.
 
 ## Implementation Details
 

@@ -2,8 +2,8 @@ import { revalidateTag } from 'next/cache';
 
 import { RegistrationsGateway } from '@/application/gateways/registrations/registrations.gateway';
 
-import { 
-  RequestIndividualRegistrationInputDto, 
+import {
+  RequestIndividualRegistrationInputDto,
   RequestIndividualRegistrationOutputDto,
   GetMyPendingRegistrationsListItemView,
   RequestDuoRegistrationOutputDto,
@@ -23,19 +23,10 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
 
   async searchMyRegistrations(filter?: SearchMyRegistrationsFilter): Promise<SearchMyRegistrationView> {
     const params = new URLSearchParams();
-    
-    if (filter?.tournamentName) {
-      params.append('filter[tournamentName]', filter.tournamentName);
-    }
-    if (filter?.status) {
-      params.append('filter[status]', filter.status);
-    }
-    if (filter?.order) {
-      params.append('filter[order]', filter.order);
-    }
-
+    if (filter?.tournamentName) params.append('filter[tournamentName]', filter.tournamentName);
+    if (filter?.status) params.append('filter[status]', filter.status);
+    if (filter?.order) params.append('filter[order]', filter.order);
     const url = `${this.baseUrl}/my-registrations${params.toString() ? `?${params.toString()}` : ''}`;
-    
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       next: {
@@ -43,12 +34,10 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
         tags: [NextKeys.registrations.mine],
       },
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao buscar minhas inscrições');
     }
-    
     return res.json();
   }
 
@@ -60,12 +49,10 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
         tags: [NextKeys.registrations.pending],
       },
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao buscar inscrições pendentes');
     }
-    
     return res.json();
   }
 
@@ -78,18 +65,15 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       },
       body: JSON.stringify(input),
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao registrar competidor individual');
     }
-
     revalidateTag(NextKeys.featuredTournaments.list);
     revalidateTag(NextKeys.tournaments.search({ filter: {}, pagination: {} }));
     revalidateTag(NextKeys.tournaments.details(input.tournamentId));
     revalidateTag(NextKeys.registrations.mine);
     revalidateTag(NextKeys.registrations.pending);
-    
     return res.json();
   }
 
@@ -102,18 +86,15 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       },
       body: JSON.stringify(input),
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao solicitar registro de dupla');
     }
-
     revalidateTag(NextKeys.featuredTournaments.list);
     revalidateTag(NextKeys.tournaments.search({ filter: {}, pagination: {} }));
     revalidateTag(NextKeys.tournaments.details(input.tournamentId));
     revalidateTag(NextKeys.registrations.mine);
     revalidateTag(NextKeys.registrations.pending);
-    
     return res.json();
   }
 
@@ -122,15 +103,13 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       method: 'POST',
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao aceitar registro de dupla');
     }
-
-    // Revalidate relevant caches
-    revalidateTag(NextKeys.registrations.pending);
     revalidateTag(NextKeys.registrations.mine);
+    revalidateTag(NextKeys.registrations.pending);
+    revalidateTag(NextKeys.featuredTournaments.list);
   }
 
   async rejectDuoCompetitorRegistration(id: string): Promise<void> {
@@ -138,15 +117,13 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       method: 'POST',
       headers: { Authorization: `Bearer ${this.accessToken}` },
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao rejeitar registro de dupla');
     }
-
-    // Revalidate relevant caches
     revalidateTag(NextKeys.registrations.pending);
     revalidateTag(NextKeys.registrations.mine);
+    revalidateTag(NextKeys.featuredTournaments.list);
   }
 
   async cancelCompetitorRegistration(input: CancelRegistrationDto): Promise<void> {
@@ -158,13 +135,13 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
       },
       body: JSON.stringify(input),
     });
-    
     if (!res.ok) {
       const body = await res.json();
       throw new Error(body.message || 'Falha ao cancelar inscrição');
     }
-
-    // Revalidate relevant caches
     revalidateTag(NextKeys.registrations.mine);
+    revalidateTag(NextKeys.registrations.pending);
+    revalidateTag(NextKeys.featuredTournaments.list);
+    // Note: tournamentId not available in CancelRegistrationDto to revalidate specific tournament details
   }
 }
