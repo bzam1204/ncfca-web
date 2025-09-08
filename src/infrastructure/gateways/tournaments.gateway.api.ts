@@ -22,6 +22,9 @@ export class TournamentsGatewayApi implements TournamentsGateway {
     if (query.filter?.showDeleted !== undefined) {
       params.append('filter[showDeleted]', query.filter.showDeleted.toString());
     }
+    if (query.filter?.openedRegistration !== undefined) {
+      params.append('filter[openedRegistration]', query.filter.openedRegistration.toString());
+    }
     if (query.pagination?.page) {
       params.append('pagination[page]', query.pagination.page.toString());
     }

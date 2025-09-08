@@ -2291,36 +2291,6 @@
         ]
       }
     },
-    "/featured-tournaments": {
-      "get": {
-        "operationId": "FeaturedTournamentController_listFeatured",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Lista de destaques retornada com sucesso.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/FeaturedTournamentResponseDto"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "JWT-auth": []
-          }
-        ],
-        "summary": "Lista torneios em destaque (carousel)",
-        "tags": [
-          "Torneios - Destaques"
-        ]
-      }
-    },
     "/featured-tournaments/{id}/update": {
       "post": {
         "operationId": "FeaturedTournamentController_updateFeatured",
@@ -2391,6 +2361,36 @@
           }
         ],
         "summary": "Remove um destaque de torneio (hard delete)",
+        "tags": [
+          "Torneios - Destaques"
+        ]
+      }
+    },
+    "/featured-tournaments": {
+      "get": {
+        "operationId": "FeaturedTournamentController_listFeatured",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Lista de destaques retornada com sucesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FeaturedTournamentResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "Lista torneios em destaque (carousel)",
         "tags": [
           "Torneios - Destaques"
         ]
@@ -4742,6 +4742,12 @@
             "type": "boolean",
             "description": "Inclui torneios excluídos (soft-delete) no resultado.",
             "example": false,
+            "default": false
+          },
+          "openedRegistration": {
+            "type": "boolean",
+            "description": "Filters tournaments with registration window currently open.",
+            "example": true,
             "default": false
           }
         }

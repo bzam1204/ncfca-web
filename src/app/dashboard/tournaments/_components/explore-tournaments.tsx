@@ -18,6 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export function ExploreTournaments() {
   const [query, setQuery] = useState<SearchTournamentsQuery>(initialQuery);
@@ -35,13 +36,7 @@ export function ExploreTournaments() {
       </CardHeader>
       <CardContent>
         {
-          /**
-           * todo: add opened registration filter
-           * learn the rules @rules
-           * check the new @openapi.json for reference. the backend team added a new filter there.
-           * implement the new filter as the api-layer-standardization.md doctrines.
-           * then add the new filter here. 
-           */
+          // Opened registration filter (follows API layer standardization)
         }
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Input placeholder="Nome do torneio..." value={query.filter?.name || ''} onChange={(e) => handleNameChange(e, setQuery)} />
@@ -53,7 +48,13 @@ export function ExploreTournaments() {
               <SelectItem value="DUO">Dupla</SelectItem>
             </SelectContent>
           </Select>
-          <div />
+          <label className="flex items-center gap-2 px-2 py-2 rounded-md border border-input">
+            <Checkbox
+              checked={!!query.filter?.openedRegistration}
+              onCheckedChange={(checked) => handleOpenedRegistrationChange(!!checked, setQuery)}
+            />
+            <span className="text-sm">Inscrições abertas</span>
+          </label>
         </div>
 
         {isLoading && (
@@ -116,6 +117,7 @@ const initialQuery: SearchTournamentsQuery = {
   filter: {
     name: '',
     type: undefined,
+    openedRegistration: undefined,
   },
   pagination: {
     page: 1,
@@ -137,6 +139,15 @@ function handleTypeChange(val: string, setQuery: Dispatch<SetStateAction<SearchT
   setQuery((prev) => ({
     ...prev,
     filter: { ...(prev.filter || {}), type },
+    pagination: { ...(prev.pagination || {}), page: 1 },
+  }));
+}
+
+function handleOpenedRegistrationChange(checked: boolean, setQuery: Dispatch<SetStateAction<SearchTournamentsQuery>>) {
+  const openedRegistration = checked ? true : undefined;
+  setQuery((prev) => ({
+    ...prev,
+    filter: { ...(prev.filter || {}), openedRegistration },
     pagination: { ...(prev.pagination || {}), page: 1 },
   }));
 }

@@ -52,6 +52,8 @@ export interface SearchTournamentFilter {
   type?: TournamentType;
   /** Mostrar torneios excluídos */
   showDeleted?: boolean;
+  /** Filtrar torneios com inscrições abertas (janela atual) */
+  openedRegistration?: boolean;
 }
 
 /**
