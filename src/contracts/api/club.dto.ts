@@ -1,5 +1,3 @@
-// src/contracts/api/club.dto.ts
-
 /**
  * @description Schema para os dados de um clube.
  * @source openapi.json - components.schemas.ClubDto

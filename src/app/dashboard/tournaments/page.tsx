@@ -44,5 +44,3 @@ export default async function TournamentsPage() {
     </div>
   );
 }
-
-// Featured section is now owned by the carousel component to avoid rendering when empty.

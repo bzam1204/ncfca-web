@@ -1,5 +1,3 @@
-// src/contracts/api/club-management.dto.ts
-
 import { AddressDto } from '@/contracts/api/user.dto';
 import { Club } from '@/domain/entities/entities';
 

@@ -4,6 +4,7 @@ import { TournamentType } from './tournament.dto';
  * @description Status possíveis para uma inscrição.
  * @source openapi.json - components.schemas.SearchMyRegistrationsFilter.properties.status.enum
  */
+
 export type RegistrationStatus = 'CONFIRMED' | 'CANCELLED' | 'PENDING_APPROVAL' | 'REJECTED';
 
 /**
@@ -17,6 +18,10 @@ export interface SearchMyRegistrationsFilter {
   status?: RegistrationStatus;
   /** Ordenação por data de criação (asc ou desc) */
   order?: 'asc' | 'desc';
+  /** Página atual para paginação (opcional) */
+  page?: number;
+  /** Limite de itens por página (opcional) */
+  limit?: number;
 }
 
 /**

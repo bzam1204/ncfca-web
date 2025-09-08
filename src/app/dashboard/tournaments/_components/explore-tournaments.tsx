@@ -1,9 +1,9 @@
 'use client';
 
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import Link from 'next/link';
 
 import { AlertTriangle, CalendarDays, Search, Users } from 'lucide-react';
-import Link from 'next/link';
 
 import { SearchTournamentsItemView, SearchTournamentsQuery, TournamentType } from '@/contracts/api/tournament.dto';
 
@@ -34,6 +34,15 @@ export function ExploreTournaments() {
         <CardDescription>Encontre torneios por nome e tipo, e navegue até os detalhes para se inscrever.</CardDescription>
       </CardHeader>
       <CardContent>
+        {
+          /**
+           * todo: add opened registration filter
+           * learn the rules @rules
+           * check the new @openapi.json for reference. the backend team added a new filter there.
+           * implement the new filter as the api-layer-standardization.md doctrines.
+           * then add the new filter here. 
+           */
+        }
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <Input placeholder="Nome do torneio..." value={query.filter?.name || ''} onChange={(e) => handleNameChange(e, setQuery)} />
           <Select value={(query.filter?.type as string) ?? 'ALL'} onValueChange={(val) => handleTypeChange(val, setQuery)}>

@@ -1,7 +1,7 @@
-// src/contracts/api/admin.dto.ts
 import { UserRoles } from '@/domain/enums/user.roles';
-import { ClubMemberDto } from './club-member.dto';
+
 import { PaginatedResponseDto, PaginationDto } from './pagination.dto';
+import { ClubMemberDto } from './club-member.dto';
 
 export interface ManageUserRoleDto {
   roles: UserRoles[];

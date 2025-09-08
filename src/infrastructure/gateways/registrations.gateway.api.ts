@@ -26,6 +26,8 @@ export class RegistrationsGatewayApi implements RegistrationsGateway {
     if (filter?.tournamentName) params.append('filter[tournamentName]', filter.tournamentName);
     if (filter?.status) params.append('filter[status]', filter.status);
     if (filter?.order) params.append('filter[order]', filter.order);
+    if (filter?.page) params.append('page', String(filter.page));
+    if (filter?.limit) params.append('limit', String(filter.limit));
     const url = `${this.baseUrl}/my-registrations${params.toString() ? `?${params.toString()}` : ''}`;
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${this.accessToken}` },

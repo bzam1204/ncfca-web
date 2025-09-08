@@ -1,7 +1,8 @@
 import { DependantRelationship } from '@/domain/enums/dependant-relationship.enum';
-import { Sex } from '@/domain/enums/sex.enum';
-import { HolderDto } from '@/contracts/api/club-member.dto';
 import { DependantType } from '@/domain/enums/dependant-type.enum';
+import { Sex } from '@/domain/enums/sex.enum';
+
+import { HolderDto } from '@/contracts/api/club-member.dto';
 
 export interface AddDependantRequestDto {
   firstName: string;
