@@ -35,6 +35,8 @@ export const NextKeys = {
     searchClubMembers: (query: SearchClubMembersQueryDto): string => `admin_search_club_members_${JSON.stringify(query)}`,
   },
   tournaments: {
+    // Broad tag for all tournament-related server cache
+    all: 'tournaments',
     search: (query: SearchTournamentsQuery): string => `tournaments.search.${JSON.stringify(query)}`,
     details: (id: string) => `tournaments.details.${id}`,
   },

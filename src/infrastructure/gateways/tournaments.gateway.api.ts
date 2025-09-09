@@ -1,6 +1,13 @@
 import { TournamentsGateway } from '@/application/gateways/tournaments/tournaments.gateway';
 
-import { SearchTournamentsQuery, SearchTournamentsView, TournamentDetailsView } from '@/contracts/api/tournament.dto';
+import {
+  CreateTournamentDto,
+  SearchTournamentsQuery,
+  SearchTournamentsView,
+  TournamentDetailsView,
+  TournamentResponseDto,
+  UpdateTournamentDto,
+} from '@/contracts/api/tournament.dto';
 
 import { NextKeys } from '../cache/next-keys';
 
@@ -38,7 +45,7 @@ export class TournamentsGatewayApi implements TournamentsGateway {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       next: {
         revalidate: 300,
-        tags: [NextKeys.tournaments.search(query)],
+        tags: [NextKeys.tournaments.all, NextKeys.tournaments.search(query)],
       },
     });
     
@@ -55,7 +62,7 @@ export class TournamentsGatewayApi implements TournamentsGateway {
       headers: { Authorization: `Bearer ${this.accessToken}` },
       next: {
         revalidate: 300,
-        tags: [NextKeys.tournaments.details(id)],
+        tags: [NextKeys.tournaments.all, NextKeys.tournaments.details(id)],
       },
     });
     
@@ -65,5 +72,50 @@ export class TournamentsGatewayApi implements TournamentsGateway {
     }
     
     return res.json();
+  }
+
+  async create(dto: CreateTournamentDto): Promise<TournamentResponseDto> {
+    const res = await fetch(`${this.baseUrl}/tournaments/create`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dto),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.message || 'Falha ao criar torneio');
+    }
+    return res.json();
+  }
+
+  async update(id: string, dto: UpdateTournamentDto): Promise<TournamentResponseDto> {
+    const res = await fetch(`${this.baseUrl}/tournaments/${id}/update`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dto),
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.message || 'Falha ao atualizar torneio');
+    }
+    return res.json();
+  }
+
+  async delete(id: string): Promise<void> {
+    const res = await fetch(`${this.baseUrl}/tournaments/${id}/delete`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+      },
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.message || 'Falha ao excluir torneio');
+    }
   }
 }

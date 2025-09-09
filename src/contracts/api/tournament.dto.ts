@@ -120,3 +120,63 @@ export interface FeaturedTournamentResponseDto {
   /** Data de fim das inscrições */
   registrationEndDate: string;
 }
+
+/**
+ * @description DTO para criação de torneio (admin)
+ * @source openapi.json - components.schemas.CreateTournamentDto
+ */
+export interface CreateTournamentDto {
+  name: string;
+  description: string;
+  type: TournamentType;
+  registrationStartDate: string; // ISO date-time
+  registrationEndDate: string; // ISO date-time
+  startDate: string; // ISO date-time
+}
+
+/**
+ * @description DTO de resposta de torneio após criar/atualizar
+ * @source openapi.json - components.schemas.TournamentResponseDto
+ */
+export interface TournamentResponseDto {
+  id: string;
+  name: string;
+  description: string;
+  type: TournamentType;
+  registrationStartDate: string;
+  registrationEndDate: string;
+  startDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/**
+ * @description DTO para atualização de torneio (admin)
+ * @source openapi.json - components.schemas.UpdateTournamentDto
+ */
+export interface UpdateTournamentDto {
+  name?: string;
+  description?: string;
+  type?: TournamentType;
+  registrationStartDate?: string;
+  registrationEndDate?: string;
+  startDate?: string;
+}
+
+/**
+ * @description DTO para criar destaque de torneio (admin)
+ * @source openapi.json - components.schemas.CreateFeaturedTournamentDto
+ */
+export interface CreateFeaturedTournamentDto {
+  tournamentId: string;
+  position: number;
+}
+
+/**
+ * @description DTO para atualizar destaque de torneio (admin)
+ * @source openapi.json - components.schemas.UpdateFeaturedTournamentDto
+ */
+export interface UpdateFeaturedTournamentDto {
+  tournamentId?: string;
+  position?: number;
+}
