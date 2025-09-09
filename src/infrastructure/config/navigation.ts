@@ -74,6 +74,11 @@ export const navigation = {
       Icon: PlayCircle,
     },
     {
+      title: 'Torneios',
+      url: '/admin/dashboard/tournaments',
+      Icon: Trophy,
+    },
+    {
       title: 'Área de Membro',
       url: '/dashboard',
       Icon: HomeIcon,

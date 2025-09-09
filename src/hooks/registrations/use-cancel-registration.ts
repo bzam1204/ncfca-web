@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { CancelRegistrationDto } from '@/contracts/api/registration.dto';
 
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { cancelRegistrationAction } from '@/infrastructure/actions/registrations/cancel-registration.action';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';

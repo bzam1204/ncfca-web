@@ -7,8 +7,8 @@ import { AlertTriangle, CalendarDays, Search, Users } from 'lucide-react';
 
 import { SearchTournamentsItemView, SearchTournamentsQuery, TournamentType } from '@/contracts/api/tournament.dto';
 
-import { useSearchTournaments } from '@/hooks/use-search-tournaments';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchTournaments } from '@/hooks/tournaments/use-search-tournaments';
+import { useDebounce } from '@/hooks/misc/use-debounce';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

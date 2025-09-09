@@ -1,7 +1,7 @@
 'use client';
 
 import {useState} from 'react';
-import {useAdminClubRequests} from '@/hooks/use-admin-club-requests';
+import {useAdminClubRequests} from '@/hooks/clubs/use-admin-club-requests';
 import {PendingEnrollmentDto} from '@/contracts/api/enrollment.dto';
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from '@/components/ui/table';
 import {Button} from '@/components/ui/button';

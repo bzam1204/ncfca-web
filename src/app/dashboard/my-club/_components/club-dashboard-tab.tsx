@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { useFindMyClubEnrollmentRequests } from '@/hooks/use-find-my-club-enrollment-requests';
-import { useSearchMyClubMembers } from '@/hooks/use-search-my-club-members';
+import { useFindMyClubEnrollmentRequests } from '@/hooks/clubs/use-find-my-club-enrollment-requests';
+import { useSearchMyClubMembers } from '@/hooks/clubs/use-search-my-club-members';
 
 import { DashboardCharts } from './dashboard-charts';
 

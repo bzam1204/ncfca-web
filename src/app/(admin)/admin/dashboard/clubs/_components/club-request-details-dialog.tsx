@@ -7,9 +7,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { User, Phone, Mail, MapPin, Calendar, MessageSquare, Building2, Users, FileText, ExternalLink } from 'lucide-react';
-import { useAdminUserById } from '@/hooks/use-admin-user-by-id';
-import { useApproveClubRequest } from '@/hooks/use-approve-club-request';
-import { useRejectClubRequest } from '@/hooks/use-reject-club-request';
+import { useAdminUserById } from '@/hooks/users/use-admin-user-by-id';
+import { useApproveClubRequest } from '@/hooks/clubs/use-approve-club-request';
+import { useRejectClubRequest } from '@/hooks/clubs/use-reject-club-request';
 import { RejectClubRequestDialog } from './reject-club-request-dialog';
 import { RejectRequestDto } from '@/contracts/api/club-request.dto';
 import {

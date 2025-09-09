@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { loginSchema, type LoginInput } from '@/infrastructure/validators/login.schema';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { Skeleton } from '@/components/ui/skeleton';
 
 function Login() {

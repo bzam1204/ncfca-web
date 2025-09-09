@@ -2,7 +2,7 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { rejectClubRequestAction } from '@/infrastructure/actions/admin/reject-club-request.action';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { RejectRequestDto } from '@/contracts/api/club-request.dto';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';
 

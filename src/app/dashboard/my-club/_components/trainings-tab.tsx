@@ -4,7 +4,7 @@ import { AlertTriangle, PlayCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useGetTrainings } from '@/hooks/use-get-trainings';
+import { useGetTrainings } from '@/hooks/trainings/use-get-trainings';
 import { YouTubePlayer } from '@/components/you-tube-player';
 
 export function TrainingsTab() {

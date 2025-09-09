@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Club } from '@/domain/entities/entities';
-import { useChangePrincipal } from '@/hooks/use-change-principal';
-import { useSearchUsers } from '@/hooks/use-search-users';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useChangePrincipal } from '@/hooks/clubs/use-change-principal';
+import { useSearchUsers } from '@/hooks/users/use-search-users';
+import { useDebounce } from '@/hooks/misc/use-debounce';
 
 interface ChangePrincipalDialogProps {
   isOpen: boolean;

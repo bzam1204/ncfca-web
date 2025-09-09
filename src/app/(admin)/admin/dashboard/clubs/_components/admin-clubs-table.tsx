@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSearchClubs } from '@/hooks/use-search-clubs';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchClubs } from '@/hooks/clubs/use-search-clubs';
+import { useDebounce } from '@/hooks/misc/use-debounce';
 import { SearchClubsQuery } from '@/contracts/api/club.dto';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { RequestDuoRegistrationDto, RequestDuoRegistrationOutputDto } from '@/contracts/api/registration.dto';
 
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { requestDuoRegistrationAction } from '@/infrastructure/actions/registrations/request-duo-registration.action';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';

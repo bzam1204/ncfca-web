@@ -15,10 +15,10 @@ import { RejectEnrollmentDialog } from '@/app/dashboard/my-club/_components/reje
 
 import { EnrollmentRequestDto, PendingEnrollmentDto } from '@/contracts/api/enrollment.dto';
 
-import { useFindMyClubPendingEnrollmentRequests } from '@/hooks/use-find-my-club-pending-enrollment-requests';
-import useApproveEnrollmentMutation from '@/hooks/use-approve-enrollment-request';
-import useRejectEnrollmentRequest from '@/hooks/use-reject-enrollment-request';
-import { useNotify } from '@/hooks/use-notify';
+import { useFindMyClubPendingEnrollmentRequests } from '@/hooks/clubs/use-find-my-club-pending-enrollment-requests';
+import useApproveEnrollmentMutation from '@/hooks/enrollments/use-approve-enrollment-request';
+import useRejectEnrollmentRequest from '@/hooks/enrollments/use-reject-enrollment-request';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { PendingRequestDetailsDialog } from './pending-request-details-dialog';
 

@@ -11,10 +11,10 @@ import { Label } from '@/components/ui/label';
 
 import { TournamentDetailsView } from '@/contracts/api/tournament.dto';
 
-import { useGetDependants } from '@/hooks/use-get-dependants';
-import { useDebounce } from '@/hooks/use-debounce';
-import { useSearchDependants } from '@/hooks/use-search-dependants';
-import { useRequestDuoRegistration } from '@/hooks/use-request-duo-registration';
+import { useGetDependants } from '@/hooks/family/use-get-dependants';
+import { useDebounce } from '@/hooks/misc/use-debounce';
+import { useSearchDependants } from '@/hooks/family/use-search-dependants';
+import { useRequestDuoRegistration } from '@/hooks/registrations/use-request-duo-registration';
 
 export function DuoRegistrationDialog({ tournament, disabled, children }: PropsWithChildren<{ tournament: TournamentDetailsView; disabled?: boolean }>) {
   const [open, setOpen] = useState(false);

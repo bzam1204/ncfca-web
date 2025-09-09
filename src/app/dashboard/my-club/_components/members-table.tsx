@@ -15,10 +15,10 @@ import { Input } from '@/components/ui/input';
 
 import { ClubMemberDto } from '@/contracts/api/club-member.dto';
 
-import { useRevokeMembershipMutation } from '@/hooks/use-revoke-membership';
-import { useSearchMyClubMembers } from '@/hooks/use-search-my-club-members';
-import { useDebounce } from '@/hooks/use-debounce';
-import { useNotify } from '@/hooks/use-notify';
+import { useRevokeMembershipMutation } from '@/hooks/clubs/use-revoke-membership';
+import { useSearchMyClubMembers } from '@/hooks/clubs/use-search-my-club-members';
+import { useDebounce } from '@/hooks/misc/use-debounce';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { MemberDetailsDialog } from './member-details';
 

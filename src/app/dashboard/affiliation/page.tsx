@@ -6,7 +6,7 @@ import { CheckCircle, AlertTriangle, XCircle, Clock } from 'lucide-react';
 import { familyStatusTranslation, getFamilyStatusVariant } from '@/infrastructure/translations';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { FamilyStatus } from '@/domain/enums/family-status.enum';
-import { useMyFamily } from '@/hooks/use-my-family';
+import { useMyFamily } from '@/hooks/family/use-my-family';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const formatDate = (dateString: string | null) => {

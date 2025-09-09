@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAdminManageUserRoleMutation } from '@/hooks/use-admin-manage-user-role';
+import { useAdminManageUserRoleMutation } from '@/hooks/users/use-admin-manage-user-role';
 import { UserDto } from '@/contracts/api/user.dto';
 import { ManageUserRoleDto } from '@/contracts/api/admin.dto';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';

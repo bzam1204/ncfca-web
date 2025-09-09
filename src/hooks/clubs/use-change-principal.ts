@@ -1,7 +1,7 @@
 'use client';
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNotify } from './use-notify';
+import { useNotify } from '../misc/use-notify';
 import { changeClubPrincipalAction } from '@/infrastructure/actions/admin/change-club-principal.action';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';
 

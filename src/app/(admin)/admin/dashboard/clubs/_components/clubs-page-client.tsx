@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
 import { ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
-import { usePendingClubRequests } from '@/hooks/use-pending-club-requests';
+import { usePendingClubRequests } from '@/hooks/clubs/use-pending-club-requests';
 
 import { PendingClubRequestsTable } from './pending-club-requests-table';
 import { AdminClubsTable } from './admin-clubs-table';

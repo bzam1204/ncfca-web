@@ -9,8 +9,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { StateCombobox } from '@/app/_components/state-combobox';
-import { useCreateClubRequest } from '@/hooks/use-create-club-request';
-import { useCepAutocompleteGeneric } from '@/hooks/use-cep-autocomplete-generic';
+import { useCreateClubRequest } from '@/hooks/clubs/use-create-club-request';
+import { useCepAutocompleteGeneric } from '@/hooks/misc/use-cep-autocomplete-generic';
 import { viaCepService } from '@/infrastructure/services/via-cep.service';
 
 const addressSchema = z.object({

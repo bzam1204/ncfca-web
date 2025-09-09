@@ -16,8 +16,8 @@ import {
 import { RejectClubRequestDialog } from './reject-club-request-dialog';
 import { RejectRequestDto } from '@/contracts/api/club-request.dto';
 import { Loader2 } from 'lucide-react';
-import { useApproveClubRequest } from '@/hooks/use-approve-club-request';
-import { useRejectClubRequest } from '@/hooks/use-reject-club-request';
+import { useApproveClubRequest } from '@/hooks/clubs/use-approve-club-request';
+import { useRejectClubRequest } from '@/hooks/clubs/use-reject-club-request';
 
 interface ClubRequestActionsProps {
   requestId: string;

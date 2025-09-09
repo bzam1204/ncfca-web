@@ -9,9 +9,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 
-import { useRequestEnrollment } from '@/hooks/use-request-enrollment';
-import { useGetDependants } from '@/hooks/use-get-dependants';
-import { useNotify } from '@/hooks/use-notify';
+import { useRequestEnrollment } from '@/hooks/enrollments/use-request-enrollment';
+import { useGetDependants } from '@/hooks/family/use-get-dependants';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { Club } from '@/domain/entities/entities';
 

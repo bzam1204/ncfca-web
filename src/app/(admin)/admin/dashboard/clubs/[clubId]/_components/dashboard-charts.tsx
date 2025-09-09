@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import { useAdminClubCharts } from '@/hooks/use-admin-club-charts';
+import { useAdminClubCharts } from '@/hooks/clubs/use-admin-club-charts';
 
 // --- GRÁFICO DE DISTRIBUIÇÃO (PIZZA/DONUT) ---
 

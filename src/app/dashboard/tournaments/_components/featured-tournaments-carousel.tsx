@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import { CalendarDays, ArrowRight, Trophy } from 'lucide-react';
 
-import { useFeaturedTournaments } from '@/hooks/use-featured-tournaments';
+import { useFeaturedTournaments } from '@/hooks/tournaments/use-featured-tournaments';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';

@@ -19,8 +19,8 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 
-import { useDeleteTraining } from '@/hooks/use-delete-training';
-import { useGetTrainings } from '@/hooks/use-get-trainings';
+import { useDeleteTraining } from '@/hooks/trainings/use-delete-training';
+import { useGetTrainings } from '@/hooks/trainings/use-get-trainings';
 
 import { EditTrainingDialog } from '@/app/(admin)/admin/dashboard/trainings/_components/edit-training-dialog';
 

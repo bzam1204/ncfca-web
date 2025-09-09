@@ -2,10 +2,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useAdminManageUserRoleMutation } from '@/hooks/use-admin-manage-user-role';
+import { useAdminManageUserRoleMutation } from '@/hooks/users/use-admin-manage-user-role';
 import { UserDto } from '@/contracts/api/user.dto';
 import { ManageUserRoleDto } from '@/contracts/api/admin.dto';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { Button } from '@/components/ui/button';
 import { ManageRoleDialog } from '../../_components/manage-role-dialog';
 

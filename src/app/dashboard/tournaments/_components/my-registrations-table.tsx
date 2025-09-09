@@ -1,7 +1,8 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { AlertTriangle, Filter, Search, RotateCcw } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { AlertTriangle, Filter, Search, RotateCcw, Eye } from 'lucide-react';
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -14,16 +15,19 @@ import { Input } from '@/components/ui/input';
 
 import { RegistrationStatus, SearchMyRegistrationItemView } from '@/contracts/api/registration.dto';
 
-import { useCancelRegistration } from '@/hooks/use-cancel-registration';
-import { useMyRegistrations } from '@/hooks/use-my-registrations';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useCancelRegistration } from '@/hooks/registrations/use-cancel-registration';
+import { useMyRegistrations } from '@/hooks/registrations/use-my-registrations';
+import { useDebounce } from '@/hooks/misc/use-debounce';
+import { DuoRegistrationAnalysisDialog } from './duo-registration-analysis-dialog';
 
 export function MyRegistrationsTable() {
+  const { data: session } = useSession();
   const [tournamentName, setTournamentName] = useState('');
   const [status, setStatus] = useState<RegistrationStatus | ''>('');
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
+  const [selectedRegistration, setSelectedRegistration] = useState<SearchMyRegistrationItemView | null>(null);
 
   const debouncedName = useDebounce(tournamentName, 400);
 
@@ -38,6 +42,14 @@ export function MyRegistrationsTable() {
 
   const rows = useMemo(() => registrations ?? [], [registrations]);
   const totalPages = meta?.totalPages || 1;
+
+  const shouldShowAnalyzeButton = (registration: SearchMyRegistrationItemView) => {
+    return (
+      registration.status === 'PENDING_APPROVAL' &&
+      registration.tournamentType === 'DUO' &&
+      registration.partnerId === session?.user?.id
+    );
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -128,7 +140,9 @@ export function MyRegistrationsTable() {
             </TableHeader>
             <TableBody>
               {rows.length > 0 ? (
-                rows.map((r: SearchMyRegistrationItemView) => (
+                rows.map((r: SearchMyRegistrationItemView) => {
+                  
+                  return (
                   <TableRow key={r.registrationId}>
                     <TableCell className="font-medium">{r.tournamentName}</TableCell>
                     <TableCell>{r.tournamentType}</TableCell>
@@ -137,17 +151,28 @@ export function MyRegistrationsTable() {
                     </TableCell>
                     <TableCell>{formatDateTime(r.requestedAt)}</TableCell>
                     <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => cancelMutation.mutate({ registrationId: r.registrationId })}
-                        disabled={!canCancel(r.status) || cancelMutation.isPending}
-                      >
-                        Cancelar
-                      </Button>
+                      {shouldShowAnalyzeButton(r) ? (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setSelectedRegistration(r)}
+                        >
+                          <Eye className="mr-2 h-4 w-4" />
+                          Analisar
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => cancelMutation.mutate({ registrationId: r.registrationId })}
+                          disabled={!canCancel(r.status) || cancelMutation.isPending}
+                        >
+                          Cancelar
+                        </Button>
+                      )}
                     </TableCell>
                   </TableRow>
-                ))
+                )})
               ) : (
                 <TableRow>
                   <TableCell colSpan={5} className="h-24 text-center">
@@ -166,6 +191,16 @@ export function MyRegistrationsTable() {
         totalPages={totalPages}
         onPageChange={(p) => {
           if (p >= 1 && p <= totalPages) setPage(p);
+        }}
+      />
+
+      {/* Duo Registration Analysis Dialog */}
+      <DuoRegistrationAnalysisDialog
+        registration={selectedRegistration}
+        onOpenChange={(isOpen) => {
+          if (!isOpen) {
+            setSelectedRegistration(null);
+          }
         }}
       />
     </div>

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { useGetDependants, useAddDependantMutation, useUpdateDependantMutation, useDeleteDependantMutation } from '@/hooks/use-manage-dependants';
-import { useNotify } from '@/hooks/use-notify';
+import { useGetDependants, useAddDependantMutation, useUpdateDependantMutation, useDeleteDependantMutation } from '@/hooks/family/use-manage-dependants';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';

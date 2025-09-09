@@ -1,9 +1,9 @@
 'use client';
 
 import {useState} from 'react';
-import {useDependantDetails} from '@/hooks/use-dependant-details';
-import {useAdminApproveEnrollmentMutation, useAdminRejectEnrollmentMutation} from '@/hooks/use-admin-club-enrollments';
-import {useNotify} from '@/hooks/use-notify';
+import {useDependantDetails} from '@/hooks/family/use-dependant-details';
+import {useAdminApproveEnrollmentMutation, useAdminRejectEnrollmentMutation} from '@/hooks/clubs/use-admin-club-enrollments';
+import {useNotify} from '@/hooks/misc/use-notify';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';

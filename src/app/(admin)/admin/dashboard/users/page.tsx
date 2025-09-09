@@ -7,8 +7,8 @@ import { UsersTable } from '@/app/(admin)/admin/dashboard/users/_components/user
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { PaginationControls } from '@/components/ui/pagination-controls';
-import { useDebounce } from '@/hooks/use-debounce';
-import { useSearchUsers } from '@/hooks/use-search-users';
+import { useDebounce } from '@/hooks/misc/use-debounce';
+import { useSearchUsers } from '@/hooks/users/use-search-users';
 import { SearchUsersQuery } from '@/contracts/api/user.dto';
 import { UserRoles } from '@/domain/enums/user.roles';
 import { Search, Filter } from 'lucide-react';

@@ -11,8 +11,8 @@ import { Label } from '@/components/ui/label';
 
 import { TournamentDetailsView } from '@/contracts/api/tournament.dto';
 
-import { useGetDependants } from '@/hooks/use-get-dependants';
-import { useRequestIndividualRegistration } from '@/hooks/use-request-individual-registration';
+import { useGetDependants } from '@/hooks/family/use-get-dependants';
+import { useRequestIndividualRegistration } from '@/hooks/registrations/use-request-individual-registration';
 
 export function IndividualRegistrationDialog({ tournament, disabled, children }: PropsWithChildren<{ tournament: TournamentDetailsView; disabled?: boolean }>) {
   const [open, setOpen] = useState(false);

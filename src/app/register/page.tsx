@@ -11,10 +11,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { registerSchema, type RegisterInput } from '@/infrastructure/validators/register.schema';
-import { useRegisterUserMutation } from '@/hooks/use-register-user';
-import { useCepAutocomplete } from '@/hooks/use-cep-autocomplete';
+import { useRegisterUserMutation } from '@/hooks/users/use-register-user';
+import { useCepAutocomplete } from '@/hooks/misc/use-cep-autocomplete';
 import { viaCepService } from '@/infrastructure/services/via-cep.service';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { useEffect } from 'react';
 import { StateCombobox } from '@/app/_components/state-combobox';
 

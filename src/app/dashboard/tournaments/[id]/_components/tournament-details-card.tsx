@@ -3,7 +3,7 @@
 import { useMemo } from 'react';
 import { CalendarDays, Users, Info, UserPlus, UsersRound, AlertTriangle } from 'lucide-react';
 
-import { useTournamentDetails } from '@/hooks/use-tournament-details';
+import { useTournamentDetails } from '@/hooks/tournaments/use-tournament-details';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';

@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 import { MyEnrollmentRequestsDto } from '@/application/gateways/enrollment/enrollment.gateway.dto';
-import { useGetMyEnrollmentRequests } from '@/hooks/use-get-my-enrollment-requests';
+import { useGetMyEnrollmentRequests } from '@/hooks/enrollments/use-get-my-enrollment-requests';
 
 import { enrollmentStatusTranslation, getEnrollmentStatusVariant } from '@/infrastructure/translations';
 

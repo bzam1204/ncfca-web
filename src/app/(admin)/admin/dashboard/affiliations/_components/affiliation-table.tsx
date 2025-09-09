@@ -2,7 +2,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useAdminAffiliations } from '@/hooks/use-admin-affiliations';
+import { useAdminAffiliations } from '@/hooks/affiliations/use-admin-affiliations';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { familyStatusTranslation, getFamilyStatusVariant } from '@/infrastructure/translations';

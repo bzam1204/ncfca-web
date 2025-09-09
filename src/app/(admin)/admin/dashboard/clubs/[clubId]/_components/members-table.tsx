@@ -13,8 +13,8 @@ import {Skeleton} from '@/components/ui/skeleton';
 import {Button} from '@/components/ui/button';
 import {Input} from '@/components/ui/input';
 
-import {useAdminClubMembers} from '@/hooks/use-admin-club-members';
-import {useDebounce} from '@/hooks/use-debounce';
+import {useAdminClubMembers} from '@/hooks/clubs/use-admin-club-members';
+import {useDebounce} from '@/hooks/misc/use-debounce';
 
 import {MemberDetailsDialog} from './member-details';
 

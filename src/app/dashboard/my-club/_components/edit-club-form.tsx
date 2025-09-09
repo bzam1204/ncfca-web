@@ -5,15 +5,15 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useSession } from 'next-auth/react';
-import { useUpdateMyClub } from '@/hooks/use-update-my-club';
-import { useNotify } from '@/hooks/use-notify';
+import { useUpdateMyClub } from '@/hooks/clubs/use-update-my-club';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
 import { Club } from '@/domain/entities/entities';
-import { useCepAutocompleteGeneric } from '@/hooks/use-cep-autocomplete-generic';
+import { useCepAutocompleteGeneric } from '@/hooks/misc/use-cep-autocomplete-generic';
 import { viaCepService } from '@/infrastructure/services/via-cep.service';
 import { StateCombobox } from '@/app/_components/state-combobox';
 

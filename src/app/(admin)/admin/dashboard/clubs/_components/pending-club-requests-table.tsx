@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertTriangle, RotateCcw } from 'lucide-react';
 import { ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
-import { usePendingClubRequests } from '@/hooks/use-pending-club-requests';
+import { usePendingClubRequests } from '@/hooks/clubs/use-pending-club-requests';
 // import { ClubRequestActions } from "./club-request-actions";
 import { ClubRequestDetailsDialog } from './club-request-details-dialog';
 

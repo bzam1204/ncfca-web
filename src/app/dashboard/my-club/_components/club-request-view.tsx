@@ -4,7 +4,7 @@ import { ClubRequestStatusDto } from '@/contracts/api/club-management.dto';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Hourglass } from 'lucide-react';
 import { CreateClubForm } from './create-club-form';
-import { useMyClubRequests } from '@/hooks/use-my-club-requests';
+import { useMyClubRequests } from '@/hooks/clubs/use-my-club-requests';
 
 export function ClubRequestView({ initialRequests }: { initialRequests: ClubRequestStatusDto[] }) {
   const { data: requests, isLoading } = useMyClubRequests(initialRequests);

@@ -6,8 +6,8 @@ import { useSession } from 'next-auth/react';
 
 import { SearchClubsQuery } from '@/contracts/api/club.dto';
 
-import { useSearchClubs } from '@/hooks/use-search-clubs';
-import { useDebounce } from '@/hooks/use-debounce';
+import { useSearchClubs } from '@/hooks/clubs/use-search-clubs';
+import { useDebounce } from '@/hooks/misc/use-debounce';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';

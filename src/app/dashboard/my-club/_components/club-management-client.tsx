@@ -12,7 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
-import { useMyClub } from '@/hooks/use-my-club';
+import { useMyClub } from '@/hooks/clubs/use-my-club';
 
 import { PendingRequestsTable } from './pending-requests-table';
 import { ClubDashboardTab } from './club-dashboard-tab';

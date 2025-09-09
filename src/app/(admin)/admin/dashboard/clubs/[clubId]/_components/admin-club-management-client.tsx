@@ -6,7 +6,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Users, AlertTriangle } from 'lucide-react';
 import { Club } from '@/domain/entities/entities';
-import { useAdminClubById } from '@/hooks/use-admin-club-by-id';
+import { useAdminClubById } from '@/hooks/clubs/use-admin-club-by-id';
 
 import { DashboardCharts } from './dashboard-charts';
 import { MembersTable } from './members-table';

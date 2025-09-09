@@ -25,10 +25,10 @@ import {
   AlertDialog,
 } from '@/components/ui/alert-dialog';
 
-import useApproveEnrollmentRequest from '@/hooks/use-approve-enrollment-request';
-import useRejectEnrollmentRequest from '@/hooks/use-reject-enrollment-request';
-import { useDependantDetails } from '@/hooks/use-dependant-details';
-import { useNotify } from '@/hooks/use-notify';
+import useApproveEnrollmentRequest from '@/hooks/enrollments/use-approve-enrollment-request';
+import useRejectEnrollmentRequest from '@/hooks/enrollments/use-reject-enrollment-request';
+import { useDependantDetails } from '@/hooks/family/use-dependant-details';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 
 export function PendingRequestDetailsDialog({ request, onOpenChange, onSuccess, clubId }: PendingRequestDetailsDialogProps) {

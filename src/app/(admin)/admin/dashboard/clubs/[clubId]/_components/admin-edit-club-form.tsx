@@ -3,15 +3,15 @@
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 import { Club } from '@/domain/entities/entities';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Loader2 } from 'lucide-react';
 import { DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from '@/components/ui/dialog';
-import { useAdminUpdateClub } from '@/hooks/use-admin-update-club';
-import { useCepAutocompleteGeneric } from '@/hooks/use-cep-autocomplete-generic';
+import { useAdminUpdateClub } from '@/hooks/clubs/use-admin-update-club';
+import { useCepAutocompleteGeneric } from '@/hooks/misc/use-cep-autocomplete-generic';
 import { viaCepService } from '@/infrastructure/services/via-cep.service';
 import { StateCombobox } from '@/app/_components/state-combobox';
 

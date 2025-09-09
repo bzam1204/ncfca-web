@@ -10,8 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 
 import { CreateTrainingDto, TrainingDto, UpdateTrainingDto } from '@/contracts/api/training.dto';
-import { useCreateTraining } from '@/hooks/use-create-training';
-import { useUpdateTraining } from '@/hooks/use-update-training';
+import { useCreateTraining } from '@/hooks/trainings/use-create-training';
+import { useUpdateTraining } from '@/hooks/trainings/use-update-training';
 
 export function TrainingForm({ training, onSuccess }: TrainingFormProps) {
   const isEditing = !!training;

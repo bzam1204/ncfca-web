@@ -2,23 +2,23 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 
-import { rejectDuoRegistrationAction } from '@/infrastructure/actions/registrations/reject-duo-registration.action';
+import { acceptDuoRegistrationAction } from '@/infrastructure/actions/registrations/accept-duo-registration.action';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';
 
-export function useRejectDuoRegistration() {
+export function useAcceptDuoRegistration() {
   const notify = useNotify();
   const queryClient = useQueryClient();
   return useMutation<void, Error, string>({
-    mutationFn: rejectDuoRegistrationAction,
+    mutationFn: acceptDuoRegistrationAction,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: QueryKeys.registrations.pending() });
       queryClient.invalidateQueries({ queryKey: QueryKeys.registrations.mine() });
-      notify.success('Convite para dupla recusado.');
+      notify.success('Convite para dupla aceito com sucesso!');
     },
     onError: (error) => {
-      notify.error(`Falha ao recusar convite: ${error.message}`);
+      notify.error(`Falha ao aceitar convite: ${error.message}`);
     },
   });
 }

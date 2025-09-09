@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { RequestIndividualRegistrationInputDto, RequestIndividualRegistrationOutputDto } from '@/contracts/api/registration.dto';
 
-import { useNotify } from '@/hooks/use-notify';
+import { useNotify } from '@/hooks/misc/use-notify';
 
 import { requestIndividualRegistrationAction } from '@/infrastructure/actions/registrations/request-individual-registration.action';
 import { QueryKeys } from '@/infrastructure/cache/query-keys';
